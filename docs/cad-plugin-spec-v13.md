@@ -1,36 +1,46 @@
 ---
 documento: Especificação de Estratégia
 projeto: Plugin Claude Code/Cowork — Collaborative Augmented Discovery (CAD)
-versao: 13.3
+versao: 13.5
 data: 2026-06-28
 status: aberto para revisão
-substitui: v13.2 (CAD + módulos Lean/DDD, toolchain Node/TS)
+substitui: v13.4 (CAD + módulos Lean/DDD, toolchain autônomo)
 ---
 
 # Plugin Claude Code/Cowork — Collaborative Augmented Discovery (CAD)
 
+## 0.6. O que mudou da v13.4 para a v13.5 (resumo executivo)
+
+Correção: os exemplos de `module.json` na seção 5 estavam em YAML "por legibilidade",
+o que era inconsistente com um arquivo `.json`. Agora estão em **JSON de verdade** — o
+formato que os hooks leem com `JSON.parse` nativo (sem dependência de parser, coerente
+com "zero dependências em runtime" da seção 11 e com o princípio 9, "controle em
+JSON"). Sem mudança de campos nem de decisão.
+
+## 0.5. O que mudou da v13.3 para a v13.4 (resumo executivo)
+
+Edição: a seção 11 e o histórico foram reescritos para descrever o toolchain de forma
+**autônoma**, por mérito técnico próprio, sem referência a outros projetos. Sem
+mudança de decisão.
+
 ## 0.4. O que mudou da v13.2 para a v13.3 (resumo executivo)
 
-Alinhamento de nome de repositório e pacote ao padrão do GovBR (repo
-`GovBR-Claude-Plugin` ↔ pacote `govbr-claude-plugin`): o repositório passa a ser
-**`CAD-Claude-Plugin`** e o nome do pacote/manifesto e do artefato `.plugin` passam de
-`cad-plugin` para **`cad-claude-plugin`** (que ainda segue a regra `cad-<adição>` da
-seção 3.0). Os identificadores de **plataforma não mudam**: comandos `/cad:`, skills
-`cad-*` e a pasta de controle `.cad-plugin/` continuam derivando do nome programático
-`cad`.
+Definição do nome de repositório e de pacote: o repositório é **`CAD-Claude-Plugin`** e
+o nome do pacote/manifesto e do artefato `.plugin` passam de `cad-plugin` para
+**`cad-claude-plugin`** (que ainda segue a regra `cad-<adição>` da seção 3.0). Os
+identificadores de **plataforma não mudam**: comandos `/cad:`, skills `cad-*` e a pasta
+de controle `.cad-plugin/` continuam derivando do nome programático `cad`.
 
 ## 0.3. O que mudou da v13.1 para a v13.2 (resumo executivo)
 
-Padronização da **linguagem e do toolchain de build** (nova seção 11), alinhada ao
-plugin GovBR já existente: **Node.js + TypeScript**, ESM, `esbuild`, versão de fonte
-única no `package.json` e scripts de build em `.mjs`. A diferença estrutural é que o
-CAD **não tem servidor MCP** (não acessa API externa — lê o repositório do cliente
-com as ferramentas nativas do Claude Code), então herda o toolchain mas descarta o
-`@modelcontextprotocol/sdk`, o `axios`, o passo `.mcpb` e a injeção de `mcpServers`.
-O que se compila são os **3 hooks** e **helpers determinísticos** (append de
+Padronização da **linguagem e do toolchain de build** (nova seção 11): **Node.js +
+TypeScript**, ESM, `esbuild`, versão de fonte única no `package.json` e scripts de
+build em `.mjs`. A característica estrutural é que o CAD **não tem servidor MCP** (não
+acessa API externa — lê o repositório do cliente com as ferramentas nativas do Claude
+Code); o que se compila são os **3 hooks** e **helpers determinísticos** (append de
 `state.json`/`sources.json`, leitura de `module.json`), todos com a stdlib do Node e
-`JSON.parse` nativo — **zero dependências em runtime**. Também se formaliza o
-contrato de módulo como `module.json` (JSON), parseável pelos hooks sem dependência.
+`JSON.parse` nativo — **zero dependências em runtime**. Também se formaliza o contrato
+de módulo como `module.json` (JSON), parseável pelos hooks sem dependência.
 
 ## 0.2. O que mudou da v13.0 para a v13.1 (resumo executivo)
 
@@ -373,63 +383,77 @@ tocar no núcleo, e o que garante que nenhuma técnica contamine outra.
 Um **módulo de técnica** é uma família de skills com um **manifesto** em duas faces:
 `<x>-module/SKILL.md` (legível por humano, em prosa) e `<x>-module/module.json` (o
 **contrato enforceável**, em JSON, lido pelos hooks e pelo `cad-synthesize` com
-`JSON.parse` nativo — sem dependência). O bloco abaixo mostra o conteúdo do
-contrato (aqui em YAML por legibilidade; no arquivo é o `module.json` equivalente):
+`JSON.parse` nativo — sem dependência). Campos do contrato: `tecnica` (nome
+programático), `metodo_de_origem` (nome completo, só para prosa), `pasta_saida` (única
+pasta onde o módulo escreve), `entradas_substrato` (únicas fontes que o módulo lê),
+`artefatos` (o que o módulo produz) e `vocabulario_proibido` (termos de outras técnicas
+barrados nestes artefatos). O `module.json` do módulo Lean Inception:
 
-```yaml
-tecnica: lean-inception
-metodo_de_origem: "Lean Inception (Paulo Caroli)"
-pasta_saida: docs/lean-inception/         # única pasta onde o módulo escreve
-entradas_substrato:                        # únicas fontes que o módulo lê
-  - docs/cad/knowledge-base.md
-  - docs/cad/evidence-log.md
-  - docs/cad/vocabulary.md
-  - docs/cad/business-rules.md
-  - docs/cad/capabilities.md
-artefatos:                                 # artefatos que o módulo produz
-  - vision.md
-  - product-enfn.md
-  - objectives.md
-  - personas.md
-  - features.md
-  - journeys.md
-  - sequencer.md
-  - mvp-canvas.md
-vocabulario_proibido:                      # termos de OUTRAS técnicas que não
-  - bounded context                        #   podem aparecer nestes artefatos
-  - agregado / aggregate
-  - evento de domínio / domain event
-  - linguagem ubíqua
+```json
+{
+  "tecnica": "lean-inception",
+  "metodo_de_origem": "Lean Inception (Paulo Caroli)",
+  "pasta_saida": "docs/lean-inception/",
+  "entradas_substrato": [
+    "docs/cad/knowledge-base.md",
+    "docs/cad/evidence-log.md",
+    "docs/cad/vocabulary.md",
+    "docs/cad/business-rules.md",
+    "docs/cad/capabilities.md"
+  ],
+  "artefatos": [
+    "vision.md",
+    "product-enfn.md",
+    "objectives.md",
+    "personas.md",
+    "features.md",
+    "journeys.md",
+    "sequencer.md",
+    "mvp-canvas.md"
+  ],
+  "vocabulario_proibido": [
+    "bounded context",
+    "agregado / aggregate",
+    "evento de domínio / domain event",
+    "linguagem ubíqua"
+  ]
+}
 ```
 
 O segundo módulo plugado, o DDD, instancia o **mesmo** contrato — provando que o
 substrato neutro serve a dois métodos sem mistura. Note o `vocabulario_proibido`
 simétrico (barra termos da Lean) e que as `entradas_substrato` privilegiam os três
 documentos que os insights apontaram como ponte: `vocabulary`, `business-rules` e
-`capabilities`:
+`capabilities` (respectivamente: linguagem ubíqua por contexto, invariantes dos
+agregados, e subdomínios/bounded contexts):
 
-```yaml
-tecnica: ddd
-metodo_de_origem: "Domain-Driven Design (Eric Evans)"
-pasta_saida: docs/ddd/                     # única pasta onde o módulo escreve
-entradas_substrato:                        # únicas fontes que o módulo lê
-  - docs/cad/knowledge-base.md
-  - docs/cad/evidence-log.md
-  - docs/cad/vocabulary.md                  # → linguagem ubíqua por contexto
-  - docs/cad/business-rules.md              # → invariantes dos agregados
-  - docs/cad/capabilities.md                # → subdomínios e bounded contexts
-artefatos:                                 # artefatos que o módulo produz
-  - subdomains.md
-  - bounded-contexts.md
-  - ubiquitous-language.md
-  - context-map.md
-  - aggregates.md
-vocabulario_proibido:                      # termos da Lean Inception barrados no DDD
-  - MVP / canvas MVP
-  - persona / persona segmentada
-  - jornada (no sentido Lean)
-  - onda / sequenciador
-  - é-não é-faz-não faz
+```json
+{
+  "tecnica": "ddd",
+  "metodo_de_origem": "Domain-Driven Design (Eric Evans)",
+  "pasta_saida": "docs/ddd/",
+  "entradas_substrato": [
+    "docs/cad/knowledge-base.md",
+    "docs/cad/evidence-log.md",
+    "docs/cad/vocabulary.md",
+    "docs/cad/business-rules.md",
+    "docs/cad/capabilities.md"
+  ],
+  "artefatos": [
+    "subdomains.md",
+    "bounded-contexts.md",
+    "ubiquitous-language.md",
+    "context-map.md",
+    "aggregates.md"
+  ],
+  "vocabulario_proibido": [
+    "MVP / canvas MVP",
+    "persona / persona segmentada",
+    "jornada (no sentido Lean)",
+    "onda / sequenciador",
+    "é-não é-faz-não faz"
+  ]
+}
 ```
 
 Regras do contrato (válidas para todo módulo):
@@ -886,16 +910,16 @@ eventos, repositórios; invariantes consomem `business-rules.md`):
     programático** da técnica (`lean-inception`, `ddd`, `cad`). Elimina o ambíguo
     `lean-module`, que vira `lean-inception-module`; nome completo/exibição ficam só
     em prosa e no campo `metodo_de_origem`.
-15. **Toolchain padronizado em Node.js + TypeScript (v13.2, seção 11),** alinhado ao
-    GovBR: ESM, `esbuild`, versão de fonte única no `package.json` e build em `.mjs`.
-    Diferença do GovBR: o CAD **não tem servidor MCP** → descarta
-    `@modelcontextprotocol/sdk`, `axios`, `mcpb.mjs`/`.mcpb` e injeção de
-    `mcpServers`; compila só **hooks + helpers**, sem dependências em runtime. O
-    contrato de módulo é formalizado como `module.json` (JSON), parseável pelos hooks
-    sem dependência.
-16. **Repositório e nome de pacote (v13.3)** seguem o padrão do GovBR: repositório
-    `CAD-Claude-Plugin`, pacote/manifesto e artefato `cad-claude-plugin` (e
-    `cad-claude-plugin.plugin`). Identificadores de plataforma (`/cad:`, skills `cad-*`,
+15. **Toolchain em Node.js + TypeScript (v13.2, seção 11):** ESM, `esbuild`, versão de
+    fonte única no `package.json` e build em `.mjs` — escolhido por portabilidade
+    (Windows/macOS/Linux), JSON nativo e zero dependências em runtime. O CAD **não tem
+    servidor MCP** (lê o repositório do cliente com ferramentas nativas), então não
+    inclui SDK de MCP, cliente HTTP, empacotamento `.mcpb` nem `mcpServers`; compila só
+    **hooks + helpers**. O contrato de módulo é formalizado como `module.json` (JSON),
+    parseável pelos hooks sem dependência.
+16. **Repositório e nome de pacote (v13.3):** repositório `CAD-Claude-Plugin`,
+    pacote/manifesto e artefato `cad-claude-plugin` (e `cad-claude-plugin.plugin`).
+    Identificadores de plataforma (`/cad:`, skills `cad-*`,
     controle `.cad-plugin/`) permanecem, pois derivam do nome programático `cad`.
 
 ---
@@ -918,12 +942,15 @@ para ler o `module.json` de cada técnica).
 
 ## 11. Linguagem, build, empacotamento e versionamento
 
-Padronizado em **Node.js + TypeScript**, igual ao plugin GovBR, para um toolchain
-único entre os dois projetos. Como o CAD **não tem servidor MCP** (não acessa API
-externa — lê o repositório do cliente com as ferramentas nativas do Claude Code), ele
-herda o toolchain do GovBR mas com uma pegada bem menor.
+O plugin é escrito em **Node.js + TypeScript**. A escolha se justifica por mérito
+próprio: **portável** nos três sistemas (Windows/macOS/Linux), **JSON nativo** (ideal
+para `state.json`/`sources.json`, leitura de `module.json` e validação de evidência) e
+um único ecossistema de build. Característica que mantém a pegada pequena: o CAD **não
+tem servidor MCP** — não acessa API externa, lê o repositório do cliente com as
+ferramentas nativas do Claude Code. O que se compila são apenas **hooks** e
+**helpers**.
 
-### 11.1 Convenções herdadas do GovBR
+### 11.1 Convenções de linguagem e build
 
 - **Node.js + TypeScript, ESM** (`"type": "module"`); `tsconfig` com `target ES2022`,
   `module Node16`, `strict`, `rootDir src` → `outDir build`.
@@ -939,13 +966,14 @@ herda o toolchain do GovBR mas com uma pegada bem menor.
   Node — então Node 18+ deve ser documentado como pré-requisito do plugin.)
 - Plataformas `darwin`/`win32`/`linux`; `build/` no `.gitignore`.
 
-### 11.2 O que o CAD descarta do GovBR
+### 11.2 Por que não há servidor MCP (escopo mínimo de runtime)
 
-O núcleo do GovBR são dois **servidores MCP** (`@modelcontextprotocol/sdk` + `axios`)
-empacotados em `.mcpb`. O CAD não tem servidor, então **remove**: as dependências
-`@modelcontextprotocol/sdk` e `axios`; o script `mcpb.mjs` e os bundles `.mcpb`; e a
-injeção de `mcpServers` no `plugin.json` feita no empacotamento. Sobram, para
-compilar, apenas os **hooks** e os **helpers**.
+Plugins que integram APIs externas costumam embutir um **servidor MCP** (com o SDK do
+MCP e um cliente HTTP) empacotado como bundle MCP (`.mcpb`). **O CAD não precisa
+disso**: toda a leitura de fontes acontece via ferramentas nativas do Claude Code sobre
+o repositório do cliente. Logo, o CAD **não inclui** SDK de MCP, cliente HTTP, passo de
+empacotamento `.mcpb`, nem injeção de `mcpServers` no `plugin.json`. Restam, para
+compilar, apenas os **hooks** e os **helpers** — sem dependências em runtime.
 
 ### 11.3 Estrutura de engenharia
 
