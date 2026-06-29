@@ -1,6 +1,6 @@
 ---
 name: cad-synthesize
-description: Orquestrador /cad:synthesize <técnica> [escopo] — roda um módulo de técnica (lean-inception | ddd), lendo só o substrato neutro (docs/cad/) e escrevendo só os artefatos da técnica em docs/<técnica>/. Marca lacunas de síntese no backlog com consumidor da técnica.
+description: Orquestrador /cad:synthesize (técnica + escopo) — roda um módulo de técnica (lean-inception | ddd), lendo só o substrato neutro (docs/cad/) e escrevendo só os artefatos na pasta da própria técnica. Marca lacunas de síntese no backlog com consumidor da técnica.
 argument-hint: "<técnica> [escopo]  (ex.: lean-inception | ddd subdomains)"
 ---
 
