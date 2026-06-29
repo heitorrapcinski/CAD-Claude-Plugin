@@ -19,14 +19,20 @@ const pkg = JSON.parse(
 );
 
 const hooks = [
-  "validate-evidence",
-  "protect-human-validation",
-  "technique-isolation",
+  "src/hooks/validate-evidence.ts",
+  "src/hooks/protect-human-validation.ts",
+  "src/hooks/technique-isolation.ts",
 ];
 
+// Helpers determinísticos (seção 11.3). São inlined nos hooks que os importam,
+// mas também são emitidos como artefatos próprios — "compila os hooks E os
+// helpers" — úteis para invocação direta (dev) e auditoria.
+const helpers = ["src/lib/state.ts", "src/lib/manifest.ts"];
+
 await build({
-  entryPoints: hooks.map((h) => resolve(__dirname, `src/hooks/${h}.ts`)),
-  outdir: resolve(__dirname, "build/hooks"),
+  entryPoints: [...hooks, ...helpers].map((f) => resolve(__dirname, f)),
+  outbase: resolve(__dirname, "src"),
+  outdir: resolve(__dirname, "build"),
   bundle: true,
   platform: "node",
   format: "cjs",
