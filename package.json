@@ -1,0 +1,32 @@
+{
+  "name": "cad-claude-plugin",
+  "version": "0.1.0",
+  "description": "CAD — Collaborative Augmented Discovery: co-facilitador de descoberta aumentada para Claude Code/Cowork.",
+  "type": "module",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "build": "node build.mjs",
+    "typecheck": "tsc --noEmit",
+    "package": "npm run build && node package.mjs",
+    "dev:hook": "tsx",
+    "prepare": "npm run build"
+  },
+  "author": {
+    "name": "Heitor Rapcinski",
+    "email": "heitor.rapcinski@gmail.com"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/heitorrapcinski/CAD-Claude-Plugin"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "adm-zip": "^0.5.16",
+    "esbuild": "^0.24.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}
