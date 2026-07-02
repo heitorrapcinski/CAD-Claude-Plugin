@@ -1,13 +1,46 @@
 ---
 documento: Especificação de Estratégia
 projeto: Plugin Claude Code/Cowork — Collaborative Augmented Discovery (CAD)
-versao: 13.5
+versao: 13.7
 data: 2026-06-28
 status: aberto para revisão
-substitui: v13.4 (CAD + módulos Lean/DDD, toolchain autônomo)
+substitui: v13.6 (CAD + módulos Lean/DDD/Event Storming)
 ---
 
 # Plugin Claude Code/Cowork — Collaborative Augmented Discovery (CAD)
+
+## 0.8. O que mudou da v13.6 para a v13.7 (resumo executivo)
+
+**Aprofundamento sob demanda** (nova seção 5.1): resolve o caso em que um método
+precisa de detalhe **fino** que o substrato grosso não tem — o exemplo canônico é o
+DDD tático descendo ao nível de **atributos** (campos de uma classe, colunas de uma
+tabela). A regra de ouro se mantém: **o módulo continua lendo só o substrato; quem
+toca a fonte é sempre a descoberta.** Quando um artefato esbarra numa lacuna de
+detalhe, o `/cad:synthesize` dispara um passo interno de descoberta que **relê apenas
+fontes já autorizadas** (em `sources.json`), apontadas por um `EV` existente, grava o
+detalhe como **fato neutro novo** e só então o módulo o consome. Fonte **nova** sempre
+volta ao humano (backlog). Isso preserva auditabilidade, neutralidade, isolamento por
+técnica e o controle humano (princípio 6 refinado). O contrato ganha o campo
+`pode_aprofundar` (padrão `"fontes-autorizadas"` em DDD e Event Storming; `"nao"` na
+Lean Inception, que trabalha no nível de produto).
+
+## 0.7. O que mudou da v13.5 para a v13.6 (resumo executivo)
+
+**Terceiro módulo plugado: Event Storming (Alberto Brandolini)** — manifesto, skills e
+templates fiéis à gramática do método (seção 8.4). Confirma que o contrato (seção 5)
+escala além de dois métodos. Pontos de destaque:
+
+- Os **hotspots** do Event Storming (problemas, conflitos, dúvidas) são alimentados
+  pelos **conflitos e lacunas já detectados** no substrato (`backlog.md`,
+  `evidence-log.md`) — uma ponte direta com o loop humano do CAD.
+- Os **eventos de domínio candidatos** vêm de código, filas, APIs e bancos (como os
+  insights previram), e os **eventos-pivô** sugerem **fronteiras de contexto
+  candidatas** — insumo para o módulo DDD.
+- Como Event Storming e DDD **compartilham vocabulário de propósito** (aggregate,
+  domain event, bounded context — Brandolini e Evans se alinham nisso), o
+  `vocabulario_proibido` passa a distinguir **termos compartilhados** (não barrados
+  entre técnicas complementares) de **termos exclusivos** (barrados). Ver nota na
+  seção 5.
 
 ## 0.6. O que mudou da v13.4 para a v13.5 (resumo executivo)
 
@@ -170,8 +203,12 @@ múltiplos dias/semanas.
 5. **Validação humana é a evidência mais forte.** Uma resposta do consultor via
    `/cad:backlog` supera até a hierarquia normativa — é julgamento informado de
    especialista sobre o caso concreto.
-6. **Escopo de scan é sempre humano.** `/cad:discovery` trabalha só nas fontes
-   passadas explicitamente. Nunca rescaneia sozinho fontes de sessões anteriores.
+6. **Escopo de scan é sempre humano — releitura, só de fontes já autorizadas.**
+   `/cad:discovery` trabalha só nas fontes passadas explicitamente e nunca escaneia por
+   conta própria uma fonte **nova**. A síntese (`/cad:synthesize`) pode, no
+   **aprofundamento sob demanda** (seção 5.1), reler **fontes já autorizadas**
+   (registradas em `sources.json`) para extrair detalhe fino — mas qualquer fonte nova
+   volta ao humano como item de backlog.
 7. **Conteúdo validado por humano é protegido.** Nem `/cad:discovery` nem
    `/cad:synthesize` sobrescrevem, em execuções futuras, um bloco cuja origem é
    validação humana. Conflito novo gera item de backlog (`conflito_pós_validação`).
@@ -225,7 +262,7 @@ a lógica.
 ```
 cad-claude-plugin/
 ├── .claude-plugin/
-│   └── plugin.json                               # manifesto: name, version, description
+│   └── plugin.json                               # manifesto Claude Code (espelha a versão)
 ├── hooks/
 │   └── hooks.json                                # enforcement dos princípios 1, 3 e 7
 ├── skills/
@@ -272,19 +309,32 @@ cad-claude-plugin/
 │   │   └── SKILL.md
 │   ├── ddd-doc-ubiquitous-language/              # linguagem ubíqua POR bounded context
 │   │   └── SKILL.md
-│   └── ddd-doc-tactical/                         # agregados, entidades, VOs, eventos, repositórios
+│   ├── ddd-doc-tactical/                         # agregados, entidades, VOs, eventos, repositórios
+│   │   └── SKILL.md
+│   │
+│   ├── event-storming-module/                    # ── módulo de técnica: Event Storming ──
+│   │   ├── SKILL.md                              # manifesto humano (prosa)
+│   │   └── module.json                           # contrato enforceável (JSON) — seção 5
+│   ├── event-storming-doc-timeline/              # eventos de domínio + eventos-pivô
+│   │   └── SKILL.md
+│   ├── event-storming-doc-flows/                 # ator, comando, agregado, evento, read model, política
+│   │   └── SKILL.md
+│   ├── event-storming-doc-hotspots/              # hotspots (conflitos/dúvidas), vindos do backlog
+│   │   └── SKILL.md
+│   └── event-storming-doc-boundaries/            # contextos candidatos + sistemas externos
 │       └── SKILL.md
 └── README.md
 ```
 
-Total v13: **20 skills** = 3 orquestradores + 6 do substrato CAD + módulo Lean (1
-manifesto + 6 docs) + módulo DDD (1 manifesto + 3 docs). Cada módulo de técnica
-futuro (Event Storming, Impact Mapping…) adiciona 1 manifesto + N skills de
-documento, sob o mesmo contrato (seção 5), sem tocar no núcleo.
+Total v13: **25 skills** = 3 orquestradores + 6 do substrato CAD + módulo Lean (1
+manifesto + 6 docs) + módulo DDD (1 manifesto + 3 docs) + módulo Event Storming (1
+manifesto + 4 docs). Cada módulo de técnica futuro (Impact Mapping, User Story
+Mapping…) adiciona 1 manifesto + N skills de documento, sob o mesmo contrato (seção 5),
+sem tocar no núcleo.
 
 > **Correção vs v12.** A v12 somava 15 skills, mas listava 6 skills de documento
-> Lean (não 5); o total correto da v12 era 16. A v13 (16 + módulo DDD com 4) chega a
-> 20.
+> Lean (não 5); o total correto da v12 era 16. A v13 chegou a 20 (16 + módulo DDD com
+> 4) e, com o módulo Event Storming (5), a **25**.
 
 > **Nota sobre granularidade de skill (mudança vs v11).** Em vez de "1 skill por
 > arquivo", a v12 adota "**1 skill por grupo coeso de artefatos da mesma atividade
@@ -353,7 +403,13 @@ docs/
     context-map.md              → relacionamentos entre contextos (ACL, OHS, Shared Kernel…)
     aggregates.md               → agregados, entidades, objetos de valor, eventos, repositórios
 
-  # event-storming/ , impact-mapping/ , ...  (consumidores futuros, seção 11)
+  event-storming/               # ── TÉCNICA: Event Storming (fiel a Brandolini) ──
+    timeline.md                 → eventos de domínio (passado) em ordem + eventos-pivô
+    flows.md                    → fatias: ator → comando → agregado → evento → read model → política
+    hotspots.md                 → problemas/conflitos/dúvidas (vindos do backlog/evidence-log)
+    boundaries.md               → contextos candidatos (dos pivôs) + sistemas externos
+
+  # impact-mapping/ , user-story-mapping/ , ...  (consumidores futuros, seção 12)
 ```
 
 Cada técnica nova é uma pasta nova; o substrato `docs/cad/` é compartilhado por
@@ -366,7 +422,7 @@ todas. **Nunca** há conceito de uma técnica dentro da pasta de outra.
 | Comando | Função |
 |---|---|
 | `/cad:discovery [fontes]` | Registra as fontes em `sources.json` → escaneia apenas elas → invoca `cad-doc-knowledge-base`, `cad-doc-evidence-log`, `cad-doc-vocabulary`, `cad-doc-business-rules`, `cad-doc-capabilities` para popular/atualizar o substrato neutro → invoca `cad-doc-backlog` para registrar lacunas/conflitos. **Não gera nenhum artefato de técnica.** Respeita a proteção de blocos validados por humano (princípio 7). |
-| `/cad:synthesize <técnica> [escopo]` | Carrega o manifesto do módulo da técnica (ex.: `lean-inception-module`) → valida que o substrato tem o mínimo necessário (senão sugere `/cad:discovery` ou aponta o backlog) → invoca os skills de documento daquele módulo, que **leem só de `docs/cad/`** e escrevem **só em `docs/<técnica>/`** → registra lacunas específicas da técnica no backlog, marcadas com `consumidor: <técnica>`. |
+| `/cad:synthesize <técnica> [escopo]` | Carrega o manifesto do módulo da técnica (ex.: `lean-inception-module`) → valida que o substrato tem o mínimo necessário (senão sugere `/cad:discovery` ou aponta o backlog) → invoca os skills de documento daquele módulo, que **leem só de `docs/cad/`** e escrevem **só em `docs/<técnica>/`** → quando falta detalhe fino no substrato, aciona o **aprofundamento sob demanda** (seção 5.1): relê, via os skills de descoberta, uma fonte **já autorizada** apontada por um `EV`, grava o detalhe como fato neutro novo e segue; fonte nova vira backlog → registra as demais lacunas da técnica no backlog, marcadas com `consumidor: <técnica>`. Flag opcional `--sem-aprofundamento` força o modo conservador. |
 | `/cad:backlog [id...]` | Invoca `cad-doc-backlog` para listar pendências, filtradas por IDs (`BL-003 BL-007`) quando informados; sem argumento, lista todas abertas → formulário de perguntas → grava resposta como evidência "Validação Humana" via `cad-doc-evidence-log` → atualiza o(s) documento(s) afetado(s), seja no substrato (`docs/cad/`) ou no módulo da técnica indicada no item. |
 
 Não há comando separado para vocabulário/glossário ou relatório de cobertura:
@@ -384,15 +440,18 @@ Um **módulo de técnica** é uma família de skills com um **manifesto** em dua
 `<x>-module/SKILL.md` (legível por humano, em prosa) e `<x>-module/module.json` (o
 **contrato enforceável**, em JSON, lido pelos hooks e pelo `cad-synthesize` com
 `JSON.parse` nativo — sem dependência). Campos do contrato: `tecnica` (nome
-programático), `metodo_de_origem` (nome completo, só para prosa), `pasta_saida` (única
-pasta onde o módulo escreve), `entradas_substrato` (únicas fontes que o módulo lê),
-`artefatos` (o que o módulo produz) e `vocabulario_proibido` (termos de outras técnicas
-barrados nestes artefatos). O `module.json` do módulo Lean Inception:
+programático), `metodo_de_origem` (nome completo, só para prosa), `pode_aprofundar`
+(se a síntese pode reler fontes já autorizadas para detalhe fino — ver 5.1),
+`pasta_saida` (única pasta onde o módulo escreve), `entradas_substrato` (únicas fontes
+que o módulo lê), `artefatos` (o que o módulo produz) e `vocabulario_proibido` (termos
+de outras técnicas barrados nestes artefatos). O `module.json` do módulo Lean
+Inception:
 
 ```json
 {
   "tecnica": "lean-inception",
   "metodo_de_origem": "Lean Inception (Paulo Caroli)",
+  "pode_aprofundar": "nao",
   "pasta_saida": "docs/lean-inception/",
   "entradas_substrato": [
     "docs/cad/knowledge-base.md",
@@ -431,6 +490,7 @@ agregados, e subdomínios/bounded contexts):
 {
   "tecnica": "ddd",
   "metodo_de_origem": "Domain-Driven Design (Eric Evans)",
+  "pode_aprofundar": "fontes-autorizadas",
   "pasta_saida": "docs/ddd/",
   "entradas_substrato": [
     "docs/cad/knowledge-base.md",
@@ -451,10 +511,60 @@ agregados, e subdomínios/bounded contexts):
     "persona / persona segmentada",
     "jornada (no sentido Lean)",
     "onda / sequenciador",
-    "é-não é-faz-não faz"
+    "é-não é-faz-não faz",
+    "hotspot",
+    "evento-pivô / pivotal event"
   ]
 }
 ```
+
+O terceiro módulo, o Event Storming, também instancia o contrato. Ele consome ainda o
+`backlog.md` (seus **hotspots** derivam dos conflitos/lacunas já registrados). O
+`module.json` do Event Storming:
+
+```json
+{
+  "tecnica": "event-storming",
+  "metodo_de_origem": "Event Storming (Alberto Brandolini)",
+  "pode_aprofundar": "fontes-autorizadas",
+  "pasta_saida": "docs/event-storming/",
+  "entradas_substrato": [
+    "docs/cad/knowledge-base.md",
+    "docs/cad/evidence-log.md",
+    "docs/cad/vocabulary.md",
+    "docs/cad/business-rules.md",
+    "docs/cad/capabilities.md",
+    "docs/cad/backlog.md"
+  ],
+  "artefatos": [
+    "timeline.md",
+    "flows.md",
+    "hotspots.md",
+    "boundaries.md"
+  ],
+  "vocabulario_proibido": [
+    "MVP / canvas MVP",
+    "persona / persona segmentada",
+    "onda / sequenciador",
+    "linguagem ubíqua",
+    "objeto de valor / value object",
+    "repositório / repository",
+    "subdomínio (Core/Supporting/Generic)",
+    "anticorruption layer / open host service / context map"
+  ]
+}
+```
+
+> **Nota — vocabulário compartilhado entre técnicas complementares.** O
+> `vocabulario_proibido` barra os termos **exclusivos** de outra técnica, não os que
+> são legitimamente **compartilhados**. Event Storming e DDD, por serem
+> complementares (Brandolini e Evans se alinham), compartilham `aggregate`,
+> `domain event`, `command`, `policy`, `read model` e `bounded context` — esses **não**
+> entram no proibido de nenhum dos dois. Barram-se apenas assinaturas exclusivas: o ES
+> barra os blocos táticos e estratégicos só-DDD (objeto de valor, repositório,
+> subdomínio, mapa de contextos/ACL/OHS, linguagem ubíqua); e o DDD passa a barrar as
+> assinaturas só-ES (`hotspot`, `evento-pivô / pivotal event`). Termos da Lean
+> Inception são barrados em ambos.
 
 Regras do contrato (válidas para todo módulo):
 
@@ -487,6 +597,56 @@ fonte (código/doc/norma)
       → artefato da técnica (ex.: features.md, com [Fonte: EV-XXX])
 ```
 
+### 5.1 Aprofundamento sob demanda (a síntese que dispara descoberta)
+
+O substrato que sai da primeira varredura é **grosso** (afirmações, regras,
+capacidades, termos). Alguns métodos precisam de detalhe **fino** que raramente está
+lá — o exemplo canônico é o DDD tático, que desce ao nível de **atributos** de uma
+entidade/objeto de valor (campos de uma classe, colunas de uma tabela). Para isso, o
+CAD tem o **aprofundamento sob demanda**, sem quebrar a separação
+fonte → substrato → artefato.
+
+**Regra de ouro: o módulo continua lendo só o substrato; quem toca a fonte é sempre a
+descoberta.** Quando um `*-doc-*` de módulo esbarra numa lacuna de detalhe, o
+`/cad:synthesize` não deixa o módulo ler a fonte — dispara um passo interno de
+descoberta:
+
+1. O doc-skill identifica a lacuna e o **ponteiro de evidência** que já existe
+   (ex.: `EV-015 → credito/service.py L142-160`).
+2. Se a fonte apontada **já está autorizada** (registrada em `sources.json`) **e** o
+   módulo declara `pode_aprofundar: "fontes-autorizadas"`, o orquestrador invoca os
+   skills de descoberta (`cad-doc-knowledge-base` + `cad-doc-evidence-log`) para reler
+   **aquele trecho** e gravar o detalhe como **fato novo e neutro** (ex.:
+   `EV-090: a classe Proposta tem os campos valor, cpf, periodo`).
+3. O doc-skill relê o substrato e escreve o artefato citando `EV-090`.
+4. Se o detalhe exigisse uma fonte **nova** (não em `sources.json`), ou se
+   `pode_aprofundar: "nao"`, **não há releitura automática**: abre-se item de backlog
+   (`consumidor: <técnica>`) para o humano escopar a fonte (`/cad:discovery`) ou
+   responder (`/cad:backlog`).
+
+Por que isso preserva a arquitetura:
+
+- **Auditabilidade:** o atributo no artefato ainda cita um `EV`; nada entra sem
+  evidência.
+- **Neutralidade:** "a classe tem os campos x, y, z" é **descritivo** (substrato);
+  dizer que `cpf` é um **objeto de valor** é opinião do DDD (artefato). O substrato pode
+  ficar arbitrariamente detalhado sem virar DDD-flavored — e o campo extraído para o
+  DDD já fica disponível para o Event Storming e os demais módulos depois.
+- **Isolamento intacto:** a escrita no substrato durante o aprofundamento é feita pelos
+  skills de **descoberta**, não pelo módulo. O módulo **nunca** escreve `docs/cad/`; só
+  lê. Por isso não há conflito com o hook de isolamento (seção 10).
+- **Controle humano preservado (princípio 6 refinado):** a releitura automática fica
+  **restrita a fontes que o humano já autorizou**. Fonte nova sempre volta ao humano.
+
+**Configuração.** `pode_aprofundar` é declarado por módulo — padrão
+`"fontes-autorizadas"` para DDD e Event Storming (que descem ao detalhe) e `"nao"` para
+a Lean Inception (que trabalha no nível de produto e não desce ao código). O consultor
+pode forçar o modo conservador num run específico com
+`/cad:synthesize <técnica> --sem-aprofundamento`. Cada aprofundamento é registrado no
+`state.json` (a sessão de síntese anota quantas fontes autorizadas foram
+reaprofundadas), e as evidências geradas ficam marcadas como originadas de
+aprofundamento no `evidence-log.md`, para auditoria.
+
 ---
 
 ## 6. Regra de evidência (lógica aplicada por todo agente)
@@ -498,8 +658,14 @@ SE há definições conflitantes entre fontes        → aplica hierarquia (prin
                                                     → registra definição priorizada + todos os conflitos
 SE bloco (substrato OU técnica) validado por humano → NUNCA sobrescreve
                                                     → conflito novo = item conflito_pós_validação
-SE módulo de técnica precisa de fato que não está  → cria backlog com consumidor: <técnica>
-   no substrato                                       (NÃO inventa, NÃO infere)
+SE módulo de técnica precisa de fato que não está  → ver aprofundamento (seção 5.1):
+   no substrato                                       SE detalhe fino E fonte já autorizada (sources.json)
+                                                         E pode_aprofundar = "fontes-autorizadas"
+                                                        → descoberta relê o trecho apontado por um EV,
+                                                          grava fato/EV novo (neutro); módulo então cita o EV
+                                                       SENÃO (fonte nova OU pode_aprofundar = "nao")
+                                                        → cria backlog com consumidor: <técnica>
+                                                          (NÃO inventa, NÃO infere, NÃO lê fonte nova sozinho)
 SE humano responde item de backlog                 → fecha item, registra em evidence-log.md
                                                        com fonte "validação humana (consultor) — [data]"
 ```
@@ -534,7 +700,8 @@ Sem prioridade automática. Duas decisões ficam com o consultor, sessão a sess
   "historico": [
     {"sessao": 1, "data": "2026-06-20", "comando": "/cad:discovery", "foco": "credito/", "resultado": "substrato populado, 2 pendências"},
     {"sessao": 2, "data": "2026-06-22", "comando": "/cad:discovery", "foco": "normativo_credito_v3.pdf", "resultado": "3 conflitos detectados"},
-    {"sessao": 3, "data": "2026-06-25", "comando": "/cad:synthesize lean-inception", "foco": "lean-inception", "resultado": "8 artefatos gerados, 5 lacunas de síntese"}
+    {"sessao": 3, "data": "2026-06-25", "comando": "/cad:synthesize lean-inception", "foco": "lean-inception", "resultado": "8 artefatos gerados, 5 lacunas de síntese"},
+    {"sessao": 4, "data": "2026-06-26", "comando": "/cad:synthesize ddd", "foco": "ddd", "aprofundamentos": 3, "resultado": "5 artefatos; 3 fontes autorizadas reaprofundadas (atributos), 2 lacunas"}
   ]
 }
 ```
@@ -858,8 +1025,107 @@ eventos, repositórios; invariantes consomem `business-rules.md`):
 
 > Eventos de domínio aqui são os do **modelo tático** (publicados por um agregado).
 > A linha do tempo de processo/descoberta de eventos candidatos em filas e APIs é
-> escopo do futuro módulo **Event Storming**, não deste — evitando sobreposição.
+> escopo do módulo **Event Storming** (seção 8.4), não deste — evitando sobreposição.
+
+> **Detalhe de atributo vem do aprofundamento sob demanda (seção 5.1).** Os campos de
+> uma entidade/objeto de valor (ex.: os atributos de `Proposta`) raramente estão no
+> substrato grosso. Quando faltam, a síntese relê — via descoberta — a fonte **já
+> autorizada** apontada por um `EV` (ex.: `credito/service.py`), grava os campos como
+> fato neutro novo (ex.: `EV-090`), e este template os cita. O julgamento "isto é um
+> objeto de valor" continua sendo do DDD; a lista de campos é fato descritivo do
+> substrato.
 ```
+
+---
+
+### 8.4 Módulo Event Storming (`docs/event-storming/`) — fiel a Alberto Brandolini
+
+Quatro artefatos que traduzem a gramática do Event Storming para o contexto do CAD:
+eventos, comandos, atores, agregados, políticas, read models, sistemas externos e
+hotspots — descobertos a partir do substrato (código, filas, APIs, bancos) e sempre
+com evidência. O CAD **interpreta** o substrato como uma linha do tempo colaborativa;
+a opinião (o que é pivô, onde ficam as fronteiras) é do método, não descoberta crua.
+
+Legenda da gramática (cores canônicas de Brandolini): **evento de domínio** (laranja,
+no passado) · **comando** (azul, imperativo) · **ator/usuário** (amarelo pequeno) ·
+**agregado** (amarelo grande) · **política/reação** (lilás) · **read model** (verde) ·
+**sistema externo** (rosa) · **hotspot** (vermelho) · **evento-pivô** (evento de
+domínio que marca transição e sugere fronteira).
+
+**`timeline.md`** — Linha do tempo de eventos de domínio (a espinha dorsal):
+```markdown
+# Linha do Tempo de Eventos de Domínio — [Sistema/Processo]
+
+> Eventos de domínio no **passado**, em ordem cronológica. Eventos-pivô marcam
+> transições e sugerem fronteiras de contexto (ver boundaries.md).
+
+| # | Evento de domínio (passado) | Fase | Pivô? | Origem (código/fila/API/BD) | Evidência |
+|---|---|---|---|---|---|
+| 1 | Pedido Registrado | Captação | — | POST /orders → OrderCreated | → EV-071 |
+| 2 | Pagamento Aprovado | Pagamento | ⭐ | fila `payments.approved` | → EV-072 |
+| 3 | Pedido Faturado | Faturamento | — | billing/service.py L88 | → EV-073 |
+
+> Evento sem origem rastreável: [⚠️ Pendente: BL-XXX] (consumidor: event-storming).
+```
+
+**`flows.md`** — Fatias da gramática (o nível de design):
+```markdown
+# Fluxos — [Processo]
+
+> Cada fatia: **Ator → Comando → Agregado → Evento(s) de domínio → Read Model →
+> Política**. Comando no imperativo; evento no passado.
+
+## Fatia: [comando principal]
+- **Ator:** [quem dispara] [Fonte: EV-XXX]
+- **Comando:** [Registrar Pedido] (imperativo) [Fonte: EV-XXX]
+- **Agregado:** [Pedido] — recebe o comando e garante a consistência [Fonte: EV-XXX]
+- **Evento(s):** [Pedido Registrado] (→ timeline.md) [Fonte: EV-XXX]
+- **Read model (decisão):** [dado consultado antes de decidir] [Fonte: EV-XXX | ⚠️ Pendente: BL-XXX]
+- **Política (reação):** "sempre que [Pagamento Aprovado] → [Faturar Pedido]"
+  (→ business-rules.md#BR-XXX) [Fonte: EV-XXX]
+```
+
+**`hotspots.md`** — Hotspots (problemas, conflitos, dúvidas), alimentados pelo substrato:
+```markdown
+# Hotspots — [Sistema/Processo]
+
+> Pontos de tensão do fluxo: problemas, contradições e dúvidas. Alimentados pelos
+> conflitos e lacunas já detectados (evidence-log.md e backlog.md).
+
+| ID | Hotspot (problema/dúvida) | Onde no fluxo (evento/comando) | Tipo | Referência |
+|---|---|---|---|---|
+| HS-01 | "Aprovação": código faz 1 alçada, normativo exige 2 | evento "Pagamento Aprovado" | conflito | → BL-004 / EV-014, EV-015 |
+| HS-02 | Não se sabe quem dispara o estorno | comando "Estornar" | lacuna | → BL-012 |
+
+> Cada hotspot referencia o item de backlog ou as evidências em conflito que o
+> originaram — a resolução se dá via `/cad:backlog`.
+```
+
+**`boundaries.md`** — Fronteiras candidatas e sistemas externos:
+```markdown
+# Fronteiras e Sistemas Externos — [Sistema]
+
+## Contextos candidatos (a partir dos eventos-pivô)
+> Agrupar os eventos entre pivôs sugere fronteiras candidatas — insumo para o DDD
+> (bounded-contexts.md), que as refina. Aqui são apenas candidatas.
+
+| Contexto candidato | Eventos incluídos | Delimitado até o pivô | Evidência |
+|---|---|---|---|
+| Captação de Pedidos | Pedido Registrado, … | "Pagamento Aprovado" | → EV-071, EV-072 |
+
+## Sistemas externos
+> Sistemas externos (rosa) que emitem ou consomem eventos do fluxo.
+
+| Sistema externo | Emite / Consome | Evento(s) | Evidência |
+|---|---|---|---|
+| Gateway de Pagamento | emite | Pagamento Aprovado / Recusado | → EV-072 |
+```
+
+> **Fronteira com o DDD.** O Event Storming **descobre** a linha do tempo, as fatias e
+> os contextos **candidatos**; o DDD **modela** (agregados/entidades/VOs, linguagem
+> ubíqua por contexto, mapa de contextos com ACL/OHS). Vocabulário compartilhado
+> (aggregate, domain event, command, policy, read model, bounded context) é legítimo
+> nos dois; ver a nota na seção 5.
 
 ---
 
@@ -921,6 +1187,20 @@ eventos, repositórios; invariantes consomem `business-rules.md`):
     pacote/manifesto e artefato `cad-claude-plugin` (e `cad-claude-plugin.plugin`).
     Identificadores de plataforma (`/cad:`, skills `cad-*`,
     controle `.cad-plugin/`) permanecem, pois derivam do nome programático `cad`.
+17. **Módulo Event Storming totalmente especificado (v13.6, seção 8.4)** como terceiro
+    módulo plugado: `timeline.md` (eventos de domínio + eventos-pivô), `flows.md`
+    (ator→comando→agregado→evento→read model→política), `hotspots.md` (conflitos/dúvidas
+    vindos do `backlog.md`/`evidence-log.md`) e `boundaries.md` (contextos candidatos +
+    sistemas externos). Formaliza que o `vocabulario_proibido` distingue termos
+    **compartilhados** (não barrados entre técnicas complementares como ES e DDD) de
+    **exclusivos** (barrados) — ver nota na seção 5.
+18. **Aprofundamento sob demanda (v13.7, seção 5.1):** a síntese pode reler **fontes já
+    autorizadas** (em `sources.json`), apontadas por um `EV`, para extrair detalhe fino
+    (ex.: atributos de um agregado no DDD), gravando o detalhe como **fato neutro** via
+    os skills de descoberta — o módulo continua só lendo o substrato. Fonte **nova**
+    sempre volta ao humano (backlog). Contrato ganha `pode_aprofundar` (`"nao"` na Lean;
+    `"fontes-autorizadas"` em DDD e Event Storming); princípio 6 refinado; flag
+    `--sem-aprofundamento` para o modo conservador.
 
 ---
 
@@ -937,6 +1217,13 @@ para ler o `module.json` de cada técnica).
 | **Validação de evidência** | `PostToolUse`, matcher `Write\|Edit`, filtrado a `docs/cad/*.md` e `docs/*/*.md` | Verifica se todo bloco factual contém `[Fonte: EV-XXX]` ou `[⚠️ Pendente: BL-XXX]`; bloqueia (exit 2) e devolve o motivo se faltar — reforça o princípio 1. |
 | **Proteção de validação humana** | `PreToolUse`, matcher `Write\|Edit`, filtrado a `docs/**/*.md` | Bloqueia remoção/sobrescrita de bloco com origem "validação humana" fora de `/cad:backlog` — reforça o princípio 7. |
 | **Isolamento por técnica** | `PreToolUse`, matcher `Write\|Edit` | Lê o `module.json` do módulo em execução e bloqueia se: (a) a escrita for fora de `pasta_saida`; ou (b) o conteúdo contiver algum termo de `vocabulario_proibido` — reforça o princípio 3 (não-misturar técnicas). |
+
+> **Aprofundamento e o hook de isolamento.** No aprofundamento sob demanda (seção 5.1),
+> a escrita no substrato (`docs/cad/`) é feita pelos skills de **descoberta**
+> (`cad-doc-*`), não pelo módulo — logo, não dispara o bloqueio "fora de `pasta_saida`".
+> O módulo continua escrevendo só em `docs/<técnica>/`. Se algum dia um skill de módulo
+> tentar escrever no substrato, o hook **deve** bloquear: é exatamente a violação que
+> ele existe para impedir.
 
 ---
 
@@ -1028,11 +1315,9 @@ auditabilidade coerente com os princípios do CAD (rastreabilidade ponta a ponta
 Cada um é uma pasta nova em `docs/` + um módulo novo no plugin, sob o contrato da
 seção 5, consumindo o mesmo substrato neutro:
 
-> O **DDD** saiu desta lista — está totalmente especificado na seção 8.3 como
-> segundo módulo plugado.
+> O **DDD** (seção 8.3) e o **Event Storming** (seção 8.4) saíram desta lista — já
+> estão totalmente especificados como segundo e terceiro módulos plugados.
 
-- **Event Storming** (`docs/event-storming/`) — eventos de domínio, comandos,
-  políticas, *read models*, candidatos identificados em código, filas, APIs e bancos.
 - **Impact Mapping** (`docs/impact-mapping/`) — objetivos, atores, impactos,
   entregáveis, inferidos das evidências.
 - **User Story Mapping** (`docs/user-story-mapping/`) — jornadas reais
@@ -1051,23 +1336,27 @@ seção 5, consumindo o mesmo substrato neutro:
 ## 13. Próximos passos sugeridos
 
 - Detalhar o conteúdo exato de cada `SKILL.md` (instruções do agente por comando e
-  por documento), começando pelos 3 orquestradores e pelos módulos Lean e DDD.
+  por documento), começando pelos 3 orquestradores e pelos módulos Lean, DDD e Event
+  Storming.
 - Definir o formato de citação de paráfrase (limite de palavras, estilo) para o
   `evidence-log`, evitando reprodução literal de documentos normativos/corporativos
   protegidos.
 - Especificar o **mínimo necessário do substrato** que `/cad:synthesize <técnica>`
   exige antes de gerar cada artefato (ex.: Lean `mvp-canvas.md` exige objetivos,
   personas, jornadas e sequenciador; DDD `aggregates.md` exige `business-rules.md` e
-  `bounded-contexts.md` já preenchidos).
+  `bounded-contexts.md`; Event Storming `flows.md` exige `timeline.md` e as regras de
+  negócio das políticas).
 - Definir como o DDD lida com **conflitos do `vocabulary.md` que viram dois
   significados legítimos** (um por contexto) em `ubiquitous-language.md` — quando é
   fronteira de contexto e quando é divergência a resolver via `/cad:backlog`.
+- Detalhar a **derivação hotspots ← backlog/evidence-log** do Event Storming: quais
+  tipos de item de backlog viram hotspot e como o hotspot referencia sua origem.
 - Implementar os 3 hooks da seção 10 (`hooks/hooks.json`), incluindo o
-  `vocabulario_proibido` simétrico entre Lean e DDD, no toolchain da seção 11
-  (TypeScript em `src/hooks/`, compilado por `esbuild` para `build/hooks/*.cjs`).
+  `vocabulario_proibido` (com a distinção compartilhado × exclusivo da seção 5), no
+  toolchain da seção 11 (TypeScript em `src/hooks/`, compilado por `esbuild` para
+  `build/hooks/*.cjs`).
 - Prototipar o ciclo completo (`/cad:discovery` → `/cad:synthesize lean-inception` →
-  `/cad:synthesize ddd` → `/cad:backlog`) num repositório piloto pequeno, validando o
-  apêndice incremental, a proteção de blocos validados e o isolamento por técnica
-  **entre dois módulos**.
-- Especificar o **terceiro módulo (Event Storming)** como próxima prova do contrato,
-  cuidando da fronteira com o DDD quanto a eventos de domínio (seção 8.3).
+  `/cad:synthesize ddd` → `/cad:synthesize event-storming` → `/cad:backlog`) num
+  repositório piloto pequeno, validando o apêndice incremental, a proteção de blocos
+  validados e o isolamento por técnica **entre três módulos**.
+- Especificar o **quarto módulo (Impact Mapping)** como próxima prova do contrato.
