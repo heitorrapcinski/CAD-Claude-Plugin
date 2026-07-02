@@ -53,7 +53,10 @@ com `consumidor: <técnica>`.
    - escreve **apenas** dentro de `pasta_saida`;
    - herda evidências do substrato — todo bloco factual carrega `[Fonte: EV-XXX]`
      (referenciando o `evidence-log.md` do substrato) ou `[⚠️ Pendente: BL-XXX]`;
-   - **não cria evidência nova**; quando falta um fato, abre backlog.
+   - **não cria evidência nova**; quando falta um fato, abre backlog **ou** — se for
+     lacuna de **detalhe fino** com fonte já autorizada — sinaliza o **ponteiro de
+     `EV`** para o aprofundamento sob demanda (próxima seção). O doc-skill **nunca**
+     lê a fonte nem escreve o substrato ele mesmo.
 4. **Respeitar o `vocabulario_proibido`.** Nenhum termo de outra técnica pode
    aparecer nos artefatos (o hook de isolamento bloqueia; você deve evitar de
    antemão). Lean não usa "bounded context", "agregado", "linguagem ubíqua"…;
@@ -63,11 +66,48 @@ com `consumidor: <técnica>`.
 6. **Proteção de validação humana.** Não sobrescreva blocos de artefato com origem
    "validação humana"; conflito novo abre `conflito_pós_validação`.
 
+## Aprofundamento sob demanda (seções 5.1 e 6)
+
+Alguns métodos precisam de **detalhe fino** que o substrato grosso não tem — o caso
+canônico é o DDD tático descendo ao nível de **atributos** (campos de uma classe,
+colunas de uma tabela). **Regra de ouro: o módulo continua lendo só o substrato;
+quem toca a fonte é sempre a descoberta.** Quando um doc-skill de módulo esbarra
+numa lacuna de detalhe fino, ele **não** lê a fonte — devolve o **ponteiro de `EV`**
+que já existe e você decide:
+
+1. **Fonte já autorizada + `pode_aprofundar == "fontes-autorizadas"`.** Se o `EV`
+   apontado (ex.: `EV-015 → credito/service.py L142-160`) referencia uma fonte
+   **registrada em `sources.json`** e o contrato permite aprofundar, então **você**
+   (orquestrador) invoca os skills de **descoberta** — `cad-doc-knowledge-base` +
+   `cad-doc-evidence-log` — para **reler apenas aquele trecho** e gravar o detalhe
+   como **fato neutro novo** (ex.: `EV-090: a classe Proposta tem os campos valor,
+   cpf, periodo`), marcado como originado de aprofundamento. Ao invocar a descoberta,
+   sinalize o passo com o env `CAD_APROFUNDAMENTO=1` (o hook de isolamento só libera
+   escrita da descoberta no substrato sob esse sinal). Em seguida, o doc-skill **relê
+   o substrato** e escreve o artefato **citando `EV-090`**.
+2. **Fonte nova, ou `pode_aprofundar == "nao"`, ou flag `--sem-aprofundamento`.**
+   **Não há releitura automática.** Abra item de backlog (`consumidor: <técnica>`)
+   para o humano escopar a fonte (`/cad:discovery`) ou responder (`/cad:backlog`).
+   Nunca invente, nunca infira, **nunca leia uma fonte nova por conta própria**.
+
+Por que preserva a arquitetura: o atributo no artefato **ainda cita um `EV`**
+(auditabilidade); "a classe tem os campos x, y, z" é **descritivo** (substrato),
+enquanto "isto é um objeto de valor" é opinião do módulo (artefato); a escrita no
+substrato é da **descoberta**, não do módulo (isolamento intacto — o hook bloqueia
+um skill de módulo que tente escrever `docs/cad/`); e a releitura fica **restrita a
+fontes que o humano já autorizou** (princípio 6 refinado — fonte nova sempre volta
+ao humano).
+
+Conte quantas fontes autorizadas foram reaprofundadas neste run — esse número vai
+para o `state.json` (campo `aprofundamentos` da sessão).
+
 ## Saída ao final
 
-Atualize `state.json` (append no histórico). Liste os artefatos gerados/atualizados
-em `docs/<técnica>/`, as lacunas de síntese abertas (`consumidor: <técnica>`) e um
-resumo de cobertura da técnica.
+Atualize `state.json` (append no histórico), **carimbando o campo `aprofundamentos`**
+com o nº de fontes autorizadas reaprofundadas nesta sessão (0 quando não houve, ou
+sob `--sem-aprofundamento`). Liste os artefatos gerados/atualizados em
+`docs/<técnica>/`, as lacunas de síntese abertas (`consumidor: <técnica>`), os
+aprofundamentos realizados e um resumo de cobertura da técnica.
 
 ## Regras inegociáveis
 
@@ -75,3 +115,7 @@ resumo de cobertura da técnica.
 - Isolamento por técnica — nenhum vazamento de vocabulário entre métodos.
 - Rastreabilidade preservada (princípio 11): todo fato vem do substrato.
 - Fidelidade ao método de origem (princípio 10): templates fixos das seções 8.2/8.3.
+- **Escopo de scan é humano; releitura, só de fontes já autorizadas (princípio 6
+  refinado).** O aprofundamento relê **apenas** fontes registradas em `sources.json`,
+  apontadas por um `EV`. **Fonte nova sempre volta ao humano** (backlog), nunca é
+  lida automaticamente. Só a **descoberta** escreve o substrato; o módulo, nunca.

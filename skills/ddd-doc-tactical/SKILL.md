@@ -35,7 +35,15 @@ Lê **apenas** o substrato CAD: `business-rules.md` (→ invariantes),
 
 > Eventos de domínio aqui são os do **modelo tático** (publicados por um agregado).
 > A linha do tempo de processo/descoberta de eventos candidatos em filas e APIs é
-> escopo do futuro módulo **Event Storming**, não deste — evitando sobreposição.
+> escopo do módulo **Event Storming** (seção 8.4), não deste — evitando sobreposição.
+
+> **Detalhe de atributo vem do aprofundamento sob demanda (seção 5.1).** Os campos de
+> uma entidade/objeto de valor (ex.: os atributos de `Proposta`) raramente estão no
+> substrato grosso. Quando faltam, a síntese relê — via descoberta — a fonte **já
+> autorizada** apontada por um `EV` (ex.: `credito/service.py`), grava os campos como
+> fato neutro novo (ex.: `EV-090`), e este template os cita. O julgamento "isto é um
+> objeto de valor" continua sendo do DDD; a lista de campos é fato descritivo do
+> substrato.
 ```
 
 ## Como preencher
@@ -46,8 +54,20 @@ Lê **apenas** o substrato CAD: `business-rules.md` (→ invariantes),
   citam `EV-XXX`.
 - **Eventos de domínio** aqui são os do **modelo tático** (publicados por um
   agregado). **Não** modele a descoberta de eventos em filas/APIs/processos — isso
-  é **Event Storming** (módulo futuro), fora deste escopo, para evitar sobreposição.
+  é **Event Storming** (seção 8.4), fora deste escopo, para evitar sobreposição.
+- **Atributos (campos/colunas) vêm do aprofundamento sob demanda (seção 5.1).** A
+  lista de campos de uma entidade/objeto de valor raramente está no substrato grosso.
+  Diante da lacuna, **não infira em silêncio nem leia a fonte** aqui: sinalize a
+  lacuna com o **ponteiro de `EV`** que aponta ao código (ex.: `EV-015 →
+  credito/service.py`) para o orquestrador aprofundar. Se a fonte já está autorizada
+  e `pode_aprofundar = "fontes-autorizadas"`, a descoberta relê o trecho e grava os
+  campos como fato neutro novo (ex.: `EV-090`); então cite esse `EV`. O campo entra
+  como **fato descritivo** do substrato; "isto é objeto de valor" continua sendo
+  **julgamento do DDD**. Fonte nova → `[⚠️ Pendente: BL-XXX]` (consumidor: `ddd`).
 - Fronteira/modelagem incerta → `Incerteza de modelagem: [⚠️ Pendente: BL-XXX]`
   (consumidor: `ddd`); nada de inferência silenciosa.
-- **Vocabulário proibido (Lean):** nada de `MVP`, `persona`, `jornada` (sentido
-  Lean), `onda`/`sequenciador`, `é-não é-faz-não faz`.
+- **Vocabulário proibido:** nada de termos exclusivos da Lean (`MVP`, `persona`,
+  `jornada` sentido Lean, `onda`/`sequenciador`, `é-não é-faz-não faz`) nem do Event
+  Storming (`hotspot`, `evento-pivô`). O vocabulário compartilhado com o ES
+  (`aggregate`, `domain event`, `command`, `policy`, `read model`, `bounded context`)
+  é permitido.

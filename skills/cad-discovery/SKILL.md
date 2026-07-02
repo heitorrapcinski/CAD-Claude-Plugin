@@ -18,8 +18,10 @@ vira item de backlog. **Este comando nunca gera artefato de técnica** (nada em
 
 - **Argumento `[fontes]`** — lista explícita de caminhos (arquivos ou pastas) e/ou
   normativos a escanear nesta sessão. Se vazio, **pergunte** ao consultor quais
-  fontes escanear; **nunca** rescaneie por conta própria fontes de sessões
-  anteriores (princípio 6 — escopo de scan é sempre humano).
+  fontes escanear; **nunca** escaneie por conta própria uma fonte **nova** de
+  sessões anteriores (princípio 6 refinado — escopo de scan é sempre humano; a
+  única releitura automática permitida é a de **fontes já autorizadas**, e ocorre
+  apenas no **aprofundamento sob demanda** disparado por `/cad:synthesize`).
 - `.cad-plugin/state.json` e `.cad-plugin/sources.json` (se existirem) — para
   saber a sessão atual e o histórico. Se não existirem, crie-os.
 
@@ -61,7 +63,9 @@ escaneadas, evidências criadas, fatos/regras/capacidades adicionados.
 ## Regras inegociáveis
 
 - Sem evidência, sem afirmação (princípio 1).
-- Escopo humano: só as fontes passadas (princípio 6).
+- Escopo humano: só as fontes passadas; releitura automática **só** de fontes já
+  autorizadas (`sources.json`) e apenas no aprofundamento sob demanda de
+  `/cad:synthesize` — fonte nova sempre volta ao humano (princípio 6 refinado).
 - Apêndice, nunca sobrescrita em `sources.json`/`state.json` (princípio 8).
 - Proteção de blocos validados por humano (princípio 7).
 - Substrato é **neutro**: nenhuma opinião de método aqui (princípio 2).

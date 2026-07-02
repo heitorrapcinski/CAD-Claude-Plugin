@@ -81,5 +81,13 @@ Escreve apenas em `docs/ddd/`.
   compartilhados" são **Shared Kernel**. Relacionamento não confirmado vira
   pendência.
 - Toda linha factual cita `EV-XXX`; nada de inferência silenciosa.
-- **Vocabulário proibido (Lean):** nada de `MVP`, `persona`, `jornada` (sentido
-  Lean), `onda`/`sequenciador`, `é-não é-faz-não faz`.
+- **Lacuna de detalhe fino → aprofundamento (seção 5.1).** Diante de uma lacuna que
+  um `EV` já aponta (ex.: falta o mapeamento de código de um contexto), **não infira
+  em silêncio nem leia a fonte**: sinalize a lacuna com o **ponteiro de `EV`** para o
+  orquestrador aprofundar (releitura só de fonte já autorizada). Fonte nova →
+  `[⚠️ Pendente: BL-XXX]` (consumidor: `ddd`).
+- **Vocabulário proibido:** nada de termos exclusivos da Lean (`MVP`, `persona`,
+  `jornada` sentido Lean, `onda`/`sequenciador`, `é-não é-faz-não faz`) nem do Event
+  Storming (`hotspot`, `evento-pivô`). Vocabulário compartilhado com o ES
+  (`aggregate`, `domain event`, `command`, `policy`, `read model`, `bounded context`)
+  é permitido.
