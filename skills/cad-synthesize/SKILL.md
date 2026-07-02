@@ -1,7 +1,7 @@
 ---
 name: cad-synthesize
-description: Orquestrador /cad:synthesize (técnica + escopo) — roda um módulo de técnica (lean-inception | ddd), lendo só o substrato neutro (docs/cad/) e escrevendo só os artefatos na pasta da própria técnica. Marca lacunas de síntese no backlog com consumidor da técnica.
-argument-hint: "<técnica> [escopo]  (ex.: lean-inception | ddd subdomains)"
+description: Orquestrador /cad:synthesize (técnica + escopo) — roda um módulo de técnica descoberto dinamicamente pelo seu module.json (lean-inception | ddd | event-storming), lendo só o substrato neutro (docs/cad/) e escrevendo só os artefatos na pasta da própria técnica. Suporta aprofundamento sob demanda e a flag --sem-aprofundamento. Marca lacunas de síntese no backlog com consumidor da técnica.
+argument-hint: "<técnica> [escopo] [--sem-aprofundamento]  (ex.: ddd | event-storming timeline)"
 ---
 
 # /cad:synthesize — Síntese por módulo de técnica
@@ -16,19 +16,31 @@ com `consumidor: <técnica>`.
 
 ## Entradas
 
-- **Argumento `<técnica>`** — o **nome programático**: `lean-inception` ou `ddd`.
-  Recuse técnicas fora do escopo implementado.
+- **Argumento `<técnica>`** — o **nome programático** de qualquer módulo instalado.
+  As técnicas **não são uma lista fixa no código**: são **descobertas
+  dinamicamente** pela varredura de `skills/*-module/module.json` (o helper
+  `loadAllContracts` faz esse glob). Aceite a técnica cujo campo `tecnica` do
+  contrato bate com o argumento; recuse (listando as disponíveis) se nenhuma bater.
+  Hoje os módulos plugados são `lean-inception`, `ddd` e `event-storming`, mas um
+  módulo novo passa a valer só por existir seu `module.json` — sem tocar neste
+  orquestrador.
 - **Argumento `[escopo]`** (opcional) — restringe a quais artefatos gerar.
+- **Flag `--sem-aprofundamento`** (opcional) — força o **modo conservador**: desliga
+  o aprofundamento sob demanda neste run (ver seção "Aprofundamento sob demanda").
 - O **`module.json`** do módulo correspondente (`skills/<técnica>-module/module.json`)
-  — o contrato enforceável (campos `tecnica`, `metodo_de_origem`, `pasta_saida`,
-  `entradas_substrato`, `artefatos`, `vocabulario_proibido`).
-- O substrato neutro em `docs/cad/`.
+  — o contrato enforceável (campos `tecnica`, `metodo_de_origem`, `pode_aprofundar`,
+  `pasta_saida`, `entradas_substrato`, `artefatos`, `vocabulario_proibido`).
+- O substrato neutro em `docs/cad/`; `.cad-plugin/sources.json` (fontes autorizadas)
+  e `.cad-plugin/state.json` (sessão/histórico).
 
 ## Procedimento
 
-1. **Carregar o contrato.** Leia o `module.json` da técnica via `JSON.parse`. Leia
-   também o manifesto humano (`<técnica>-module/SKILL.md`) para a intenção do
-   método.
+1. **Descobrir e carregar o contrato.** Varra `skills/*-module/module.json`
+   (descoberta dinâmica, sem lista fixa), selecione o contrato cujo `tecnica` bate
+   com o argumento e leia-o via `JSON.parse`. Leia também o manifesto humano
+   (`<técnica>-module/SKILL.md`) para a intenção do método. Anote o campo
+   `pode_aprofundar` (`nao` | `fontes-autorizadas`) — ele governa o aprofundamento
+   sob demanda.
 2. **Validar o mínimo do substrato.** Confirme que os arquivos em
    `entradas_substrato` existem e têm conteúdo suficiente para os artefatos
    pedidos. Se faltar, **não invente**: aponte exatamente quais itens de backlog

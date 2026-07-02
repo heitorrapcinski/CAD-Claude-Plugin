@@ -27,9 +27,12 @@ do método**.
   dos agregados) e `capabilities` (→ subdomínios/bounded contexts).
 - **Artefatos:** `subdomains.md`, `bounded-contexts.md`, `ubiquitous-language.md`,
   `context-map.md`, `aggregates.md`.
-- **Vocabulário proibido** (Lean, barrado por hook): `MVP / canvas MVP`, `persona /
-  persona segmentada`, `jornada (no sentido Lean)`, `onda / sequenciador`,
-  `é-não é-faz-não faz`.
+- **Vocabulário proibido** (assinaturas **exclusivas** de outras técnicas, barradas
+  por hook): da Lean — `MVP / canvas MVP`, `persona / persona segmentada`, `jornada
+  (no sentido Lean)`, `onda / sequenciador`, `é-não é-faz-não faz`; do Event Storming
+  — `hotspot`, `evento-pivô / pivotal event`. O vocabulário **compartilhado** com o
+  Event Storming (`aggregate`, `domain event`, `command`, `policy`, `read model`,
+  `bounded context`) é legítimo aqui — ver a nota na seção 5.
 
 ## Artefatos e doc-skills correspondentes
 
