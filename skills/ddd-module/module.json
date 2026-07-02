@@ -1,0 +1,26 @@
+{
+  "tecnica": "ddd",
+  "metodo_de_origem": "Domain-Driven Design (Eric Evans)",
+  "pasta_saida": "docs/ddd/",
+  "entradas_substrato": [
+    "docs/cad/knowledge-base.md",
+    "docs/cad/evidence-log.md",
+    "docs/cad/vocabulary.md",
+    "docs/cad/business-rules.md",
+    "docs/cad/capabilities.md"
+  ],
+  "artefatos": [
+    "subdomains.md",
+    "bounded-contexts.md",
+    "ubiquitous-language.md",
+    "context-map.md",
+    "aggregates.md"
+  ],
+  "vocabulario_proibido": [
+    "MVP / canvas MVP",
+    "persona / persona segmentada",
+    "jornada (no sentido Lean)",
+    "onda / sequenciador",
+    "é-não é-faz-não faz"
+  ]
+}

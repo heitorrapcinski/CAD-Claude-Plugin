@@ -1,0 +1,28 @@
+{
+  "tecnica": "lean-inception",
+  "metodo_de_origem": "Lean Inception (Paulo Caroli)",
+  "pasta_saida": "docs/lean-inception/",
+  "entradas_substrato": [
+    "docs/cad/knowledge-base.md",
+    "docs/cad/evidence-log.md",
+    "docs/cad/vocabulary.md",
+    "docs/cad/business-rules.md",
+    "docs/cad/capabilities.md"
+  ],
+  "artefatos": [
+    "vision.md",
+    "product-enfn.md",
+    "objectives.md",
+    "personas.md",
+    "features.md",
+    "journeys.md",
+    "sequencer.md",
+    "mvp-canvas.md"
+  ],
+  "vocabulario_proibido": [
+    "bounded context",
+    "agregado / aggregate",
+    "evento de domínio / domain event",
+    "linguagem ubíqua"
+  ]
+}
