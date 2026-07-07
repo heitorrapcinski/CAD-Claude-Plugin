@@ -1,6 +1,6 @@
 {
   "name": "cad-claude-plugin",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "CAD — Collaborative Augmented Discovery: co-facilitador de descoberta aumentada para Claude Code/Cowork.",
   "type": "module",
   "engines": {

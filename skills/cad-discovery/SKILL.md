@@ -42,6 +42,14 @@ vira item de backlog. **Este comando nunca gera artefato de técnica** (nada em
    - Conforme o conteúdo, alimente também **`cad-doc-vocabulary`** (termos +
      conflitos), **`cad-doc-business-rules`** (regras) e
      **`cad-doc-capabilities`** (capacidades).
+   - Quando a fonte **descreve os dados de um conceito** (campos de uma classe,
+     tabela de campos de um formulário, validações, valores de exemplo, relações
+     entre entidades), alimente **`cad-doc-data-structures`** com a estrutura em
+     nível **conceitual/lógico e neutro** — campos, valores enumerados, exemplos de
+     preenchimento (nunca dado real/PII), formato/tamanho derivado e relações com
+     multiplicidade. Isso front-carrega o detalhe fino que o DDD tático consome, sem
+     depender do aprofundamento sob demanda. **Sem contaminação de tecnologia**
+     (tipos, tabelas, FKs ficam de fora — ver a regra manter/descartar do skill).
 4. **Aplicar a regra de evidência** (seção 6 da spec):
    - Sem evidência clara → **não afirme, não assuma** → abra item em
      `cad-doc-backlog` (`tipo: lacuna`, `consumidor: cad`).
@@ -58,7 +66,7 @@ Atualize `state.json` (append no `historico`, contagem de `backlog_abertos`) e
 **exiba a lista de IDs de backlog abertos** (de descoberta) para apoiar a decisão
 do consultor sobre quando o substrato está "rico o bastante" para sintetizar uma
 técnica (princípio/seção 7). Mostre também um resumo de cobertura: fontes
-escaneadas, evidências criadas, fatos/regras/capacidades adicionados.
+escaneadas, evidências criadas, fatos/regras/capacidades/estruturas adicionados.
 
 ## Regras inegociáveis
 

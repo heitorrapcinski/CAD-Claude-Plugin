@@ -1,13 +1,39 @@
 ---
 documento: Especificação de Estratégia
 projeto: Plugin Claude Code/Cowork — Collaborative Augmented Discovery (CAD)
-versao: 13.7
-data: 2026-06-28
+versao: 13.8
+data: 2026-07-07
 status: aberto para revisão
-substitui: v13.6 (CAD + módulos Lean/DDD/Event Storming)
+substitui: v13.7 (CAD + módulos Lean/DDD/Event Storming + aprofundamento sob demanda)
 ---
 
 # Plugin Claude Code/Cowork — Collaborative Augmented Discovery (CAD)
+
+## 0.9. O que mudou da v13.7 para a v13.8 (resumo executivo)
+
+**Estruturas de dados no substrato neutro** (novo artefato `docs/cad/data-structures.md`
+e skill `cad-doc-data-structures`): a descoberta passa a **front-carregar** as estruturas
+de dados encontradas no código e na documentação — campos de um conceito, valores
+enumerados, **exemplos de preenchimento**, **formato/tamanho derivado** desses exemplos e
+**relações com multiplicidade** (`1..1`, `1..n`, `0..n`) — em nível **conceitual/lógico e
+neutro**, **sem contaminação de tecnologia** (nada de tipos técnicos, nomes de tabela/coluna,
+FKs ou tabelas-pivô; ver a regra manter/descartar do skill). É a ponte natural para as
+**entidades e objetos de valor** do DDD tático, os **read models** do Event Storming e as
+**funcionalidades** da Lean. Duas consequências:
+
+- O **DDD tático** consome `data-structures.md` como **fonte primária** de atributos e
+  relações; o **aprofundamento sob demanda** (seção 5.1) deixa de ser o caminho principal e
+  vira **rede de segurança** para o que a descoberta não cobrir. `data-structures.md` entra
+  em `entradas_substrato` do módulo DDD.
+- **Correção da resolução de fonte no aprofundamento.** O `evidence-log.md` ganha a coluna
+  **`SRC`**, ligando cada `EV` à fonte de `sources.json`. O aprofundamento resolve o caminho
+  real compondo `sources.json[SRC].caminho` + `Fonte`/`Localização` do `EV`. E o
+  `/cad:synthesize` ganha o **branch que faltava**: fonte **autorizada mas com caminho não
+  localizado** no workspace **não degrada mais em silêncio** ("0 releituras") — abre backlog
+  explícito ("confirmar caminho/base da SRC") e avisa na saída.
+
+**Anti-PII:** exemplos de preenchimento vêm de regra de validação, default, máscara declarada,
+fixture ou valor sintético — **nunca** de dado real de produção.
 
 ## 0.8. O que mudou da v13.6 para a v13.7 (resumo executivo)
 
@@ -283,6 +309,8 @@ cad-claude-plugin/
 │   │   └── SKILL.md
 │   ├── cad-doc-capabilities/                     # inventário de capacidades
 │   │   └── SKILL.md
+│   ├── cad-doc-data-structures/                  # estruturas de dados (conceitual/lógico, neutro)
+│   │   └── SKILL.md
 │   ├── cad-doc-backlog/
 │   │   └── SKILL.md
 │   │
@@ -326,9 +354,10 @@ cad-claude-plugin/
 └── README.md
 ```
 
-Total v13: **25 skills** = 3 orquestradores + 6 do substrato CAD + módulo Lean (1
+Total v13.8: **26 skills** = 3 orquestradores + 7 do substrato CAD + módulo Lean (1
 manifesto + 6 docs) + módulo DDD (1 manifesto + 3 docs) + módulo Event Storming (1
-manifesto + 4 docs). Cada módulo de técnica futuro (Impact Mapping, User Story
+manifesto + 4 docs). (A v13.6 fechava em 25; a v13.8 soma `cad-doc-data-structures` ao
+substrato.) Cada módulo de técnica futuro (Impact Mapping, User Story
 Mapping…) adiciona 1 manifesto + N skills de documento, sob o mesmo contrato (seção 5),
 sem tocar no núcleo.
 
@@ -384,6 +413,7 @@ docs/
     vocabulary.md               → termos + definições por fonte + conflitos
     business-rules.md           → regras de negócio extraídas, com evidência
     capabilities.md             → inventário de capacidades de negócio/sistema
+    data-structures.md          → estruturas de dados (campos, exemplos, formato, relações) — neutro
     backlog.md                  → lacunas e conflitos pendentes de validação
 
   lean-inception/               # ── TÉCNICA: Lean Inception (fiel a Caroli) ──
@@ -421,7 +451,7 @@ todas. **Nunca** há conceito de uma técnica dentro da pasta de outra.
 
 | Comando | Função |
 |---|---|
-| `/cad:discovery [fontes]` | Registra as fontes em `sources.json` → escaneia apenas elas → invoca `cad-doc-knowledge-base`, `cad-doc-evidence-log`, `cad-doc-vocabulary`, `cad-doc-business-rules`, `cad-doc-capabilities` para popular/atualizar o substrato neutro → invoca `cad-doc-backlog` para registrar lacunas/conflitos. **Não gera nenhum artefato de técnica.** Respeita a proteção de blocos validados por humano (princípio 7). |
+| `/cad:discovery [fontes]` | Registra as fontes em `sources.json` → escaneia apenas elas → invoca `cad-doc-knowledge-base`, `cad-doc-evidence-log`, `cad-doc-vocabulary`, `cad-doc-business-rules`, `cad-doc-capabilities`, `cad-doc-data-structures` para popular/atualizar o substrato neutro → invoca `cad-doc-backlog` para registrar lacunas/conflitos. **Não gera nenhum artefato de técnica.** Respeita a proteção de blocos validados por humano (princípio 7). |
 | `/cad:synthesize <técnica> [escopo]` | Carrega o manifesto do módulo da técnica (ex.: `lean-inception-module`) → valida que o substrato tem o mínimo necessário (senão sugere `/cad:discovery` ou aponta o backlog) → invoca os skills de documento daquele módulo, que **leem só de `docs/cad/`** e escrevem **só em `docs/<técnica>/`** → quando falta detalhe fino no substrato, aciona o **aprofundamento sob demanda** (seção 5.1): relê, via os skills de descoberta, uma fonte **já autorizada** apontada por um `EV`, grava o detalhe como fato neutro novo e segue; fonte nova vira backlog → registra as demais lacunas da técnica no backlog, marcadas com `consumidor: <técnica>`. Flag opcional `--sem-aprofundamento` força o modo conservador. |
 | `/cad:backlog [id...]` | Invoca `cad-doc-backlog` para listar pendências, filtradas por IDs (`BL-003 BL-007`) quando informados; sem argumento, lista todas abertas → formulário de perguntas → grava resposta como evidência "Validação Humana" via `cad-doc-evidence-log` → atualiza o(s) documento(s) afetado(s), seja no substrato (`docs/cad/`) ou no módulo da técnica indicada no item. |
 
@@ -481,10 +511,10 @@ Inception:
 
 O segundo módulo plugado, o DDD, instancia o **mesmo** contrato — provando que o
 substrato neutro serve a dois métodos sem mistura. Note o `vocabulario_proibido`
-simétrico (barra termos da Lean) e que as `entradas_substrato` privilegiam os três
-documentos que os insights apontaram como ponte: `vocabulary`, `business-rules` e
-`capabilities` (respectivamente: linguagem ubíqua por contexto, invariantes dos
-agregados, e subdomínios/bounded contexts):
+simétrico (barra termos da Lean) e que as `entradas_substrato` privilegiam os
+documentos-ponte: `vocabulary`, `business-rules`, `capabilities` e `data-structures`
+(respectivamente: linguagem ubíqua por contexto, invariantes dos agregados,
+subdomínios/bounded contexts, e entidades/objetos de valor/atributos/relações):
 
 ```json
 {
@@ -497,7 +527,8 @@ agregados, e subdomínios/bounded contexts):
     "docs/cad/evidence-log.md",
     "docs/cad/vocabulary.md",
     "docs/cad/business-rules.md",
-    "docs/cad/capabilities.md"
+    "docs/cad/capabilities.md",
+    "docs/cad/data-structures.md"
   ],
   "artefatos": [
     "subdomains.md",
@@ -606,6 +637,16 @@ entidade/objeto de valor (campos de uma classe, colunas de uma tabela). Para iss
 CAD tem o **aprofundamento sob demanda**, sem quebrar a separação
 fonte → substrato → artefato.
 
+> **A partir da v13.8, o aprofundamento é a rede — não a fonte primária.** A descoberta
+> passa a **front-carregar** as estruturas de dados (campos, exemplos, formato, relações)
+> em `data-structures.md` (seção 8.1), que o DDD tático consome direto. O aprofundamento
+> sob demanda cobre só o que a descoberta **não** capturou. Quando ele precisa reler,
+> resolve o caminho real da fonte compondo `sources.json[SRC].caminho` + a
+> `Fonte`/`Localização` do `EV` (a coluna `SRC` do `evidence-log.md` faz esse elo). Se a
+> fonte é autorizada mas o caminho composto **não existe** no workspace, **não degrada em
+> silêncio**: abre backlog "confirmar caminho/base da SRC" e avisa na saída (ver a regra
+> de evidência, seção 6).
+
 **Regra de ouro: o módulo continua lendo só o substrato; quem toca a fonte é sempre a
 descoberta.** Quando um `*-doc-*` de módulo esbarra numa lacuna de detalhe, o
 `/cad:synthesize` não deixa o módulo ler a fonte — dispara um passo interno de
@@ -660,9 +701,13 @@ SE bloco (substrato OU técnica) validado por humano → NUNCA sobrescreve
                                                     → conflito novo = item conflito_pós_validação
 SE módulo de técnica precisa de fato que não está  → ver aprofundamento (seção 5.1):
    no substrato                                       SE detalhe fino E fonte já autorizada (sources.json)
-                                                         E pode_aprofundar = "fontes-autorizadas"
-                                                        → descoberta relê o trecho apontado por um EV,
-                                                          grava fato/EV novo (neutro); módulo então cita o EV
+                                                         E pode_aprofundar = "fontes-autorizadas":
+                                                         SE caminho (SRC.caminho + Fonte/Localização) existe
+                                                          → descoberta relê o trecho apontado por um EV,
+                                                            grava fato/EV novo (neutro); módulo então cita o EV
+                                                         SENÃO (caminho autorizado não localizado / falta SRC)
+                                                          → backlog "confirmar caminho/base da SRC" + AVISA
+                                                            na saída (NÃO degrada em silêncio como "0 releituras")
                                                        SENÃO (fonte nova OU pode_aprofundar = "nao")
                                                         → cria backlog com consumidor: <técnica>
                                                           (NÃO inventa, NÃO infere, NÃO lê fonte nova sozinho)
@@ -716,7 +761,11 @@ Sem prioridade automática. Duas decisões ficam com o consultor, sessão a sess
 }
 ```
 Tipos válidos: `Normativo`, `Corporativo`, `Código`, `Informal`. Uma mesma fonte
-pode aparecer em múltiplas sessões se revisitada explicitamente.
+pode aparecer em múltiplas sessões se revisitada explicitamente. O `caminho` é a
+**base** a partir da qual o aprofundamento sob demanda (seção 5.1) resolve o arquivo
+real de um `EV`: `caminho` + a `Fonte`/`Localização` do `EV` (via a coluna `SRC` do
+`evidence-log.md`). Por isso a `Fonte` no `evidence-log` é registrada **relativa** ao
+`caminho` da sua `SRC`.
 
 ---
 
@@ -737,12 +786,15 @@ pode aparecer em múltiplas sessões se revisitada explicitamente.
 ```markdown
 # Log de Evidências
 
-| ID | Afirmação (resumo) | Fonte | Localização | Tipo de fonte | Sessão | Data |
-|---|---|---|---|---|---|---|
-| EV-014 | Aprovação exige 2 alçadas | normativo_credito_v3.pdf | Seção 4.2 | Normativo | 2 | 2026-06-22 |
-| EV-015 | Código implementa 1 alçada | credito/service.py | L142-160 | Código | 1 | 2026-06-20 |
+| ID | Afirmação (resumo) | SRC | Fonte | Localização | Tipo de fonte | Sessão | Data |
+|---|---|---|---|---|---|---|---|
+| EV-014 | Aprovação exige 2 alçadas | SRC-002 | normativo_credito_v3.pdf | Seção 4.2 | Normativo | 2 | 2026-06-22 |
+| EV-015 | Código implementa 1 alçada | SRC-001 | src/service.py | L142-160 | Código | 1 | 2026-06-20 |
 ```
 Tipos de fonte: `Normativo`, `Corporativo`, `Código`, `Informal`, `Validação Humana`.
+A coluna **`SRC`** liga a evidência à fonte de `sources.json` (elo que o aprofundamento
+usa para compor o caminho real: `sources.json[SRC].caminho` + `Fonte`/`Localização`);
+evidência de `Validação Humana` usa `—`.
 
 `docs/cad/vocabulary.md` — termos + conflitos, **neutro** (sem *bounded context*,
 que é um recorte do DDD e vive no módulo `ddd/`):
@@ -782,6 +834,27 @@ hierárquico/heat map é técnica própria — BCM; aqui é só descoberta):
 | CAP-003 | Análise de risco de crédito | negócio | → EV-040 | parcialmente automatizada |
 | CAP-004 | Notificação ao cliente | sistema | → EV-041 | via fila SQS |
 ```
+
+`docs/cad/data-structures.md` — estruturas de dados em nível **conceitual/lógico e
+neutro** (a ponte para entidades/objetos de valor do DDD, read models do ES e
+funcionalidades da Lean). **Sem tecnologia:** nada de tipos técnicos, nomes de
+tabela/coluna, FKs ou tabelas-pivô; **exemplos no lugar de tipos** (a máscara/tamanho
+é derivada do exemplo), e **exemplos nunca de dado real/PII**:
+```markdown
+# Estruturas de Dados — [Domínio/Subdomínio]
+
+## Estrutura: Ticket
+- **Campos:** título, descrição, tipo, status, urgência, impacto, prioridade [Fonte: EV-XXX]
+- **Valores enumerados:** status ∈ {New, Assigned, Planned, Pending, Solved, Closed} [Fonte: EV-XXX]
+- **Exemplos de preenchimento:** título "Impressora sem toner"; prioridade "3" [Fonte: EV-XXX]
+- **Formato/tamanho (derivado):** título — texto até ~255 chars; aberto_em — AAAA-MM-DD hh:mm [Fonte: EV-XXX]
+- **Relações:** Ticket 1..N Follow-up; Ticket 1..1 Solicitante; Ticket 0..N Watcher [Fonte: EV-XXX]
+> **Nota de fronteira:** agrupamento/relações observados na fonte; ownership e fronteira de modelo são decisão da técnica.
+```
+> Multiplicidade conceitual (`1..1`, `1..n`, `0..n`) é fato de domínio e **entra**; o
+> mecanismo de persistência (FK, tabela-pivô) **fica de fora**. A "Nota de fronteira"
+> lembra que o agrupamento observado no código **não** é o veredito de fronteira — isso
+> é do DDD/ES.
 
 `docs/cad/backlog.md` — agora com coluna de **consumidor** (substrato ou técnica):
 ```markdown
@@ -1027,13 +1100,15 @@ eventos, repositórios; invariantes consomem `business-rules.md`):
 > A linha do tempo de processo/descoberta de eventos candidatos em filas e APIs é
 > escopo do módulo **Event Storming** (seção 8.4), não deste — evitando sobreposição.
 
-> **Detalhe de atributo vem do aprofundamento sob demanda (seção 5.1).** Os campos de
-> uma entidade/objeto de valor (ex.: os atributos de `Proposta`) raramente estão no
-> substrato grosso. Quando faltam, a síntese relê — via descoberta — a fonte **já
-> autorizada** apontada por um `EV` (ex.: `credito/service.py`), grava os campos como
-> fato neutro novo (ex.: `EV-090`), e este template os cita. O julgamento "isto é um
-> objeto de valor" continua sendo do DDD; a lista de campos é fato descritivo do
-> substrato.
+> **Atributos e relações vêm primeiro de `data-structures.md` (v13.8).** Os campos,
+> exemplos, formatos e a multiplicidade das relações de uma entidade/objeto de valor
+> já chegam do substrato como fato neutro com `EV`. O DDD **classifica** (isto é
+> entidade, isto é objeto de valor, esta é a raiz) e desenha a fronteira — a lista de
+> campos é fato descritivo do substrato, não julgamento do método. Só quando
+> `data-structures.md` não cobre um detalhe é que entra o **aprofundamento sob demanda**
+> (seção 5.1), como rede: a síntese relê — via descoberta — a fonte **já autorizada**
+> apontada por um `EV` (resolvendo o caminho por `SRC`), grava o detalhe como fato novo
+> (ex.: `EV-090`) e este template o cita.
 ```
 
 ---
@@ -1201,6 +1276,15 @@ domínio que marca transição e sugere fronteira).
     sempre volta ao humano (backlog). Contrato ganha `pode_aprofundar` (`"nao"` na Lean;
     `"fontes-autorizadas"` em DDD e Event Storming); princípio 6 refinado; flag
     `--sem-aprofundamento` para o modo conservador.
+19. **Estruturas de dados no substrato (v13.8, seções 8.1 e 0.9):** novo artefato
+    `data-structures.md` e skill `cad-doc-data-structures` — a descoberta front-carrega
+    as estruturas de dados (campos, valores enumerados, **exemplos de preenchimento**,
+    **formato/tamanho derivado** e **relações com multiplicidade**) em nível
+    conceitual/lógico e **neutro** (sem tipos técnicos, tabelas, FKs; exemplos nunca de
+    PII). Vira **fonte primária** dos atributos/relações no DDD tático, com o
+    aprofundamento sob demanda como **rede**. Correção associada: `evidence-log.md` ganha
+    a coluna **`SRC`** (elo `EV`→`sources.json`) e o `/cad:synthesize` trata o caso
+    **"fonte autorizada, caminho não localizado"** sem degradar em silêncio.
 
 ---
 

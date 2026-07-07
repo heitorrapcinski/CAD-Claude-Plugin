@@ -75,17 +75,29 @@ quem toca a fonte é sempre a descoberta.** Quando um doc-skill de módulo esbar
 numa lacuna de detalhe fino, ele **não** lê a fonte — devolve o **ponteiro de `EV`**
 que já existe e você decide:
 
-1. **Fonte já autorizada + `pode_aprofundar == "fontes-autorizadas"`.** Se o `EV`
-   apontado (ex.: `EV-015 → credito/service.py L142-160`) referencia uma fonte
-   **registrada em `sources.json`** e o contrato permite aprofundar, então **você**
-   (orquestrador) invoca os skills de **descoberta** — `cad-doc-knowledge-base` +
-   `cad-doc-evidence-log` — para **reler apenas aquele trecho** e gravar o detalhe
-   como **fato neutro novo** (ex.: `EV-090: a classe Proposta tem os campos valor,
-   cpf, periodo`), marcado como originado de aprofundamento. Ao invocar a descoberta,
-   sinalize o passo com o env `CAD_APROFUNDAMENTO=1` (o hook de isolamento só libera
-   escrita da descoberta no substrato sob esse sinal). Em seguida, o doc-skill **relê
-   o substrato** e escreve o artefato **citando `EV-090`**.
-2. **Fonte nova, ou `pode_aprofundar == "nao"`, ou flag `--sem-aprofundamento`.**
+1. **Fonte já autorizada + caminho resolvido + `pode_aprofundar == "fontes-autorizadas"`.**
+   O `EV` apontado (ex.: `EV-015`) carrega, no `evidence-log.md`, a coluna `SRC` que o
+   liga a uma fonte **registrada em `sources.json`**. **Resolva o caminho real do trecho
+   compondo `sources.json[SRC].caminho` + a `Fonte`/`Localização` do `EV`** (a `Fonte` é
+   relativa à `caminho` da SRC — ex.: `caminho` `Extração.../glpi` + `Fonte`
+   `src/Ticket.php` = `Extração.../glpi/src/Ticket.php`). Confirme que o arquivo composto
+   **existe no workspace**. Havendo permissão de aprofundar, **você** (orquestrador)
+   invoca os skills de **descoberta** — `cad-doc-knowledge-base` + `cad-doc-evidence-log`
+   (+ `cad-doc-data-structures` quando o detalhe for estrutura/atributo) — para **reler
+   apenas aquele trecho** e gravar o detalhe como **fato neutro novo** (ex.: `EV-090`),
+   marcado como originado de aprofundamento. Ao invocar a descoberta, sinalize o passo
+   com o env `CAD_APROFUNDAMENTO=1` (o hook de isolamento só libera escrita da descoberta
+   no substrato sob esse sinal). Em seguida, o doc-skill **relê o substrato** e escreve o
+   artefato **citando `EV-090`**.
+2. **Fonte autorizada, mas caminho não resolvido no workspace.** Se o `EV` referencia
+   uma fonte de `sources.json` mas o caminho composto (`caminho` + `Fonte`) **não existe**
+   no workspace — ou falta o `SRC` que permitiria compô-lo — **não degrade em silêncio**
+   (o bug que originou "0 releituras"). Abra item de backlog explícito
+   (`consumidor: <técnica>`) sinalizando **"fonte autorizada não localizada — confirmar
+   caminho/base da SRC-XXX"**, e **avise em destaque na saída** que o aprofundamento não
+   pôde reler por caminho irresolvível (não por ausência de permissão). Assim o consultor
+   sabe que basta trazer o código à pasta ou corrigir a base, sem re-escanear do zero.
+3. **Fonte nova, ou `pode_aprofundar == "nao"`, ou flag `--sem-aprofundamento`.**
    **Não há releitura automática.** Abra item de backlog (`consumidor: <técnica>`)
    para o humano escopar a fonte (`/cad:discovery`) ou responder (`/cad:backlog`).
    Nunca invente, nunca infira, **nunca leia uma fonte nova por conta própria**.

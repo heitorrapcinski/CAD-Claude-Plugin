@@ -22,9 +22,10 @@ do método**.
 - **Método de origem:** Domain-Driven Design (Eric Evans)
 - **Pasta de saída (única):** `docs/ddd/`
 - **Entradas do substrato:** `knowledge-base.md`, `evidence-log.md`,
-  `vocabulary.md`, `business-rules.md`, `capabilities.md`. As três pontes-chave são
-  `vocabulary` (→ linguagem ubíqua por contexto), `business-rules` (→ invariantes
-  dos agregados) e `capabilities` (→ subdomínios/bounded contexts).
+  `vocabulary.md`, `business-rules.md`, `capabilities.md`, `data-structures.md`. As
+  pontes-chave são `vocabulary` (→ linguagem ubíqua por contexto), `business-rules`
+  (→ invariantes dos agregados), `capabilities` (→ subdomínios/bounded contexts) e
+  `data-structures` (→ entidades, objetos de valor, atributos e relações dos agregados).
 - **Artefatos:** `subdomains.md`, `bounded-contexts.md`, `ubiquitous-language.md`,
   `context-map.md`, `aggregates.md`.
 - **Vocabulário proibido** (assinaturas **exclusivas** de outras técnicas, barradas
@@ -47,7 +48,9 @@ do método**.
 `subdomains.md` apoia-se em `capabilities.md`; `bounded-contexts.md` precisa de
 módulos de código evidenciados; `ubiquitous-language.md` consome `vocabulary.md`
 (conflitos viram significados por contexto); `aggregates.md` exige
-`business-rules.md` (invariantes) e `bounded-contexts.md` já preenchidos. Faltando
+`business-rules.md` (invariantes) e `bounded-contexts.md` já preenchidos, e consome
+`data-structures.md` para atributos/relações (na falta, cai no aprofundamento sob
+demanda). Faltando
 o mínimo, **não invente**: abra backlog `consumidor: ddd` ou marque
 `[⚠️ Pendente: BL-XXX]`.
 
