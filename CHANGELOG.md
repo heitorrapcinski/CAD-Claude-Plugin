@@ -5,9 +5,10 @@ Todas as mudanças relevantes deste plugin. O formato segue, de modo leve,
 [SemVer](https://semver.org/lang/pt-BR/). A fonte da verdade da estratégia é a
 especificação em [`docs/cad-plugin-spec-v13.md`](docs/cad-plugin-spec-v13.md).
 
-## [0.3.0] — 2026-07-07
+## [Não lançado]
 
-Entra a funcionalidade da spec v13.8 (delta v13.7 → v13.8). Skills: **25 → 26**.
+Trabalho em validação nesta branch (delta v13.7 → v13.8 da spec). Skills: **25 → 26**.
+Ainda **não** promovido a uma versão publicada — a versão corrente permanece `0.2.0`.
 
 ### Adicionado
 
@@ -36,7 +37,6 @@ Entra a funcionalidade da spec v13.8 (delta v13.7 → v13.8). Skills: **25 → 2
     caminho não localizado** no workspace **não degrada mais em silêncio** — abre
     backlog "confirmar caminho/base da SRC" e avisa na saída.
 - Spec atualizada para **v13.8** (seções 0.9, 3.1/3.2, 4, 5, 5.1, 6, 8.0, 8.1, 8.3, 9).
-- Versão espelhada em `package.json` e `.claude-plugin/plugin.json`.
 
 ## [0.2.0] — 2026-07-02
 

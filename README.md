@@ -6,7 +6,7 @@ fatos com **evidência rastreável**, detecta divergências, e depois **sintetiz
 esse conhecimento em artefatos fiéis a métodos específicos — **Lean Inception**
 (Paulo Caroli), **DDD** (Eric Evans) e **Event Storming** (Alberto Brandolini).
 
-> Versão `0.3.0`. Especificação de referência (fonte da verdade):
+> Versão `0.2.0`. Especificação de referência (fonte da verdade):
 > [`docs/cad-plugin-spec-v13.md`](docs/cad-plugin-spec-v13.md) (v13.8).
 > Histórico de mudanças: [`CHANGELOG.md`](CHANGELOG.md).
 
