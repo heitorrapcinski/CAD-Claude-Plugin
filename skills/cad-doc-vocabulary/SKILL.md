@@ -17,7 +17,7 @@ context*, que é um recorte do DDD e vive em `docs/ddd/ubiquitous-language.md`.
 - Fontes escaneadas por `/cad:discovery`.
 - `docs/cad/evidence-log.md` — cada definição e cada conflito cita uma `EV-XXX`.
 
-## Template (seção 8.1 — copiar fielmente)
+## Template (copiar fielmente)
 
 ```markdown
 # Vocabulário — Termos do Domínio

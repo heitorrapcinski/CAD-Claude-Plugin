@@ -17,7 +17,7 @@ Lê **apenas** o substrato CAD: `knowledge-base.md`, `vocabulary.md`,
 `business-rules.md`, `capabilities.md` e `evidence-log.md` (para as `EV-XXX`).
 Escreve apenas em `docs/lean-inception/`.
 
-## Templates (seção 8.2 — copiar fielmente)
+## Templates (copiar fielmente)
 
 ### `vision.md` — Visão do Produto (template de Geoffrey Moore)
 

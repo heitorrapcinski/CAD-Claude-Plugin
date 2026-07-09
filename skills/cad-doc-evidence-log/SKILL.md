@@ -17,9 +17,9 @@ em qualquer artefato de técnica referencia uma linha desta tabela.
 - Respostas do consultor em `/cad:backlog` (geram evidência de validação humana).
 - Releituras de **aprofundamento sob demanda** disparadas por `/cad:synthesize`
   (relê um trecho de fonte **já autorizada** apontado por um `EV`, gravando o
-  detalhe fino como evidência nova — seção 5.1).
+  detalhe fino como evidência nova).
 
-## Template (seção 8.1 — copiar fielmente)
+## Template (copiar fielmente)
 
 ```markdown
 # Log de Evidências
@@ -49,7 +49,7 @@ Tipos de fonte: `Normativo`, `Corporativo`, `Código`, `Informal`, `Validação 
 - Para `/cad:backlog`, registre `Tipo de fonte: Validação Humana` e `Fonte:
   "validação consultor — [data]"`. Esta evidência é a **mais forte** (princípio 5)
   e supera a hierarquia normativa para o ponto resolvido.
-- **Evidência de aprofundamento (seção 5.1):** quando a evidência nasce de uma
+- **Evidência de aprofundamento:** quando a evidência nasce de uma
   releitura de aprofundamento (fonte **já autorizada**, apontada por um `EV`
   anterior), **marque-a visivelmente** para auditoria — anexe a observação
   `_(aprofundamento)_` ao final da `Afirmação (resumo)`. Mantém o `Tipo de fonte`

@@ -1,14 +1,14 @@
 // manifest.ts — leitura do contrato module.json de cada módulo de técnica.
 //
-// Usa apenas a stdlib do Node e JSON.parse nativo — zero dependências em runtime
-// (seção 11 da spec). É consumido pelo hook de isolamento por técnica e pelo
-// orquestrador cad-synthesize para validar entradas/saídas e vocabulário proibido.
+// Usa apenas a stdlib do Node e JSON.parse nativo — zero dependências em runtime.
+// É consumido pelo hook de isolamento por técnica e pelo orquestrador cad-synthesize
+// para validar entradas/saídas e vocabulário proibido.
 
 import { readFileSync, existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 
 /**
- * Política de aprofundamento sob demanda (seção 5.1 da spec):
+ * Política de aprofundamento sob demanda:
  *   "fontes-autorizadas" → a síntese pode reler uma fonte já autorizada
  *      (registrada em sources.json), apontada por um EV, para extrair detalhe fino;
  *   "nao" → sem releitura automática (a técnica trabalha no nível de produto).

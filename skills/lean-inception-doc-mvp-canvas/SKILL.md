@@ -17,7 +17,7 @@ Lê **apenas** o substrato CAD (`evidence-log.md`) e os artefatos deste módulo
 `docs/lean-inception/`. Exige objetivos, personas, jornadas e sequenciador já
 preenchidos; faltando, aponte o backlog antes de gerar.
 
-## Template (seção 8.2 — copiar fielmente)
+## Template (copiar fielmente)
 
 ```markdown
 # Canvas MVP — [Nome do MVP]

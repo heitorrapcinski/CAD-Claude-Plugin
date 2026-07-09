@@ -18,7 +18,7 @@ Lê **apenas** o substrato CAD: `capabilities.md` (→ subdomínios/contextos),
 `knowledge-base.md`, `business-rules.md`, `vocabulary.md` e `evidence-log.md`.
 Escreve apenas em `docs/ddd/`.
 
-## Templates (seção 8.3 — copiar fielmente)
+## Templates (copiar fielmente)
 
 ### `subdomains.md` — Subdomínios (Core / Supporting / Generic)
 
@@ -81,7 +81,7 @@ Escreve apenas em `docs/ddd/`.
   compartilhados" são **Shared Kernel**. Relacionamento não confirmado vira
   pendência.
 - Toda linha factual cita `EV-XXX`; nada de inferência silenciosa.
-- **Lacuna de detalhe fino → aprofundamento (seção 5.1).** Diante de uma lacuna que
+- **Lacuna de detalhe fino → aprofundamento.** Diante de uma lacuna que
   um `EV` já aponta (ex.: falta o mapeamento de código de um contexto), **não infira
   em silêncio nem leia a fonte**: sinalize a lacuna com o **ponteiro de `EV`** para o
   orquestrador aprofundar (releitura só de fonte já autorizada). Fonte nova →

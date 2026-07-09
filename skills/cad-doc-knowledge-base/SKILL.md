@@ -16,7 +16,7 @@ sequenciar, delimitar contextos é dos módulos de técnica, não daqui).
 - Fontes escaneadas por `/cad:discovery` (no escopo declarado pelo consultor).
 - `docs/cad/evidence-log.md` — toda afirmação aponta para uma `EV-XXX`.
 
-## Template (seção 8.1 — copiar fielmente)
+## Template (copiar fielmente)
 
 ```markdown
 # Base de Conhecimento — [Domínio]

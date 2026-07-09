@@ -16,7 +16,7 @@ aqui é só descoberta: **sem** mapa hierárquico ou heat map (isso é o método
 - Fontes escaneadas por `/cad:discovery`.
 - `docs/cad/evidence-log.md` — cada capacidade cita uma `EV-XXX`.
 
-## Template (seção 8.1 — copiar fielmente)
+## Template (copiar fielmente)
 
 ```markdown
 # Inventário de Capacidades

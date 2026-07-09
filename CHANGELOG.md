@@ -2,12 +2,12 @@
 
 Todas as mudanças relevantes deste plugin. O formato segue, de modo leve,
 [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/), e a versão adota
-[SemVer](https://semver.org/lang/pt-BR/). A fonte da verdade da estratégia é a
-especificação em [`docs/cad-plugin-spec-v13.md`](docs/cad-plugin-spec-v13.md).
+[SemVer](https://semver.org/lang/pt-BR/). O racional de design vive em
+[`DESIGN.md`](DESIGN.md); este arquivo é o histórico de mudanças.
 
 ## [Não lançado]
 
-Trabalho em validação nesta branch (delta v13.7 → v13.8 da spec). Skills: **25 → 26**.
+Trabalho em validação nesta branch. Skills: **25 → 26**.
 Ainda **não** promovido a uma versão publicada — a versão corrente permanece `0.2.0`.
 
 ### Adicionado
@@ -36,11 +36,11 @@ Ainda **não** promovido a uma versão publicada — a versão corrente permanec
   - `cad-synthesize` ganha o **branch que faltava**: fonte **autorizada mas com
     caminho não localizado** no workspace **não degrada mais em silêncio** — abre
     backlog "confirmar caminho/base da SRC" e avisa na saída.
-- Spec atualizada para **v13.8** (seções 0.9, 3.1/3.2, 4, 5, 5.1, 6, 8.0, 8.1, 8.3, 9).
+- Racional de design atualizado no `DESIGN.md` (seções 3.1/3.2, 4, 5, 5.1, 6, 8.0, 8.1, 8.3, 9).
 
 ## [0.2.0] — 2026-07-02
 
-Entram duas funcionalidades da spec v13.7 (deltas v13.6 e v13.7). Skills: **20 → 25**.
+Entram duas funcionalidades: módulo Event Storming e aprofundamento sob demanda. Skills: **20 → 25**.
 
 ### Adicionado
 

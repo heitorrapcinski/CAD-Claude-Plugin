@@ -28,7 +28,7 @@ julgamento do Event Storming, não descoberta crua.
 - **Método de origem:** Event Storming (Alberto Brandolini)
 - **Pode aprofundar:** `fontes-autorizadas` — a síntese pode reler uma fonte **já
   autorizada** (apontada por um `EV`) para extrair detalhe fino, via os skills de
-  descoberta; fonte nova sempre volta ao humano (ver seção 5.1 da spec).
+  descoberta; fonte nova sempre volta ao humano.
 - **Pasta de saída (única):** `docs/event-storming/`
 - **Entradas do substrato:** `knowledge-base.md`, `evidence-log.md`, `vocabulary.md`,
   `business-rules.md`, `capabilities.md` e — específico deste módulo —
@@ -41,7 +41,7 @@ julgamento do Event Storming, não descoberta crua.
   (Core/Supporting/Generic)`, `anticorruption layer / open host service / context
   map`).
 
-> **Vocabulário compartilhado × exclusivo (seção 5).** Event Storming e DDD são
+> **Vocabulário compartilhado × exclusivo.** Event Storming e DDD são
 > técnicas **complementares** (Brandolini e Evans se alinham). Por isso os termos
 > `aggregate`, `domain event`, `command`, `policy`, `read model` e `bounded context`
 > são **compartilhados** — legítimos nos dois — e **não** entram no vocabulário
@@ -77,6 +77,6 @@ ubíqua por contexto, mapa de contextos com ACL/OHS). Os eventos-pivô de
 
 - Lê só o substrato; escreve só em `docs/event-storming/`.
 - Todo bloco factual carrega `[Fonte: EV-XXX]` ou `[⚠️ Pendente: BL-XXX]`.
-- Fidelidade a Alberto Brandolini — templates fixos da seção 8.4, sem inventar campos.
+- Fidelidade a Alberto Brandolini — templates fixos, sem inventar campos.
 - Nada de vocabulário exclusivo da Lean Inception ou do DDD; o vocabulário
   compartilhado com o DDD é permitido.

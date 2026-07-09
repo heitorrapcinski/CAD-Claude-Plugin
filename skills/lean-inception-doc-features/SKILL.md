@@ -18,7 +18,7 @@ Lê **apenas** o substrato CAD (`capabilities.md`, `business-rules.md`,
 módulo (`objectives.md`, `personas.md`) para as colunas/linhas. Escreve apenas em
 `docs/lean-inception/`.
 
-## Template (seção 8.2 — copiar fielmente)
+## Template (copiar fielmente)
 
 ```markdown
 # Funcionalidades — [Nome]

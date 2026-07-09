@@ -16,7 +16,7 @@ aqui ficam descritivas, sem modelagem de método.
 - Fontes escaneadas por `/cad:discovery` (código, normativos, docs corporativas).
 - `docs/cad/evidence-log.md` — cada regra cita uma `EV-XXX`.
 
-## Template (seção 8.1 — copiar fielmente)
+## Template (copiar fielmente)
 
 ```markdown
 # Regras de Negócio Extraídas

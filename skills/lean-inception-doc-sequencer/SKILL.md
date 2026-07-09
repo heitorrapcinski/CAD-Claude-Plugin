@@ -17,7 +17,7 @@ Lê **apenas** o substrato CAD (`evidence-log.md`) e os artefatos deste módulo
 (`features.md` com as marcações de Confiança/E/$/♥, `journeys.md`). Escreve apenas
 em `docs/lean-inception/`.
 
-## Template (seção 8.2 — copiar fielmente)
+## Template (copiar fielmente)
 
 ```markdown
 # Sequenciador de Funcionalidades — [Nome]

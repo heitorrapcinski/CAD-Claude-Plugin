@@ -22,7 +22,7 @@ as **funcionalidades** da Lean — mas aqui fica **descritiva e neutra**, em ní
   os dados de um conceito (formulários, tabelas de campos).
 - `docs/cad/evidence-log.md` — cada estrutura/campo cita uma `EV-XXX`.
 
-## Template (seção 8.1 — copiar fielmente)
+## Template (copiar fielmente)
 
 ```markdown
 # Estruturas de Dados — [Domínio/Subdomínio]

@@ -50,7 +50,7 @@ vira item de backlog. **Este comando nunca gera artefato de técnica** (nada em
      multiplicidade. Isso front-carrega o detalhe fino que o DDD tático consome, sem
      depender do aprofundamento sob demanda. **Sem contaminação de tecnologia**
      (tipos, tabelas, FKs ficam de fora — ver a regra manter/descartar do skill).
-4. **Aplicar a regra de evidência** (seção 6 da spec):
+4. **Aplicar a regra de evidência**:
    - Sem evidência clara → **não afirme, não assuma** → abra item em
      `cad-doc-backlog` (`tipo: lacuna`, `consumidor: cad`).
    - Definições conflitantes entre fontes → aplique a **hierarquia de fontes**
@@ -65,7 +65,7 @@ vira item de backlog. **Este comando nunca gera artefato de técnica** (nada em
 Atualize `state.json` (append no `historico`, contagem de `backlog_abertos`) e
 **exiba a lista de IDs de backlog abertos** (de descoberta) para apoiar a decisão
 do consultor sobre quando o substrato está "rico o bastante" para sintetizar uma
-técnica (princípio/seção 7). Mostre também um resumo de cobertura: fontes
+técnica (critério de parada). Mostre também um resumo de cobertura: fontes
 escaneadas, evidências criadas, fatos/regras/capacidades/estruturas adicionados.
 
 ## Regras inegociáveis

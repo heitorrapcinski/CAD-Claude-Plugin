@@ -45,8 +45,7 @@ com `consumidor: <técnica>`.
    `entradas_substrato` existem e têm conteúdo suficiente para os artefatos
    pedidos. Se faltar, **não invente**: aponte exatamente quais itens de backlog
    resolver antes (sugira `/cad:backlog`) ou ofereça sintetizar com lacunas
-   explícitas marcadas como `[⚠️ Pendente: BL-XXX]`. A decisão é do consultor
-   (seção 7).
+   explícitas marcadas como `[⚠️ Pendente: BL-XXX]`. A decisão é do consultor.
 3. **Invocar os doc-skills do módulo.** Para cada artefato em `artefatos` (ou no
    `escopo`), chame o `<técnica>-doc-*` correspondente. Cada um:
    - lê **apenas** os arquivos de `entradas_substrato`;

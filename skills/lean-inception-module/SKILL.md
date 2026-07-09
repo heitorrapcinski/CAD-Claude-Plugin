@@ -51,5 +51,5 @@ mínimo, **não invente**: abra backlog `consumidor: lean-inception` ou marque
 
 - Lê só o substrato; escreve só em `docs/lean-inception/`.
 - Todo bloco factual carrega `[Fonte: EV-XXX]` ou `[⚠️ Pendente: BL-XXX]`.
-- Fidelidade ao livro de Caroli — templates fixos da seção 8.2, sem inventar campos.
+- Fidelidade ao livro de Caroli — templates fixos, sem inventar campos.
 - Nada de vocabulário de DDD/outras técnicas.
