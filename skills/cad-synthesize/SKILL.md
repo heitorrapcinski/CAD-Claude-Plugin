@@ -65,7 +65,7 @@ com `consumidor: <técnica>`.
 6. **Proteção de validação humana.** Não sobrescreva blocos de artefato com origem
    "validação humana"; conflito novo abre `conflito_pós_validação`.
 
-## Aprofundamento sob demanda (seções 5.1 e 6)
+## Aprofundamento sob demanda
 
 Alguns métodos precisam de **detalhe fino** que o substrato grosso não tem — o caso
 canônico é o DDD tático descendo ao nível de **atributos** (campos de uma classe,
@@ -106,8 +106,8 @@ Por que preserva a arquitetura: o atributo no artefato **ainda cita um `EV`**
 enquanto "isto é um objeto de valor" é opinião do módulo (artefato); a escrita no
 substrato é da **descoberta**, não do módulo (isolamento intacto — o hook bloqueia
 um skill de módulo que tente escrever `docs/cad/`); e a releitura fica **restrita a
-fontes que o humano já autorizou** (princípio 6 refinado — fonte nova sempre volta
-ao humano).
+fontes que o humano já autorizou** — fonte nova sempre volta
+ao humano.
 
 Conte quantas fontes autorizadas foram reaprofundadas neste run — esse número vai
 para o `state.json` (campo `aprofundamentos` da sessão).
@@ -122,11 +122,11 @@ aprofundamentos realizados e um resumo de cobertura da técnica.
 
 ## Regras inegociáveis
 
-- Lê só o substrato; escreve só na própria pasta (princípios 2 e 3).
+- Lê só o substrato; escreve só na própria pasta.
 - Isolamento por técnica — nenhum vazamento de vocabulário entre métodos.
-- Rastreabilidade preservada (princípio 11): todo fato vem do substrato.
-- Fidelidade ao método de origem (princípio 10): templates fixos das seções 8.2/8.3.
-- **Escopo de scan é humano; releitura, só de fontes já autorizadas (princípio 6
-  refinado).** O aprofundamento relê **apenas** fontes registradas em `sources.json`,
+- Rastreabilidade preservada: todo fato vem do substrato.
+- Fidelidade ao método de origem: templates fixos, sem inventar campos.
+- **Escopo de scan é humano; releitura, só de fontes já autorizadas.** O
+  aprofundamento relê **apenas** fontes registradas em `sources.json`,
   apontadas por um `EV`. **Fonte nova sempre volta ao humano** (backlog), nunca é
   lida automaticamente. Só a **descoberta** escreve o substrato; o módulo, nunca.

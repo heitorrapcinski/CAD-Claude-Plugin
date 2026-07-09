@@ -35,6 +35,6 @@ aqui ficam descritivas, sem modelagem de método.
   aplique a hierarquia e abra `conflito_definição` no backlog.
 - `Status`: `confirmado` | `conflitante` | `inferido`. Regra sem evidência clara
   **não entra** — vira `lacuna` no backlog.
-- Regra resolvida por humano é protegida (princípio 7); só `/cad:backlog` altera.
+- Regra resolvida por humano é protegida; só `/cad:backlog` altera.
 - **Sem vocabulário de técnica** aqui — nada de "invariante de agregado",
   "bounded context" etc. Isso é interpretação do DDD, feita em `docs/ddd/`.

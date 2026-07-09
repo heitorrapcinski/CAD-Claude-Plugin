@@ -77,6 +77,6 @@ o nosso produto [diferença-chave] [Fonte: EV-XXX]
 - Objetivos: prefira **3 principais**, de negócio, derivados do substrato.
 - Trade-offs são **opcionais**; só preencha se houver evidência das prioridades.
 - **Não** infira para "completar a frase" da Visão; lacuna explícita é melhor que
-  invenção (princípios 1 e 11).
+  invenção.
 - **Vocabulário proibido:** nada de `bounded context`, `agregado`, `evento de
   domínio`, `linguagem ubíqua` — são de DDD.

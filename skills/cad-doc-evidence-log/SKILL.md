@@ -47,7 +47,7 @@ Tipos de fonte: `Normativo`, `Corporativo`, `Código`, `Informal`, `Validação 
   trazer o `SRC`. Evidência de `Validação Humana` não tem `SRC` (use `—`).
 - `Afirmação (resumo)` é uma **paráfrase curta**, não cópia literal da fonte.
 - Para `/cad:backlog`, registre `Tipo de fonte: Validação Humana` e `Fonte:
-  "validação consultor — [data]"`. Esta evidência é a **mais forte** (princípio 5)
+  "validação consultor — [data]"`. Esta evidência é a **mais forte**
   e supera a hierarquia normativa para o ponto resolvido.
 - **Evidência de aprofundamento:** quando a evidência nasce de uma
   releitura de aprofundamento (fonte **já autorizada**, apontada por um `EV`

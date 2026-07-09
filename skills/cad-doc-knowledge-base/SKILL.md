@@ -39,7 +39,7 @@ sequenciar, delimitar contextos é dos módulos de técnica, não daqui).
   em `vocabulary.md`/`business-rules.md` e abra backlog).
 - Em conflito entre fontes, a **hierarquia** (Normativo > Corporativo > Código >
   Informal) define a versão priorizada; nunca esconda as divergências.
-- **Não sobrescreva** blocos de origem "validação humana" (princípio 7); conflito
+- **Não sobrescreva** blocos de origem "validação humana"; conflito
   novo abre `conflito_pós_validação`.
 - **Vocabulário proibido:** nenhum conceito de técnica (bounded context, MVP,
   persona, agregado, jornada…) entra aqui — isto é substrato neutro.

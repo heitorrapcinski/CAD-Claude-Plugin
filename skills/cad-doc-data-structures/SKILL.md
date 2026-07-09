@@ -74,4 +74,4 @@ as **funcionalidades** da Lean — mas aqui fica **descritiva e neutra**, em ní
 - **Sem vocabulário de técnica** aqui — nada de "entidade", "objeto de valor",
   "agregado", "read model". Isso é interpretação dos módulos, feita em
   `docs/<técnica>/`. Aqui é só "estrutura de dados", "campo", "relação".
-- Bloco resolvido por humano é protegido (princípio 7); só `/cad:backlog` altera.
+- Bloco resolvido por humano é protegido; só `/cad:backlog` altera.

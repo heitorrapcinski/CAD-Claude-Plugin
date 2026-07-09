@@ -37,9 +37,9 @@ context*, que é um recorte do DDD e vive em `docs/ddd/ubiquitous-language.md`.
 - A **definição priorizada** segue a hierarquia: Normativo > Corporativo > Código
   > Informal. Indique entre parênteses de qual nível ela veio.
 - **Liste todos os conflitos** com sua evidência e o sinal ⚠️ — divergências
-  nunca são escondidas (princípio 4).
+  nunca são escondidas.
 - `Status`: `conflito aberto` (abra item `conflito_definição` em
   `cad-doc-backlog`) ou `resolvido por humano` (após `/cad:backlog`).
 - **Não inclua `Contexto (bounded context)`** — esse campo foi removido daqui; é do
-  módulo DDD. Manter aqui violaria o isolamento por técnica (princípio 3).
-- Bloco resolvido por humano é protegido (princípio 7); só `/cad:backlog` altera.
+  módulo DDD. Manter aqui violaria o isolamento por técnica.
+- Bloco resolvido por humano é protegido; só `/cad:backlog` altera.

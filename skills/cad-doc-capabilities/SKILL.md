@@ -36,4 +36,4 @@ aqui é só descoberta: **sem** mapa hierárquico ou heat map (isso é o método
 - **Inventário plano:** não organize em hierarquia, níveis ou heat map; essa
   estruturação é o método **Business Capability Mapping** (consumidor futuro),
   não o substrato.
-- Bloco resolvido por humano é protegido (princípio 7); só `/cad:backlog` altera.
+- Bloco resolvido por humano é protegido; só `/cad:backlog` altera.

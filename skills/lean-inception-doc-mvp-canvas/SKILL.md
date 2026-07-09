@@ -40,5 +40,5 @@ preenchidos; faltando, aponte o backlog antes de gerar.
   carregam `[Fonte: EV-XXX]` e o que falta vira `[⚠️ Pendente: BL-XXX]`
   (consumidor: `lean-inception`).
 - Resultado esperado, métricas e custo/cronograma costumam exigir validação humana
-  — se não houver evidência, **deixe a pendência explícita** (princípios 1 e 11).
+  — se não houver evidência, **deixe a pendência explícita**.
 - **Vocabulário proibido:** nada de termos de DDD.
