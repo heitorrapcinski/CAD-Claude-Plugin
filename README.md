@@ -6,7 +6,7 @@ fatos com **evidência rastreável**, detecta divergências, e depois **sintetiz
 esse conhecimento em artefatos fiéis a métodos específicos — **Lean Inception**
 (Paulo Caroli), **DDD** (Eric Evans) e **Event Storming** (Alberto Brandolini).
 
-> Versão `0.2.0`. Racional de design (princípios, arquitetura, contrato de módulo):
+> Versão `0.3.0`. Racional de design (princípios, arquitetura, contrato de módulo):
 > [`DESIGN.md`](DESIGN.md). Histórico de mudanças: [`CHANGELOG.md`](CHANGELOG.md).
 
 ## Conceito

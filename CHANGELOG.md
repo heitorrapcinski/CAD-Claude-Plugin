@@ -5,10 +5,10 @@ Todas as mudanças relevantes deste plugin. O formato segue, de modo leve,
 [SemVer](https://semver.org/lang/pt-BR/). O racional de design vive em
 [`DESIGN.md`](DESIGN.md); este arquivo é o histórico de mudanças.
 
-## [Não lançado]
+## [0.3.0] — 2026-07-09
 
-Trabalho em validação nesta branch. Skills: **25 → 26**.
-Ainda **não** promovido a uma versão publicada — a versão corrente permanece `0.2.0`.
+Estruturas de dados no substrato neutro e uma reorganização da documentação que
+desacopla o plugin da especificação. Skills: **25 → 26**.
 
 ### Adicionado
 
@@ -36,7 +36,25 @@ Ainda **não** promovido a uma versão publicada — a versão corrente permanec
   - `cad-synthesize` ganha o **branch que faltava**: fonte **autorizada mas com
     caminho não localizado** no workspace **não degrada mais em silêncio** — abre
     backlog "confirmar caminho/base da SRC" e avisa na saída.
-- Racional de design atualizado no `DESIGN.md` (seções 3.1/3.2, 4, 5, 5.1, 6, 8.0, 8.1, 8.3, 9).
+
+### Documentação
+
+- **Especificação versionada → `DESIGN.md` vivo.** `docs/cad-plugin-spec-v13.md`
+  (v13.8) vira `DESIGN.md` na raiz, **desversionado**: sai o andaime de versão
+  (frontmatter `versao`/`substitui` e as seções "0.x — o que mudou de vX→vY", que
+  duplicavam este CHANGELOG). A versão vive no `package.json`, o histórico aqui, o
+  diff no git.
+- **"Fonte da verdade" esclarecida.** README e CHANGELOG deixam de apontar a spec
+  como fonte da verdade; `DESIGN.md` passa a ser o **racional de design** (o porquê).
+- **Skills auto-contidas.** Removidas de todas as skills as referências à numeração
+  do `DESIGN.md` (`seção N`, `princípio N`) — uma skill é artefato de runtime e não
+  pode depender de um documento que não vai no pacote `.plugin`. Alinha às boas
+  práticas de autoria de Skills da Anthropic.
+- **Seção 8 do `DESIGN.md` desduplicada.** Os templates dos artefatos de `docs/` (que
+  já viviam nos `SKILL.md`) saem do documento, substituídos por um ponteiro
+  pasta→skill; fica só a `8.0` (controle JSON), sem lar em skill. `DESIGN.md`:
+  1276 → 852 linhas.
+- **Comentários de código desacoplados** da spec (`src/lib/manifest.ts`, `build.mjs`).
 
 ## [0.2.0] — 2026-07-02
 
