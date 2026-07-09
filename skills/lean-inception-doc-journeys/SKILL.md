@@ -17,7 +17,7 @@ Lê **apenas** o substrato CAD (`knowledge-base.md`, `business-rules.md`,
 `evidence-log.md`) e os artefatos deste módulo (`personas.md`, `objectives.md`,
 `features.md`). Escreve apenas em `docs/lean-inception/`.
 
-## Template (seção 8.2 — copiar fielmente)
+## Template (copiar fielmente)
 
 ```markdown
 # Jornadas dos Usuários — [Nome]

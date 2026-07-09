@@ -18,7 +18,7 @@ Lê **apenas** o substrato CAD: `knowledge-base.md` e `evidence-log.md` (eventos
 origem), `business-rules.md` e `capabilities.md` (fases do processo). Escreve apenas
 em `docs/event-storming/`.
 
-## Template (seção 8.4 — copiar fielmente)
+## Template (copiar fielmente)
 
 ```markdown
 # Linha do Tempo de Eventos de Domínio — [Sistema/Processo]
@@ -47,7 +47,7 @@ em `docs/event-storming/`.
   método**, não descoberta crua.
 - **Lacuna de detalhe fino** (ex.: falta a origem exata de um evento que um `EV` já
   aponta): **não infira em silêncio**. Sinalize a lacuna com o **ponteiro de `EV`**
-  existente para o orquestrador aprofundar (seção 5.1): se a fonte já está autorizada
+  existente para o orquestrador aprofundar: se a fonte já está autorizada
   e `pode_aprofundar = "fontes-autorizadas"`, a descoberta relê o trecho e grava um
   `EV` novo e neutro; senão, abra `[⚠️ Pendente: BL-XXX]` (consumidor:
   event-storming).

@@ -17,7 +17,7 @@ descoberta (`cad`) de lacunas de síntese de uma técnica (`lean-inception`, `dd
 - `/cad:synthesize` — abre lacunas com `consumidor: <técnica>`.
 - `/cad:backlog` — lê para apresentar; fecha itens ao receber resposta humana.
 
-## Template (seção 8.1 — copiar fielmente)
+## Template (copiar fielmente)
 
 ```markdown
 # Backlog de Pendências
@@ -43,4 +43,4 @@ Consumidor: `cad` ou o nome programático da técnica (`lean-inception`, `ddd`, 
   `Resposta`, `Fonte resposta` (`validação consultor — [data]`) e `Data`, e mude
   o status para resolvido.
 - Lacuna de uma técnica recebe `Consumidor: <técnica>`, sinalizando que é
-  pendência de **síntese**, não de descoberta (princípio/contrato seção 5, regra 5).
+  pendência de **síntese**, não de descoberta (regra do contrato de módulo).

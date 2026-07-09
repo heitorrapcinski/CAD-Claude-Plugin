@@ -17,7 +17,7 @@ Lê **apenas** o substrato CAD (`evidence-log.md`) e os artefatos deste módulo
 `docs/lean-inception/`. Exige objetivos, personas, jornadas e sequenciador já
 preenchidos; faltando, aponte o backlog antes de gerar.
 
-## Template (seção 8.2 — copiar fielmente)
+## Template (copiar fielmente)
 
 ```markdown
 # Canvas MVP — [Nome do MVP]
@@ -40,5 +40,5 @@ preenchidos; faltando, aponte o backlog antes de gerar.
   carregam `[Fonte: EV-XXX]` e o que falta vira `[⚠️ Pendente: BL-XXX]`
   (consumidor: `lean-inception`).
 - Resultado esperado, métricas e custo/cronograma costumam exigir validação humana
-  — se não houver evidência, **deixe a pendência explícita** (princípios 1 e 11).
+  — se não houver evidência, **deixe a pendência explícita**.
 - **Vocabulário proibido:** nada de termos de DDD.

@@ -9,7 +9,7 @@ argument-hint: "[id...]  (ex.: BL-003 BL-007; sem argumento lista todas as abert
 ## Objetivo
 
 Transformar pendências do backlog em **evidência de validação humana** — a fonte
-mais forte da hierarquia (princípio 5), pois é julgamento informado do especialista
+mais forte da hierarquia, pois é julgamento informado do especialista
 sobre o caso concreto. Resolve lacunas e conflitos, registra a resposta como
 evidência e propaga a atualização aos documentos afetados.
 
@@ -51,6 +51,6 @@ evidência e propaga a atualização aos documentos afetados.
 
 ## Regras inegociáveis
 
-- Validação humana é a evidência mais forte (princípio 5).
-- Toda resolução vira evidência rastreável (princípio 1 e 11).
+- Validação humana é a evidência mais forte.
+- Toda resolução vira evidência rastreável.
 - Apêndice no `evidence-log`, nunca sobrescrita do histórico de evidências.

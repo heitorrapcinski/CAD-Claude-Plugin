@@ -18,7 +18,7 @@ Lê **apenas** o substrato CAD: `backlog.md` (lacunas e conflitos pendentes) e
 `evidence-log.md` (evidências em conflito). Localiza os hotspots sobre a
 `timeline.md`/`flows.md` (deste módulo). Escreve apenas em `docs/event-storming/`.
 
-## Template (seção 8.4 — copiar fielmente)
+## Template (copiar fielmente)
 
 ```markdown
 # Hotspots — [Sistema/Processo]

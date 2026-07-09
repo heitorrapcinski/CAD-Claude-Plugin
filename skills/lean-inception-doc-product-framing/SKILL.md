@@ -17,7 +17,7 @@ Lê **apenas** o substrato CAD: `knowledge-base.md`, `vocabulary.md`,
 `business-rules.md`, `capabilities.md` e `evidence-log.md` (para as `EV-XXX`).
 Escreve apenas em `docs/lean-inception/`.
 
-## Templates (seção 8.2 — copiar fielmente)
+## Templates (copiar fielmente)
 
 ### `vision.md` — Visão do Produto (template de Geoffrey Moore)
 
@@ -77,6 +77,6 @@ o nosso produto [diferença-chave] [Fonte: EV-XXX]
 - Objetivos: prefira **3 principais**, de negócio, derivados do substrato.
 - Trade-offs são **opcionais**; só preencha se houver evidência das prioridades.
 - **Não** infira para "completar a frase" da Visão; lacuna explícita é melhor que
-  invenção (princípios 1 e 11).
+  invenção.
 - **Vocabulário proibido:** nada de `bounded context`, `agregado`, `evento de
   domínio`, `linguagem ubíqua` — são de DDD.

@@ -22,7 +22,7 @@ as **funcionalidades** da Lean — mas aqui fica **descritiva e neutra**, em ní
   os dados de um conceito (formulários, tabelas de campos).
 - `docs/cad/evidence-log.md` — cada estrutura/campo cita uma `EV-XXX`.
 
-## Template (seção 8.1 — copiar fielmente)
+## Template (copiar fielmente)
 
 ```markdown
 # Estruturas de Dados — [Domínio/Subdomínio]
@@ -74,4 +74,4 @@ as **funcionalidades** da Lean — mas aqui fica **descritiva e neutra**, em ní
 - **Sem vocabulário de técnica** aqui — nada de "entidade", "objeto de valor",
   "agregado", "read model". Isso é interpretação dos módulos, feita em
   `docs/<técnica>/`. Aqui é só "estrutura de dados", "campo", "relação".
-- Bloco resolvido por humano é protegido (princípio 7); só `/cad:backlog` altera.
+- Bloco resolvido por humano é protegido; só `/cad:backlog` altera.

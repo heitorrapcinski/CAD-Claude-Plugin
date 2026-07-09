@@ -15,7 +15,7 @@ empatia** opcional. Responde "para quem estamos construindo".
 Lê **apenas** o substrato CAD (`knowledge-base.md`, `vocabulary.md`,
 `capabilities.md`, `evidence-log.md`). Escreve apenas em `docs/lean-inception/`.
 
-## Template (seção 8.2 — copiar fielmente)
+## Template (copiar fielmente)
 
 ```markdown
 # Personas — [Nome do Produto]

@@ -18,7 +18,7 @@ Lê **apenas** o substrato CAD: `knowledge-base.md`, `evidence-log.md`,
 `business-rules.md` (→ políticas) e `vocabulary.md`. Usa a `timeline.md` (deste
 módulo) como referência dos eventos. Escreve apenas em `docs/event-storming/`.
 
-## Template (seção 8.4 — copiar fielmente)
+## Template (copiar fielmente)
 
 ```markdown
 # Fluxos — [Processo]
@@ -46,7 +46,7 @@ módulo) como referência dos eventos. Escreve apenas em `docs/event-storming/`.
   qual dado embasa a decisão, marque `[⚠️ Pendente: BL-XXX]`.
 - **Lacuna de detalhe fino** (ex.: falta saber qual agregado recebe o comando, e um
   `EV` já aponta ao código): **não infira em silêncio**. Sinalize a lacuna com o
-  **ponteiro de `EV`** para o orquestrador aprofundar (seção 5.1); fonte nova →
+  **ponteiro de `EV`** para o orquestrador aprofundar; fonte nova →
   `[⚠️ Pendente: BL-XXX]` (consumidor: event-storming).
 - **Vocabulário proibido:** nada de termos exclusivos da Lean ou só-DDD (`objeto de
   valor`, `repositório`, `linguagem ubíqua`, `subdomínio`, `ACL/OHS/mapa de

@@ -17,7 +17,7 @@ Lê **apenas** o substrato CAD: `vocabulary.md` (fonte primária), `evidence-log
 e `knowledge-base.md`. Usa os contextos definidos em `bounded-contexts.md` (deste
 mesmo módulo). Escreve apenas em `docs/ddd/`.
 
-## Template (seção 8.3 — copiar fielmente)
+## Template (copiar fielmente)
 
 ```markdown
 # Linguagem Ubíqua — por Bounded Context
@@ -49,7 +49,7 @@ mesmo módulo). Escreve apenas em `docs/ddd/`.
   significados por contexto** (resolve a fronteira). Quando for genuína divergência
   a resolver, **não** invente o desempate — abra `[⚠️ Pendente: BL-XXX]`
   (consumidor: `ddd`) e leve a `/cad:backlog`.
-- **Lacuna de detalhe fino → aprofundamento (seção 5.1).** Se falta o significado
+- **Lacuna de detalhe fino → aprofundamento.** Se falta o significado
   concreto de um termo num contexto e um `EV` já aponta ao código/doc, **não infira
   em silêncio nem leia a fonte**: sinalize a lacuna com o **ponteiro de `EV`** para o
   orquestrador aprofundar (só fonte já autorizada). Fonte nova → `[⚠️ Pendente:

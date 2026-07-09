@@ -1,185 +1,16 @@
 ---
-documento: Especificação de Estratégia
+documento: Documento de Design (vivo)
 projeto: Plugin Claude Code/Cowork — Collaborative Augmented Discovery (CAD)
-versao: 13.8
-data: 2026-07-07
-status: aberto para revisão
-substitui: v13.7 (CAD + módulos Lean/DDD/Event Storming + aprofundamento sob demanda)
+status: vivo — descreve o estado atual do design
 ---
 
-# Plugin Claude Code/Cowork — Collaborative Augmented Discovery (CAD)
+# CAD — Documento de Design
 
-## 0.9. O que mudou da v13.7 para a v13.8 (resumo executivo)
-
-**Estruturas de dados no substrato neutro** (novo artefato `docs/cad/data-structures.md`
-e skill `cad-doc-data-structures`): a descoberta passa a **front-carregar** as estruturas
-de dados encontradas no código e na documentação — campos de um conceito, valores
-enumerados, **exemplos de preenchimento**, **formato/tamanho derivado** desses exemplos e
-**relações com multiplicidade** (`1..1`, `1..n`, `0..n`) — em nível **conceitual/lógico e
-neutro**, **sem contaminação de tecnologia** (nada de tipos técnicos, nomes de tabela/coluna,
-FKs ou tabelas-pivô; ver a regra manter/descartar do skill). É a ponte natural para as
-**entidades e objetos de valor** do DDD tático, os **read models** do Event Storming e as
-**funcionalidades** da Lean. Duas consequências:
-
-- O **DDD tático** consome `data-structures.md` como **fonte primária** de atributos e
-  relações; o **aprofundamento sob demanda** (seção 5.1) deixa de ser o caminho principal e
-  vira **rede de segurança** para o que a descoberta não cobrir. `data-structures.md` entra
-  em `entradas_substrato` do módulo DDD.
-- **Correção da resolução de fonte no aprofundamento.** O `evidence-log.md` ganha a coluna
-  **`SRC`**, ligando cada `EV` à fonte de `sources.json`. O aprofundamento resolve o caminho
-  real compondo `sources.json[SRC].caminho` + `Fonte`/`Localização` do `EV`. E o
-  `/cad:synthesize` ganha o **branch que faltava**: fonte **autorizada mas com caminho não
-  localizado** no workspace **não degrada mais em silêncio** ("0 releituras") — abre backlog
-  explícito ("confirmar caminho/base da SRC") e avisa na saída.
-
-**Anti-PII:** exemplos de preenchimento vêm de regra de validação, default, máscara declarada,
-fixture ou valor sintético — **nunca** de dado real de produção.
-
-## 0.8. O que mudou da v13.6 para a v13.7 (resumo executivo)
-
-**Aprofundamento sob demanda** (nova seção 5.1): resolve o caso em que um método
-precisa de detalhe **fino** que o substrato grosso não tem — o exemplo canônico é o
-DDD tático descendo ao nível de **atributos** (campos de uma classe, colunas de uma
-tabela). A regra de ouro se mantém: **o módulo continua lendo só o substrato; quem
-toca a fonte é sempre a descoberta.** Quando um artefato esbarra numa lacuna de
-detalhe, o `/cad:synthesize` dispara um passo interno de descoberta que **relê apenas
-fontes já autorizadas** (em `sources.json`), apontadas por um `EV` existente, grava o
-detalhe como **fato neutro novo** e só então o módulo o consome. Fonte **nova** sempre
-volta ao humano (backlog). Isso preserva auditabilidade, neutralidade, isolamento por
-técnica e o controle humano (princípio 6 refinado). O contrato ganha o campo
-`pode_aprofundar` (padrão `"fontes-autorizadas"` em DDD e Event Storming; `"nao"` na
-Lean Inception, que trabalha no nível de produto).
-
-## 0.7. O que mudou da v13.5 para a v13.6 (resumo executivo)
-
-**Terceiro módulo plugado: Event Storming (Alberto Brandolini)** — manifesto, skills e
-templates fiéis à gramática do método (seção 8.4). Confirma que o contrato (seção 5)
-escala além de dois métodos. Pontos de destaque:
-
-- Os **hotspots** do Event Storming (problemas, conflitos, dúvidas) são alimentados
-  pelos **conflitos e lacunas já detectados** no substrato (`backlog.md`,
-  `evidence-log.md`) — uma ponte direta com o loop humano do CAD.
-- Os **eventos de domínio candidatos** vêm de código, filas, APIs e bancos (como os
-  insights previram), e os **eventos-pivô** sugerem **fronteiras de contexto
-  candidatas** — insumo para o módulo DDD.
-- Como Event Storming e DDD **compartilham vocabulário de propósito** (aggregate,
-  domain event, bounded context — Brandolini e Evans se alinham nisso), o
-  `vocabulario_proibido` passa a distinguir **termos compartilhados** (não barrados
-  entre técnicas complementares) de **termos exclusivos** (barrados). Ver nota na
-  seção 5.
-
-## 0.6. O que mudou da v13.4 para a v13.5 (resumo executivo)
-
-Correção: os exemplos de `module.json` na seção 5 estavam em YAML "por legibilidade",
-o que era inconsistente com um arquivo `.json`. Agora estão em **JSON de verdade** — o
-formato que os hooks leem com `JSON.parse` nativo (sem dependência de parser, coerente
-com "zero dependências em runtime" da seção 11 e com o princípio 9, "controle em
-JSON"). Sem mudança de campos nem de decisão.
-
-## 0.5. O que mudou da v13.3 para a v13.4 (resumo executivo)
-
-Edição: a seção 11 e o histórico foram reescritos para descrever o toolchain de forma
-**autônoma**, por mérito técnico próprio, sem referência a outros projetos. Sem
-mudança de decisão.
-
-## 0.4. O que mudou da v13.2 para a v13.3 (resumo executivo)
-
-Definição do nome de repositório e de pacote: o repositório é **`CAD-Claude-Plugin`** e
-o nome do pacote/manifesto e do artefato `.plugin` passam de `cad-plugin` para
-**`cad-claude-plugin`** (que ainda segue a regra `cad-<adição>` da seção 3.0). Os
-identificadores de **plataforma não mudam**: comandos `/cad:`, skills `cad-*` e a pasta
-de controle `.cad-plugin/` continuam derivando do nome programático `cad`.
-
-## 0.3. O que mudou da v13.1 para a v13.2 (resumo executivo)
-
-Padronização da **linguagem e do toolchain de build** (nova seção 11): **Node.js +
-TypeScript**, ESM, `esbuild`, versão de fonte única no `package.json` e scripts de
-build em `.mjs`. A característica estrutural é que o CAD **não tem servidor MCP** (não
-acessa API externa — lê o repositório do cliente com as ferramentas nativas do Claude
-Code); o que se compila são os **3 hooks** e **helpers determinísticos** (append de
-`state.json`/`sources.json`, leitura de `module.json`), todos com a stdlib do Node e
-`JSON.parse` nativo — **zero dependências em runtime**. Também se formaliza o contrato
-de módulo como `module.json` (JSON), parseável pelos hooks sem dependência.
-
-## 0.2. O que mudou da v13.0 para a v13.1 (resumo executivo)
-
-Padronização de nomenclatura, para eliminar a ambiguidade do antigo `lean-module`.
-A regra agora é única e explícita (seção 3.0): **o prefixo de toda skill é o nome
-programático da técnica**. Logo `lean-module` → `lean-inception-module`, e os docs
-Lean `lean-doc-*` → `lean-inception-doc-*`. Os skills de DDD já seguiam o padrão
-(`ddd-module`, `ddd-doc-*`). O argumento do comando também passa a usar o nome
-programático: `/cad:synthesize lean-inception` (não `/cad:synthesize lean`). Nenhuma
-mudança estrutural — só nomes.
-
-## 0.1. O que mudou da v12 para a v13 (resumo executivo)
-
-A v12 estabeleceu o reposicionamento (CAD como plataforma), o **contrato de módulo
-de técnica** (seção 5) e a Lean Inception como **primeiro** módulo, deixando o DDD
-como consumidor futuro.
-
-A v13 **especifica o módulo DDD por completo** — manifesto, skills e templates fiéis
-a Eric Evans — como **segundo módulo plugado**. Isso valida o contrato na prática:
-dois métodos consomem o mesmo substrato neutro sem se misturarem. Em particular:
-
-- A ponte que os insights apontaram fica concreta: o substrato neutro
-  (`vocabulary.md`, `business-rules.md`, `capabilities.md`) alimenta diretamente os
-  artefatos DDD (linguagem ubíqua, bounded contexts, agregados).
-- O DDD passa a ter `vocabulario_proibido` simétrico ao da Lean: termos de Lean
-  (MVP, persona, jornada, sequenciador…) ficam barrados nos artefatos DDD, e
-  vice-versa — garantindo o não-misturar que motivou a v12.
-- O DDD sai da seção 11 (consumidores futuros) e ganha schemas próprios (seção 8.3).
-
-Mudanças menores: contagem de skills atualizada (corrige também uma soma da v12) e
-o "próximo módulo de prova de contrato" passa a ser o Event Storming.
-
-## 0. O que mudou da v11 para a v12 (resumo executivo)
-
-A v11 tratava o plugin como uma **evolução da Lean Inception**. Os insights de
-executar a primeira versão mostraram que a parte mais valiosa — escanear fontes,
-extrair fatos, detectar divergências e validar com especialistas — **não pertence
-à Lean Inception**. Ela é uma etapa de descoberta que pode alimentar *vários*
-métodos.
-
-A v12 reposiciona o plugin assim:
-
-> **Collaborative Augmented Discovery (CAD)** é uma metodologia de descoberta
-> colaborativa humano-agente que produz uma **base de conhecimento auditável e
-> orientada por evidências**, capaz de apoiar diferentes práticas de engenharia de
-> software. A **Lean Inception passa a ser um dos consumidores** desse
-> conhecimento — o primeiro a ser implementado e validado. DDD, Event Storming,
-> Impact Mapping e outros são consumidores futuros, sob o mesmo contrato.
-
-Três mudanças estruturais derivam disso:
-
-1. **Separação substrato × método.** O CAD produz um **substrato neutro**
-   (`docs/cad/`): conhecimento descritivo, sem opinião metodológica. Cada **módulo
-   de técnica** (`docs/lean-inception/`, `docs/ddd/`, …) consome esse substrato e
-   gera **apenas os artefatos da sua técnica**, fiéis ao método de origem.
-
-2. **Isolamento por técnica (não-misturar).** Um módulo nunca lê nem escreve a
-   pasta de outra técnica. A fronteira de pasta + skill garante que Lean Inception
-   não vaze conceitos de DDD e vice-versa. Isso é o que você pediu: cada pasta de
-   `docs/` contém artefatos de uma técnica só.
-
-3. **Templates da Lean Inception revisados para fidelidade ao livro de Paulo
-   Caroli.** A v11 havia misturado, dentro das "canvases da Lean Inception",
-   artefatos que **não são** da Lean Inception:
-   - `glossary.md` com *bounded context* e *linguagem ubíqua* → conceitos de **DDD**.
-   - `stakeholders.md` (mapa interesse × influência) → técnica de **análise de
-     stakeholders**, não da Lean Inception (que só distingue "stakeholder × membro
-     ativo" para a agenda do workshop).
-   - `prioritization.md` com **MoSCoW** → a Lean Inception prioriza pelo
-     **Sequenciador** + **gráfico do semáforo** + **tabela esforço/negócio/UX**, não
-     por MoSCoW.
-   - `roadmap.md` com **Now/Next/Later** → convenção genérica de roadmap, não um
-     artefato de Caroli (que usa **ondas do Sequenciador** e **incrementos de MVP**).
-
-   Esses quatro itens saem da Lean Inception. O glossário/linguagem ubíqua migra
-   (em parte) para o substrato neutro e (em parte) para o futuro módulo DDD; os
-   demais viram candidatos a módulos próprios (seção 11). No lugar, a Lean
-   Inception recebe os artefatos **fiéis** ao livro (seção 8.2).
-
----
+> **Documento vivo.** Descreve o **estado atual** do design do plugin — princípios,
+> arquitetura, contrato de módulo, schemas e enforcement: o *porquê* das decisões.
+> **Não é versionado e não registra histórico.** A versão publicada vive no
+> `package.json`; o histórico de mudanças, em [`CHANGELOG.md`](CHANGELOG.md); e o diff
+> linha a linha, no git. Para *o que é* e *como usar*, veja o [`README.md`](README.md).
 
 ## 1. Visão geral
 
@@ -354,19 +185,14 @@ cad-claude-plugin/
 └── README.md
 ```
 
-Total v13.8: **26 skills** = 3 orquestradores + 7 do substrato CAD + módulo Lean (1
+Total: **26 skills** = 3 orquestradores + 7 do substrato CAD + módulo Lean (1
 manifesto + 6 docs) + módulo DDD (1 manifesto + 3 docs) + módulo Event Storming (1
-manifesto + 4 docs). (A v13.6 fechava em 25; a v13.8 soma `cad-doc-data-structures` ao
-substrato.) Cada módulo de técnica futuro (Impact Mapping, User Story
+manifesto + 4 docs). Cada módulo de técnica futuro (Impact Mapping, User Story
 Mapping…) adiciona 1 manifesto + N skills de documento, sob o mesmo contrato (seção 5),
 sem tocar no núcleo.
 
-> **Correção vs v12.** A v12 somava 15 skills, mas listava 6 skills de documento
-> Lean (não 5); o total correto da v12 era 16. A v13 chegou a 20 (16 + módulo DDD com
-> 4) e, com o módulo Event Storming (5), a **25**.
-
-> **Nota sobre granularidade de skill (mudança vs v11).** Em vez de "1 skill por
-> arquivo", a v12 adota "**1 skill por grupo coeso de artefatos da mesma atividade
+> **Nota sobre granularidade de skill.** Em vez de "1 skill por
+> arquivo", adota-se "**1 skill por grupo coeso de artefatos da mesma atividade
 > do método**". Ex.: `lean-inception-doc-product-framing` cuida das três atividades de
 > definição do produto de Caroli (Visão, ENFN, Objetivos), que andam juntas. Isso
 > reduz dispersão sem comprometer a fidelidade — cada arquivo continua sendo um
@@ -385,7 +211,7 @@ Cada skill de documento segue a mesma estrutura interna:
 SKILL.md
 ├── Objetivo        → que pergunta o artefato responde, e a qual método pertence
 ├── Entradas        → quais documentos do substrato CAD ele consome
-├── Template        → schema fixo (seção 8), fiel ao método de origem
+├── Template        → schema fixo, fiel ao método de origem
 └── Como preencher  → regras de citação; quando gerar backlog em vez de afirmar;
                        hierarquia de fontes; vocabulário PROIBIDO de outras técnicas
 ```
@@ -461,7 +287,7 @@ de `/cad:discovery` e de `/cad:synthesize` ao final de cada execução.
 
 ---
 
-## 5. Contrato de módulo de técnica (o núcleo da v12)
+## 5. Contrato de módulo de técnica (o núcleo da plataforma)
 
 Este contrato é o que permite plugar DDD, Event Storming, Impact Mapping etc. sem
 tocar no núcleo, e o que garante que nenhuma técnica contamine outra.
@@ -637,9 +463,9 @@ entidade/objeto de valor (campos de uma classe, colunas de uma tabela). Para iss
 CAD tem o **aprofundamento sob demanda**, sem quebrar a separação
 fonte → substrato → artefato.
 
-> **A partir da v13.8, o aprofundamento é a rede — não a fonte primária.** A descoberta
-> passa a **front-carregar** as estruturas de dados (campos, exemplos, formato, relações)
-> em `data-structures.md` (seção 8.1), que o DDD tático consome direto. O aprofundamento
+> **O aprofundamento é a rede — não a fonte primária.** A descoberta
+> **front-carrega** as estruturas de dados (campos, exemplos, formato, relações)
+> em `data-structures.md`, que o DDD tático consome direto. O aprofundamento
 > sob demanda cobre só o que a descoberta **não** capturou. Quando ele precisa reler,
 > resolve o caminho real da fonte compondo `sources.json[SRC].caminho` + a
 > `Fonte`/`Localização` do `EV` (a coluna `SRC` do `evidence-log.md` faz esse elo). Se a
@@ -769,456 +595,49 @@ real de um `EV`: `caminho` + a `Fonte`/`Localização` do `EV` (via a coluna `SR
 
 ---
 
-### 8.1 Substrato neutro (`docs/cad/`)
+### 8.1 Templates dos artefatos de `docs/` — vivem nos skills
 
-`docs/cad/knowledge-base.md`
-```markdown
-# Base de Conhecimento — [Domínio]
+Os schemas dos artefatos entregues em `docs/` **não são reproduzidos aqui**. Cada
+template canônico vive no `SKILL.md` do skill que o gera — **fonte única**, para o skill
+ser autossuficiente em runtime (não depende deste documento). Este documento descreve o
+*porquê*; o *o quê/como* de cada arquivo está no skill correspondente:
 
-## [Subdomínio: ex. Aprovação de Crédito]
-- **Afirmação:** [paráfrase, nunca cópia literal da fonte]
-  - Status: confirmado | inferido | conflitante
-  - Evidência: → evidence-log.md#EV-014
-  - Sessão: 2
-```
+| Pasta | Técnica | Templates canônicos em |
+|---|---|---|
+| `docs/cad/` | substrato neutro | `skills/cad-doc-*/SKILL.md` — knowledge-base, evidence-log, vocabulary, business-rules, capabilities, data-structures, backlog |
+| `docs/lean-inception/` | Lean Inception | `skills/lean-inception-doc-*/SKILL.md` |
+| `docs/ddd/` | DDD | `skills/ddd-doc-*/SKILL.md` |
+| `docs/event-storming/` | Event Storming | `skills/event-storming-doc-*/SKILL.md` |
 
-`docs/cad/evidence-log.md`
-```markdown
-# Log de Evidências
+Invariantes transversais que valem para **todos** esses templates (o que importa ao
+design, independentemente do formato de cada arquivo):
 
-| ID | Afirmação (resumo) | SRC | Fonte | Localização | Tipo de fonte | Sessão | Data |
-|---|---|---|---|---|---|---|---|
-| EV-014 | Aprovação exige 2 alçadas | SRC-002 | normativo_credito_v3.pdf | Seção 4.2 | Normativo | 2 | 2026-06-22 |
-| EV-015 | Código implementa 1 alçada | SRC-001 | src/service.py | L142-160 | Código | 1 | 2026-06-20 |
-```
-Tipos de fonte: `Normativo`, `Corporativo`, `Código`, `Informal`, `Validação Humana`.
-A coluna **`SRC`** liga a evidência à fonte de `sources.json` (elo que o aprofundamento
-usa para compor o caminho real: `sources.json[SRC].caminho` + `Fonte`/`Localização`);
-evidência de `Validação Humana` usa `—`.
-
-`docs/cad/vocabulary.md` — termos + conflitos, **neutro** (sem *bounded context*,
-que é um recorte do DDD e vive no módulo `ddd/`):
-```markdown
-# Vocabulário — Termos do Domínio
-
-## Termo: "Aprovação"
-- **Definição priorizada (normativo):** [definição] → EV-014
-- **NÃO confundir com:** [termo parecido, e por quê]
-- **Conflitos detectados:**
-  - Código (EV-015): trata como etapa única ⚠️
-  - Doc corporativa (EV-022): descreve 3 etapas ⚠️
-- **Status:** conflito aberto | resolvido por humano
-- **Resolução humana:** [se houver] → fonte: "validação consultor — 2026-06-25"
-```
-> O campo `Contexto (bounded context)` da v11 foi **removido daqui** — pertence ao
-> módulo DDD, que produz `ubiquitous-language.md` com a linguagem ubíqua por
-> contexto, consumindo este vocabulário neutro.
-
-`docs/cad/business-rules.md` — regras extraídas (neutras; o DDD/BCM as consomem):
-```markdown
-# Regras de Negócio Extraídas
-
-| ID | Regra (paráfrase) | Condição/Gatilho | Fonte | Status | Evidência |
-|---|---|---|---|---|---|
-| BR-007 | Limite de crédito acima de X exige 2ª alçada | valor > R$ 50k | normativo | confirmado | → EV-014 |
-| BR-008 | Cliente inadimplente não recebe nova proposta | flag em cadastro | código | conflitante | → EV-031 |
-```
-
-`docs/cad/capabilities.md` — inventário **plano** de capacidades (o mapa
-hierárquico/heat map é técnica própria — BCM; aqui é só descoberta):
-```markdown
-# Inventário de Capacidades
-
-| ID | Capacidade | Tipo | Evidência | Observações |
-|---|---|---|---|---|
-| CAP-003 | Análise de risco de crédito | negócio | → EV-040 | parcialmente automatizada |
-| CAP-004 | Notificação ao cliente | sistema | → EV-041 | via fila SQS |
-```
-
-`docs/cad/data-structures.md` — estruturas de dados em nível **conceitual/lógico e
-neutro** (a ponte para entidades/objetos de valor do DDD, read models do ES e
-funcionalidades da Lean). **Sem tecnologia:** nada de tipos técnicos, nomes de
-tabela/coluna, FKs ou tabelas-pivô; **exemplos no lugar de tipos** (a máscara/tamanho
-é derivada do exemplo), e **exemplos nunca de dado real/PII**:
-```markdown
-# Estruturas de Dados — [Domínio/Subdomínio]
-
-## Estrutura: Ticket
-- **Campos:** título, descrição, tipo, status, urgência, impacto, prioridade [Fonte: EV-XXX]
-- **Valores enumerados:** status ∈ {New, Assigned, Planned, Pending, Solved, Closed} [Fonte: EV-XXX]
-- **Exemplos de preenchimento:** título "Impressora sem toner"; prioridade "3" [Fonte: EV-XXX]
-- **Formato/tamanho (derivado):** título — texto até ~255 chars; aberto_em — AAAA-MM-DD hh:mm [Fonte: EV-XXX]
-- **Relações:** Ticket 1..N Follow-up; Ticket 1..1 Solicitante; Ticket 0..N Watcher [Fonte: EV-XXX]
-> **Nota de fronteira:** agrupamento/relações observados na fonte; ownership e fronteira de modelo são decisão da técnica.
-```
-> Multiplicidade conceitual (`1..1`, `1..n`, `0..n`) é fato de domínio e **entra**; o
-> mecanismo de persistência (FK, tabela-pivô) **fica de fora**. A "Nota de fronteira"
-> lembra que o agrupamento observado no código **não** é o veredito de fronteira — isso
-> é do DDD/ES.
-
-`docs/cad/backlog.md` — agora com coluna de **consumidor** (substrato ou técnica):
-```markdown
-# Backlog de Pendências
-
-| ID | Tipo | Consumidor | Lacuna/Conflito | Artefato afetado | Status | Resposta | Fonte resposta | Data |
-|---|---|---|---|---|---|---|---|---|
-| BL-003 | lacuna | cad | Quais permissões da capacidade "Aprovação"? | capabilities.md | aberto | — | — | — |
-| BL-004 | conflito_definição | cad | "Aprovação": normativo 2 alçadas vs. código 1 | vocabulary.md | aberto | — | — | — |
-| BL-009 | lacuna | lean-inception | Falta a proposta do MVP1 | lean-inception/mvp-canvas.md | aberto | — | — | — |
-```
-Tipos: `lacuna`, `conflito_definição`, `conflito_pós_validação`. Consumidor: `cad`
-ou o nome da técnica (`lean-inception`, `ddd`, …).
+- Todo bloco factual carrega `[Fonte: EV-XXX]` ou `[⚠️ Pendente: BL-XXX]` (princípios
+  1 e 11).
+- O `evidence-log.md` tem a coluna `SRC`, que liga cada `EV` à fonte de `sources.json`
+  — a base do aprofundamento sob demanda (seção 5.1) para resolver o caminho real.
+- O `backlog.md` tem a coluna `consumidor` (`cad` ou o nome da técnica), separando
+  lacunas de descoberta das de síntese.
 
 ---
 
-### 8.2 Módulo Lean Inception (`docs/lean-inception/`) — fiel a Caroli
+## 9. Decisões de design
 
-Os oito artefatos abaixo correspondem **exatamente** às atividades do livro *Lean
-Inception: Como Alinhar Pessoas e Construir o Produto Certo* (Caroli). Todo bloco
-factual referencia uma evidência do substrato (`[Fonte: EV-XXX]`) ou marca pendência.
-
-**`vision.md`** — Visão do Produto (template de Geoffrey Moore):
-```markdown
-# Visão do Produto — [Nome]
-
-Para [cliente final] [Fonte: EV-XXX]
-cujo [problema que precisa ser resolvido] [Fonte: EV-XXX]
-o [nome do produto]
-é um [categoria do produto]
-que [benefício-chave, razão para adquiri-lo] [Fonte: EV-XXX]
-diferentemente de [alternativa da concorrência]
-o nosso produto [diferença-chave] [Fonte: EV-XXX]
-
-## Lacunas
-[⚠️ Pendente: BL-XXX] — [lacuna para fechar a frase]
-```
-
-**`product-enfn.md`** — É / Não é / Faz / Não faz (dica de Caroli: *É* =
-substantivo/adjetivo; *Faz* = verbo/ação):
-```markdown
-# O Produto É – Não é – Faz – Não faz — [Nome]
-
-| É (substantivo/adjetivo) | Não é |
-|---|---|
-| [característica] [Fonte: EV-XXX] | [...] [Fonte: EV-XXX] |
-
-| Faz (verbo/ação) | Não faz |
-|---|---|
-| [ação] [Fonte: EV-XXX] | [...] [Fonte: EV-XXX] |
-```
-
-**`objectives.md`** — Objetivos do produto (3 principais) + trade-offs (opcional):
-```markdown
-# Objetivos do Produto — [Nome]
-
-1. [Objetivo de negócio] [Fonte: EV-XXX]
-2. [Objetivo de negócio] [Fonte: EV-XXX]
-3. [Objetivo de negócio] [Fonte: EV-XXX]
-
-## Trade-offs (opcional)
-| Categoria | Nível de importância (1 = menos importante) |
-|---|---|
-| [ex.: segurança] | [...] |
-| [ex.: usabilidade] | [...] |
-```
-
-**`personas.md`** — Personas (template de Caroli) + mapa de empatia (opcional):
-```markdown
-# Personas — [Nome do Produto]
-
-## Persona: [Apelido] [Fonte: EV-XXX]
-- **Perfil:** [idade, papel/ocupação, formação, contexto] [Fonte: EV-XXX]
-- **Comportamento:** [traços comportamentais] [Fonte: EV-XXX]
-- **Necessidades:** [necessidades específicas] [Fonte: EV-XXX | ⚠️ Pendente: BL-XXX]
-
-### Mapa de empatia (opcional)
-- **Vejo:** [...] · **Ouço:** [...] · **Penso/Sinto:** [...] · **Falo/Faço:** [...]
-- **Dores:** [...] · **Ganhos:** [...]
-```
-
-**`features.md`** — Brainstorming de funcionalidades (Objetivos × Personas) +
-Revisão técnica, de negócio e de UX (gráfico do semáforo + tabela):
-```markdown
-# Funcionalidades — [Nome]
-
-> Brainstorming guiado por Objetivos (colunas) × Personas (linhas).
-> Revisão: Confiança pelo gráfico do semáforo (🟢 alto / 🟡 médio / 🔴 baixo,
-> combinando confiança técnica "como fazer" × confiança negócio/UX "o que fazer").
-> Marcações: Esforço E/EE/EEE · Negócio $/$$/$$$ · UX ♥/♥♥/♥♥♥.
-
-| Funcionalidade | Persona | Objetivo | Confiança | Esforço | Negócio | UX | Jornada de origem |
-|---|---|---|---|---|---|---|---|
-| [func] [Fonte: EV-XXX] | [apelido] | [objetivo] | 🟢/🟡/🔴 | EE | $$ | ♥♥♥ | Jornada: [nome] |
-
-> Funcionalidade 🔴 marcada com "X" (baixa confiança técnica E de negócio/UX):
-> descartar ou esclarecer antes de prosseguir. Funcionalidade sem persona
-> associada: descartar ou repensar.
-```
-
-**`journeys.md`** — Jornadas dos usuários (com funcionalidades nas jornadas):
-```markdown
-# Jornadas dos Usuários — [Nome]
-
-## Jornada: [nome] — Persona [apelido] · Objetivo: [...] [Fonte: EV-XXX]
-- **Ponto de partida:** [o que desencadeia o desejo de atingir o objetivo]
-- **Passos:** 1. [...] → 2. [...] → 3. [...] → [objetivo alcançado]
-- **Funcionalidades nesta jornada:** [F1, F2, …] (→ features.md)
-- **Dores/atritos:** [Fonte: EV-XXX | ⚠️ Pendente: BL-XXX]
-```
-
-**`sequencer.md`** — Sequenciador (ondas + 6 regras) + Esforço/Tempo/Custo:
-```markdown
-# Sequenciador de Funcionalidades — [Nome]
-
-> Regras de Caroli para cada onda:
-> 1) máx. 3 cartões · 2) máx. 1 vermelho · 3) não 3 só amarelos/vermelhos
-> 4) Σ esforço ≤ 5E · 5) Σ valor ≥ 4$ e 4♥ · 6) dependência sempre em onda anterior.
-
-| Onda | Funcionalidades (≤3) | Σ Esforço | Σ $ | Σ ♥ | MVP |
-|---|---|---|---|---|---|
-| 1 | F1, F2, F3 | 4E | $$$$ | ♥♥♥♥♥ | MVP1 |
-| 2 | F4, F5 | 3E | $$$$$ | ♥♥♥♥ | MVP1 |
-| 3 | F6, F7, F8 | 5E | $$$$ | ♥♥♥♥ | MVP2 |
-
-## Esforço, tempo e custo (por amostragem de ondas)
-- **Ondas amostradas:** [ex.: 1 e 3]
-- **Tarefas detalhadas / tamanho médio de onda:** [...]
-- **Estimativa MVP1:** [tempo/custo] [Fonte: EV-XXX | ⚠️ Pendente: BL-XXX]
-```
-
-**`mvp-canvas.md`** — Canvas MVP (7 blocos, na ordem de Caroli):
-```markdown
-# Canvas MVP — [Nome do MVP]
-
-1. **Proposta do MVP** — Qual é a proposta deste MVP? [Fonte: EV-XXX]
-2. **Personas segmentadas** — Para quem é? Dá para testar num grupo menor? [Fonte: EV-XXX]
-3. **Jornadas** — Quais jornadas são atendidas/melhoradas? (→ journeys.md)
-4. **Funcionalidades** — O que vamos construir / que ações serão melhoradas? (→ sequencer.md)
-5. **Resultado esperado** — Que aprendizado/resultado buscamos? [Fonte: EV-XXX | ⚠️ Pendente: BL-XXX]
-6. **Métricas para validar as hipóteses do negócio** — Como medir os resultados? [Fonte: EV-XXX | ⚠️ Pendente: BL-XXX]
-7. **Custo e Cronograma** — Custo e data prevista para a entrega? [Fonte: EV-XXX | ⚠️ Pendente: BL-XXX]
-```
-
-> **Faça no máximo três canvas MVP** (um por MVP do sequenciador), e só preencha os
-> dos primeiros MVPs — fiel à recomendação de Caroli de não ir longe demais.
-
----
-
-### 8.3 Módulo DDD (`docs/ddd/`) — fiel a Eric Evans
-
-Cinco artefatos que respondem exatamente às perguntas que os insights levantaram:
-quais subdomínios e bounded contexts emergem, qual a linguagem ubíqua implícita,
-onde há contextos compartilhados, quais agregados aparecem e onde o acoplamento é
-baixo. Todo bloco factual referencia o substrato (`[Fonte: EV-XXX]`) ou marca
-pendência. O DDD **lê** o substrato neutro e **interpreta** — a classificação
-(Core/Supporting/Generic, limites de contexto, padrões de integração) é opinião do
-método, não descoberta crua.
-
-**`subdomains.md`** — Subdomínios no espaço do problema (Core / Supporting / Generic):
-```markdown
-# Subdomínios — [Domínio]
-
-| Subdomínio | Tipo | Descrição | Capacidade(s) relacionada(s) | Evidência |
-|---|---|---|---|---|
-| Análise de risco de crédito | Core | diferencial competitivo do negócio | CAP-003 (→ capabilities.md) | → EV-040 |
-| Notificação ao cliente | Supporting | necessário, mas não diferenciador | CAP-004 | → EV-041 |
-| Autenticação | Generic | resolvido por solução de mercado | CAP-009 | → EV-052 |
-
-> Tipo: **Core** (diferenciador, foco do investimento) · **Supporting** (apoia o
-> core, específico do negócio) · **Generic** (commodity, candidato a comprar/terceirizar).
-> Classificação incerta vira [⚠️ Pendente: BL-XXX] (consumidor: ddd).
-```
-
-**`bounded-contexts.md`** — Bounded contexts no espaço da solução, mapeados ao código:
-```markdown
-# Bounded Contexts — [Sistema]
-
-## Contexto: [Nome do Contexto]
-- **Subdomínio relacionado:** [...] (→ subdomains.md)
-- **Responsabilidade:** [o que este contexto resolve e o que NÃO resolve]
-- **Módulos/pacotes de código:** [ex.: credito/, billing/api] [Fonte: EV-XXX]
-- **Linguagem ubíqua:** → ubiquitous-language.md#[contexto]
-- **Acoplamento observado:** baixo | médio | alto — [evidência do acoplamento] [Fonte: EV-XXX]
-- **Limite incerto:** [⚠️ Pendente: BL-XXX] — [o que falta para confirmar a fronteira]
-```
-
-**`ubiquitous-language.md`** — Linguagem ubíqua **por** bounded context (consome
-`vocabulary.md`; é aqui que o mesmo termo ganha significados diferentes por contexto):
-```markdown
-# Linguagem Ubíqua — por Bounded Context
-
-## Contexto: [Nome]
-| Termo | Significado NESTE contexto | Termo no substrato | Evidência |
-|---|---|---|---|
-| Aprovação | etapa única de liberação automática | vocabulary.md#Aprovação | → EV-015 |
-| Conta | carteira de crédito do cliente | vocabulary.md#Conta | → EV-061 |
-
-## Contexto: [Outro Nome]
-| Termo | Significado NESTE contexto | Termo no substrato | Evidência |
-|---|---|---|---|
-| Aprovação | fluxo de 2 alçadas (gerência + risco) | vocabulary.md#Aprovação | → EV-014 |
-
-> O mesmo termo "Aprovação" significa coisas distintas em contextos distintos — esse
-> é o sinal clássico de fronteira de contexto. Conflitos no `vocabulary.md` neutro
-> frequentemente viram **dois significados legítimos** aqui, um por contexto.
-```
-
-**`context-map.md`** — Relacionamentos entre contextos (padrões de integração):
-```markdown
-# Mapa de Contextos — [Sistema]
-
-| Upstream (montante) | Downstream (jusante) | Padrão de relacionamento | Evidência |
-|---|---|---|---|
-| Crédito | Notificação | Customer/Supplier | → EV-041 |
-| Sistema Legado | Crédito | Anticorruption Layer (ACL) | → EV-050 |
-| Crédito | Cobrança | Shared Kernel (modelo de "Fatura" compartilhado) | → EV-063 |
-| Pagamentos | (externo) | Open Host Service + Published Language | → EV-070 |
-
-> Padrões válidos: Partnership · Shared Kernel · Customer/Supplier · Conformist ·
-> Anticorruption Layer (ACL) · Open Host Service (OHS) · Published Language ·
-> Separate Ways · Big Ball of Mud.
-> "Contextos compartilhados" (pergunta do insight) aparecem como **Shared Kernel**.
-> Relacionamento não confirmado: [⚠️ Pendente: BL-XXX] (consumidor: ddd).
-```
-
-**`aggregates.md`** — Blocos táticos por contexto (agregados, entidades, VOs,
-eventos, repositórios; invariantes consomem `business-rules.md`):
-```markdown
-# Agregados — Contexto [Nome]
-
-## Agregado: [Raiz do Agregado]
-- **Raiz (entidade):** [ex.: Proposta] [Fonte: EV-XXX]
-- **Entidades:** [ex.: ItemDaProposta] [Fonte: EV-XXX]
-- **Objetos de valor:** [ex.: Valor, CPF, Período] [Fonte: EV-XXX]
-- **Invariantes (regras que o agregado protege):** [ex.: total = soma dos itens]
-  (→ business-rules.md#BR-007) [Fonte: EV-XXX]
-- **Eventos de domínio publicados:** [ex.: PropostaAprovada, PropostaRecusada] [Fonte: EV-XXX]
-- **Repositório:** [ex.: PropostaRepository] [Fonte: EV-XXX]
-- **Incerteza de modelagem:** [⚠️ Pendente: BL-XXX] — [ex.: fronteira do agregado a confirmar]
-
-> Eventos de domínio aqui são os do **modelo tático** (publicados por um agregado).
-> A linha do tempo de processo/descoberta de eventos candidatos em filas e APIs é
-> escopo do módulo **Event Storming** (seção 8.4), não deste — evitando sobreposição.
-
-> **Atributos e relações vêm primeiro de `data-structures.md` (v13.8).** Os campos,
-> exemplos, formatos e a multiplicidade das relações de uma entidade/objeto de valor
-> já chegam do substrato como fato neutro com `EV`. O DDD **classifica** (isto é
-> entidade, isto é objeto de valor, esta é a raiz) e desenha a fronteira — a lista de
-> campos é fato descritivo do substrato, não julgamento do método. Só quando
-> `data-structures.md` não cobre um detalhe é que entra o **aprofundamento sob demanda**
-> (seção 5.1), como rede: a síntese relê — via descoberta — a fonte **já autorizada**
-> apontada por um `EV` (resolvendo o caminho por `SRC`), grava o detalhe como fato novo
-> (ex.: `EV-090`) e este template o cita.
-```
-
----
-
-### 8.4 Módulo Event Storming (`docs/event-storming/`) — fiel a Alberto Brandolini
-
-Quatro artefatos que traduzem a gramática do Event Storming para o contexto do CAD:
-eventos, comandos, atores, agregados, políticas, read models, sistemas externos e
-hotspots — descobertos a partir do substrato (código, filas, APIs, bancos) e sempre
-com evidência. O CAD **interpreta** o substrato como uma linha do tempo colaborativa;
-a opinião (o que é pivô, onde ficam as fronteiras) é do método, não descoberta crua.
-
-Legenda da gramática (cores canônicas de Brandolini): **evento de domínio** (laranja,
-no passado) · **comando** (azul, imperativo) · **ator/usuário** (amarelo pequeno) ·
-**agregado** (amarelo grande) · **política/reação** (lilás) · **read model** (verde) ·
-**sistema externo** (rosa) · **hotspot** (vermelho) · **evento-pivô** (evento de
-domínio que marca transição e sugere fronteira).
-
-**`timeline.md`** — Linha do tempo de eventos de domínio (a espinha dorsal):
-```markdown
-# Linha do Tempo de Eventos de Domínio — [Sistema/Processo]
-
-> Eventos de domínio no **passado**, em ordem cronológica. Eventos-pivô marcam
-> transições e sugerem fronteiras de contexto (ver boundaries.md).
-
-| # | Evento de domínio (passado) | Fase | Pivô? | Origem (código/fila/API/BD) | Evidência |
-|---|---|---|---|---|---|
-| 1 | Pedido Registrado | Captação | — | POST /orders → OrderCreated | → EV-071 |
-| 2 | Pagamento Aprovado | Pagamento | ⭐ | fila `payments.approved` | → EV-072 |
-| 3 | Pedido Faturado | Faturamento | — | billing/service.py L88 | → EV-073 |
-
-> Evento sem origem rastreável: [⚠️ Pendente: BL-XXX] (consumidor: event-storming).
-```
-
-**`flows.md`** — Fatias da gramática (o nível de design):
-```markdown
-# Fluxos — [Processo]
-
-> Cada fatia: **Ator → Comando → Agregado → Evento(s) de domínio → Read Model →
-> Política**. Comando no imperativo; evento no passado.
-
-## Fatia: [comando principal]
-- **Ator:** [quem dispara] [Fonte: EV-XXX]
-- **Comando:** [Registrar Pedido] (imperativo) [Fonte: EV-XXX]
-- **Agregado:** [Pedido] — recebe o comando e garante a consistência [Fonte: EV-XXX]
-- **Evento(s):** [Pedido Registrado] (→ timeline.md) [Fonte: EV-XXX]
-- **Read model (decisão):** [dado consultado antes de decidir] [Fonte: EV-XXX | ⚠️ Pendente: BL-XXX]
-- **Política (reação):** "sempre que [Pagamento Aprovado] → [Faturar Pedido]"
-  (→ business-rules.md#BR-XXX) [Fonte: EV-XXX]
-```
-
-**`hotspots.md`** — Hotspots (problemas, conflitos, dúvidas), alimentados pelo substrato:
-```markdown
-# Hotspots — [Sistema/Processo]
-
-> Pontos de tensão do fluxo: problemas, contradições e dúvidas. Alimentados pelos
-> conflitos e lacunas já detectados (evidence-log.md e backlog.md).
-
-| ID | Hotspot (problema/dúvida) | Onde no fluxo (evento/comando) | Tipo | Referência |
-|---|---|---|---|---|
-| HS-01 | "Aprovação": código faz 1 alçada, normativo exige 2 | evento "Pagamento Aprovado" | conflito | → BL-004 / EV-014, EV-015 |
-| HS-02 | Não se sabe quem dispara o estorno | comando "Estornar" | lacuna | → BL-012 |
-
-> Cada hotspot referencia o item de backlog ou as evidências em conflito que o
-> originaram — a resolução se dá via `/cad:backlog`.
-```
-
-**`boundaries.md`** — Fronteiras candidatas e sistemas externos:
-```markdown
-# Fronteiras e Sistemas Externos — [Sistema]
-
-## Contextos candidatos (a partir dos eventos-pivô)
-> Agrupar os eventos entre pivôs sugere fronteiras candidatas — insumo para o DDD
-> (bounded-contexts.md), que as refina. Aqui são apenas candidatas.
-
-| Contexto candidato | Eventos incluídos | Delimitado até o pivô | Evidência |
-|---|---|---|---|
-| Captação de Pedidos | Pedido Registrado, … | "Pagamento Aprovado" | → EV-071, EV-072 |
-
-## Sistemas externos
-> Sistemas externos (rosa) que emitem ou consomem eventos do fluxo.
-
-| Sistema externo | Emite / Consome | Evento(s) | Evidência |
-|---|---|---|---|
-| Gateway de Pagamento | emite | Pagamento Aprovado / Recusado | → EV-072 |
-```
-
-> **Fronteira com o DDD.** O Event Storming **descobre** a linha do tempo, as fatias e
-> os contextos **candidatos**; o DDD **modela** (agregados/entidades/VOs, linguagem
-> ubíqua por contexto, mapa de contextos com ACL/OHS). Vocabulário compartilhado
-> (aggregate, domain event, command, policy, read model, bounded context) é legítimo
-> nos dois; ver a nota na seção 5.
-
----
-
-## 9. Decisões fechadas nesta sessão
+As decisões estruturais que sustentam o resto do documento (o *porquê* de cada escolha):
 
 1. **Reposicionamento:** o plugin é o **CAD** (metodologia de descoberta), e a Lean
    Inception é o **primeiro consumidor**, não o teto da proposta.
 2. **Três comandos:** `/cad:discovery`, `/cad:synthesize <técnica>`, `/cad:backlog`.
 3. **Substrato neutro × módulos de técnica:** `docs/cad/` guarda conhecimento
    descritivo; `docs/<técnica>/` guarda artefatos opinativos de um método só.
-4. **Isolamento por técnica** vira princípio não-negociável (4 → agora princípio 3),
+4. **Isolamento por técnica** é princípio não-negociável (princípio 3),
    reforçado por hook: módulo lê só o substrato, escreve só na própria pasta, e tem
    `vocabulario_proibido` de outras técnicas.
 5. **Contrato de módulo (seção 5):** manifesto fixo declarando entradas, saída,
    artefatos e vocabulário proibido — permite plugar DDD/Event Storming/etc. sem
    tocar no núcleo.
-6. **Templates da Lean Inception revisados para fidelidade ao livro de Caroli**
-   (seção 8.2): Visão (Geoffrey Moore), ENFN, Objetivos, Personas, Funcionalidades
+6. **Templates da Lean Inception revisados para fidelidade ao livro de Caroli** —
+   Visão (Geoffrey Moore), ENFN, Objetivos, Personas, Funcionalidades
    (semáforo + tabela E/\$/♥), Jornadas, Sequenciador (6 regras + amostragem de
    esforço/custo) e Canvas MVP (7 blocos).
 7. **Removidos da Lean Inception por não pertencerem ao método:**
@@ -1239,44 +658,44 @@ domínio que marca transição e sugere fronteira).
     `sources.json`); `docs/` segue em Markdown.
 12. **Proteção de validação humana** vale tanto para o substrato quanto para os
     artefatos de técnica.
-13. **Módulo DDD totalmente especificado (v13)** como segundo módulo plugado
-    (seção 8.3): `subdomains.md` (Core/Supporting/Generic), `bounded-contexts.md`
+13. **Módulo DDD totalmente especificado** como segundo módulo plugado —
+    `subdomains.md` (Core/Supporting/Generic), `bounded-contexts.md`
     (com mapeamento a módulos de código e acoplamento), `ubiquitous-language.md`
     (linguagem ubíqua por contexto, consumindo `vocabulary.md`), `context-map.md`
     (padrões ACL/OHS/Shared Kernel/…) e `aggregates.md` (agregados, entidades, VOs,
     eventos de domínio, invariantes consumindo `business-rules.md`). Prova o contrato
     da seção 5 com dois métodos sobre o mesmo substrato, sem mistura.
-14. **Convenção de nomenclatura única (v13.1, seção 3.0):** todo identificador de
+14. **Convenção de nomenclatura única (seção 3.0):** todo identificador de
     skill, pasta, argumento de comando e marcação de backlog deriva do **nome
     programático** da técnica (`lean-inception`, `ddd`, `cad`). Elimina o ambíguo
     `lean-module`, que vira `lean-inception-module`; nome completo/exibição ficam só
     em prosa e no campo `metodo_de_origem`.
-15. **Toolchain em Node.js + TypeScript (v13.2, seção 11):** ESM, `esbuild`, versão de
+15. **Toolchain em Node.js + TypeScript (seção 11):** ESM, `esbuild`, versão de
     fonte única no `package.json` e build em `.mjs` — escolhido por portabilidade
     (Windows/macOS/Linux), JSON nativo e zero dependências em runtime. O CAD **não tem
     servidor MCP** (lê o repositório do cliente com ferramentas nativas), então não
     inclui SDK de MCP, cliente HTTP, empacotamento `.mcpb` nem `mcpServers`; compila só
     **hooks + helpers**. O contrato de módulo é formalizado como `module.json` (JSON),
     parseável pelos hooks sem dependência.
-16. **Repositório e nome de pacote (v13.3):** repositório `CAD-Claude-Plugin`,
+16. **Repositório e nome de pacote:** repositório `CAD-Claude-Plugin`,
     pacote/manifesto e artefato `cad-claude-plugin` (e `cad-claude-plugin.plugin`).
     Identificadores de plataforma (`/cad:`, skills `cad-*`,
     controle `.cad-plugin/`) permanecem, pois derivam do nome programático `cad`.
-17. **Módulo Event Storming totalmente especificado (v13.6, seção 8.4)** como terceiro
+17. **Módulo Event Storming totalmente especificado** como terceiro
     módulo plugado: `timeline.md` (eventos de domínio + eventos-pivô), `flows.md`
     (ator→comando→agregado→evento→read model→política), `hotspots.md` (conflitos/dúvidas
     vindos do `backlog.md`/`evidence-log.md`) e `boundaries.md` (contextos candidatos +
     sistemas externos). Formaliza que o `vocabulario_proibido` distingue termos
     **compartilhados** (não barrados entre técnicas complementares como ES e DDD) de
     **exclusivos** (barrados) — ver nota na seção 5.
-18. **Aprofundamento sob demanda (v13.7, seção 5.1):** a síntese pode reler **fontes já
+18. **Aprofundamento sob demanda (seção 5.1):** a síntese pode reler **fontes já
     autorizadas** (em `sources.json`), apontadas por um `EV`, para extrair detalhe fino
     (ex.: atributos de um agregado no DDD), gravando o detalhe como **fato neutro** via
     os skills de descoberta — o módulo continua só lendo o substrato. Fonte **nova**
     sempre volta ao humano (backlog). Contrato ganha `pode_aprofundar` (`"nao"` na Lean;
     `"fontes-autorizadas"` em DDD e Event Storming); princípio 6 refinado; flag
     `--sem-aprofundamento` para o modo conservador.
-19. **Estruturas de dados no substrato (v13.8, seções 8.1 e 0.9):** novo artefato
+19. **Estruturas de dados no substrato:** novo artefato
     `data-structures.md` e skill `cad-doc-data-structures` — a descoberta front-carrega
     as estruturas de dados (campos, valores enumerados, **exemplos de preenchimento**,
     **formato/tamanho derivado** e **relações com multiplicidade**) em nível
@@ -1399,8 +818,8 @@ auditabilidade coerente com os princípios do CAD (rastreabilidade ponta a ponta
 Cada um é uma pasta nova em `docs/` + um módulo novo no plugin, sob o contrato da
 seção 5, consumindo o mesmo substrato neutro:
 
-> O **DDD** (seção 8.3) e o **Event Storming** (seção 8.4) saíram desta lista — já
-> estão totalmente especificados como segundo e terceiro módulos plugados.
+> O **DDD** e o **Event Storming** **não** estão nesta lista —
+> já são módulos plugados e totalmente especificados.
 
 - **Impact Mapping** (`docs/impact-mapping/`) — objetivos, atores, impactos,
   entregáveis, inferidos das evidências.
@@ -1412,8 +831,8 @@ seção 5, consumindo o mesmo substrato neutro:
   hierárquico/heat map (consome `capabilities.md`).
 - **Value Stream Mapping** (`docs/vsm/`) — fluxos reconstruídos a partir de
   processos e integrações.
-- **Análise de stakeholders** (`docs/stakeholders/`) — mapa interesse × influência
-  (o ex-`stakeholders.md` da v11, agora como técnica própria).
+- **Análise de stakeholders** (`docs/stakeholders/`) — mapa interesse × influência,
+  como técnica própria (não é artefato da Lean Inception).
 
 ---
 

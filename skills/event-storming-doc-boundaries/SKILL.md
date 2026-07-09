@@ -18,7 +18,7 @@ Lê **apenas** o substrato CAD: `knowledge-base.md`, `evidence-log.md` e
 `capabilities.md` (sistemas). Usa os eventos-pivô de `timeline.md` (deste módulo).
 Escreve apenas em `docs/event-storming/`.
 
-## Template (seção 8.4 — copiar fielmente)
+## Template (copiar fielmente)
 
 ```markdown
 # Fronteiras e Sistemas Externos — [Sistema]
@@ -48,7 +48,7 @@ Escreve apenas em `docs/event-storming/`.
   (gateways, filas de terceiros, integrações), com o(s) evento(s) e `EV-XXX`.
 - **Lacuna de detalhe fino** (ex.: falta confirmar qual sistema emite um evento, e
   um `EV` já aponta à integração): **não infira em silêncio**. Sinalize com o
-  **ponteiro de `EV`** para o orquestrador aprofundar (seção 5.1); fonte nova →
+  **ponteiro de `EV`** para o orquestrador aprofundar; fonte nova →
   `[⚠️ Pendente: BL-XXX]` (consumidor: event-storming).
 - **Vocabulário proibido:** nada de termos exclusivos da Lean ou só-DDD. Em
   particular, **não** classifique subdomínios (Core/Supporting/Generic) nem padrões

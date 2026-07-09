@@ -6,7 +6,7 @@
 // distribuído SEM node_modules e SEM npm install no destino.
 //
 // A versão é injetada em build via define __PKG_VERSION__, garantindo fonte
-// única no package.json (princípio de proveniência — seção 11.5 da spec).
+// única no package.json (princípio de proveniência).
 
 import { build } from "esbuild";
 import { readFileSync } from "node:fs";

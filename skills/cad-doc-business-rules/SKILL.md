@@ -16,7 +16,7 @@ aqui ficam descritivas, sem modelagem de método.
 - Fontes escaneadas por `/cad:discovery` (código, normativos, docs corporativas).
 - `docs/cad/evidence-log.md` — cada regra cita uma `EV-XXX`.
 
-## Template (seção 8.1 — copiar fielmente)
+## Template (copiar fielmente)
 
 ```markdown
 # Regras de Negócio Extraídas
@@ -35,6 +35,6 @@ aqui ficam descritivas, sem modelagem de método.
   aplique a hierarquia e abra `conflito_definição` no backlog.
 - `Status`: `confirmado` | `conflitante` | `inferido`. Regra sem evidência clara
   **não entra** — vira `lacuna` no backlog.
-- Regra resolvida por humano é protegida (princípio 7); só `/cad:backlog` altera.
+- Regra resolvida por humano é protegida; só `/cad:backlog` altera.
 - **Sem vocabulário de técnica** aqui — nada de "invariante de agregado",
   "bounded context" etc. Isso é interpretação do DDD, feita em `docs/ddd/`.

@@ -19,16 +19,16 @@ vira item de backlog. **Este comando nunca gera artefato de técnica** (nada em
 - **Argumento `[fontes]`** — lista explícita de caminhos (arquivos ou pastas) e/ou
   normativos a escanear nesta sessão. Se vazio, **pergunte** ao consultor quais
   fontes escanear; **nunca** escaneie por conta própria uma fonte **nova** de
-  sessões anteriores (princípio 6 refinado — escopo de scan é sempre humano; a
+  sessões anteriores: o escopo de scan é sempre humano; a
   única releitura automática permitida é a de **fontes já autorizadas**, e ocorre
-  apenas no **aprofundamento sob demanda** disparado por `/cad:synthesize`).
+  apenas no **aprofundamento sob demanda** disparado por `/cad:synthesize`.
 - `.cad-plugin/state.json` e `.cad-plugin/sources.json` (se existirem) — para
   saber a sessão atual e o histórico. Se não existirem, crie-os.
 
 ## Procedimento
 
 1. **Registrar fontes.** Para cada fonte do argumento, faça **append** em
-   `.cad-plugin/sources.json` (nunca sobrescreva — princípio 8) uma entrada com
+   `.cad-plugin/sources.json` (nunca sobrescreva) uma entrada com
    `id` (`SRC-NNN`), `caminho`, `tipo` (`Normativo` | `Corporativo` | `Código` |
    `Informal`), `sessao` e `data`. Uma mesma fonte pode reaparecer em sessões
    diferentes se revisitada explicitamente. Incremente a sessão em `state.json`.
@@ -50,13 +50,13 @@ vira item de backlog. **Este comando nunca gera artefato de técnica** (nada em
      multiplicidade. Isso front-carrega o detalhe fino que o DDD tático consome, sem
      depender do aprofundamento sob demanda. **Sem contaminação de tecnologia**
      (tipos, tabelas, FKs ficam de fora — ver a regra manter/descartar do skill).
-4. **Aplicar a regra de evidência** (seção 6 da spec):
+4. **Aplicar a regra de evidência**:
    - Sem evidência clara → **não afirme, não assuma** → abra item em
      `cad-doc-backlog` (`tipo: lacuna`, `consumidor: cad`).
    - Definições conflitantes entre fontes → aplique a **hierarquia de fontes**
      (Normativo > Corporativo > Código > Informal): registre a definição
      priorizada **e todos os conflitos**, e abra `tipo: conflito_definição`.
-   - Bloco já validado por humano → **nunca sobrescreva** (princípio 7); um
+   - Bloco já validado por humano → **nunca sobrescreva**; um
      conflito novo abre `tipo: conflito_pós_validação`.
 5. **Não tocar em nenhuma pasta de técnica.** Discovery escreve só em `docs/cad/`.
 
@@ -65,15 +65,15 @@ vira item de backlog. **Este comando nunca gera artefato de técnica** (nada em
 Atualize `state.json` (append no `historico`, contagem de `backlog_abertos`) e
 **exiba a lista de IDs de backlog abertos** (de descoberta) para apoiar a decisão
 do consultor sobre quando o substrato está "rico o bastante" para sintetizar uma
-técnica (princípio/seção 7). Mostre também um resumo de cobertura: fontes
+técnica (critério de parada). Mostre também um resumo de cobertura: fontes
 escaneadas, evidências criadas, fatos/regras/capacidades/estruturas adicionados.
 
 ## Regras inegociáveis
 
-- Sem evidência, sem afirmação (princípio 1).
+- Sem evidência, sem afirmação.
 - Escopo humano: só as fontes passadas; releitura automática **só** de fontes já
   autorizadas (`sources.json`) e apenas no aprofundamento sob demanda de
-  `/cad:synthesize` — fonte nova sempre volta ao humano (princípio 6 refinado).
-- Apêndice, nunca sobrescrita em `sources.json`/`state.json` (princípio 8).
-- Proteção de blocos validados por humano (princípio 7).
-- Substrato é **neutro**: nenhuma opinião de método aqui (princípio 2).
+  `/cad:synthesize` — fonte nova sempre volta ao humano.
+- Apêndice, nunca sobrescrita em `sources.json`/`state.json`.
+- Proteção de blocos validados por humano.
+- Substrato é **neutro**: nenhuma opinião de método aqui.
