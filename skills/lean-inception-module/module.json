@@ -1,6 +1,7 @@
 {
   "tecnica": "lean-inception",
   "metodo_de_origem": "Lean Inception (Paulo Caroli)",
+  "pode_aprofundar": "nao",
   "pasta_saida": "docs/lean-inception/",
   "entradas_substrato": [
     "docs/cad/knowledge-base.md",

@@ -1,13 +1,15 @@
 {
   "tecnica": "ddd",
   "metodo_de_origem": "Domain-Driven Design (Eric Evans)",
+  "pode_aprofundar": "fontes-autorizadas",
   "pasta_saida": "docs/ddd/",
   "entradas_substrato": [
     "docs/cad/knowledge-base.md",
     "docs/cad/evidence-log.md",
     "docs/cad/vocabulary.md",
     "docs/cad/business-rules.md",
-    "docs/cad/capabilities.md"
+    "docs/cad/capabilities.md",
+    "docs/cad/data-structures.md"
   ],
   "artefatos": [
     "subdomains.md",
@@ -21,6 +23,8 @@
     "persona / persona segmentada",
     "jornada (no sentido Lean)",
     "onda / sequenciador",
-    "é-não é-faz-não faz"
+    "é-não é-faz-não faz",
+    "hotspot",
+    "evento-pivô / pivotal event"
   ]
 }

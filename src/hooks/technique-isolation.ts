@@ -6,6 +6,13 @@
 //   (b) o conteúdo de um artefato de técnica contém termo do vocabulario_proibido.
 // Sem técnica ativa declarada, associa o destino pela pasta e ainda assim aplica
 // o veto de vocabulário. Zero dependências em runtime.
+//
+// Aprofundamento sob demanda (seção 5.1/10): durante um /cad:synthesize, quem
+// escreve o substrato (docs/cad/) são os skills de DESCOBERTA, não o módulo. O
+// orquestrador sinaliza esse passo com env CAD_APROFUNDAMENTO — só então uma
+// escrita em docs/cad/ com técnica ativa é liberada (ator = descoberta). Sem esse
+// sinal, um skill de MÓDULO escrevendo no substrato é a violação que o hook existe
+// para impedir, e é bloqueado.
 
 import { loadAllContracts, outputPrefix, ModuleContract } from "../lib/manifest.js";
 
@@ -75,6 +82,16 @@ function forbiddenHits(content: string, forbidden: string[]): string[] {
   return hits;
 }
 
+/**
+ * Passo de aprofundamento em curso: a escrita atual no substrato é feita pelos
+ * skills de descoberta a mando do /cad:synthesize (ator = descoberta), não por um
+ * skill de módulo. Sinalizado pelo orquestrador via env CAD_APROFUNDAMENTO.
+ */
+function isDeepeningFlow(): boolean {
+  const v = process.env.CAD_APROFUNDAMENTO;
+  return v === "1" || v === "true" || v === "yes";
+}
+
 function block(rel: string, reason: string, hits: string[]): never {
   process.stderr.write(
     `[CAD] technique-isolation: ${reason} — ${rel} (princípio 3).\n` +
@@ -118,8 +135,18 @@ async function main(): Promise<void> {
       const prefix = outputPrefix(contract);
       // (a) módulo ativo escrevendo fora da própria pasta_saida.
       if (!rel.startsWith(prefix + "/")) {
-        // o substrato neutro (docs/cad/) não é território de módulo: permitido.
-        if (rel.startsWith("docs/cad/")) process.exit(0);
+        if (rel.startsWith("docs/cad/")) {
+          // Substrato neutro: NÃO é território de módulo. Só a descoberta pode
+          // escrevê-lo, e apenas durante o aprofundamento sob demanda (seção 5.1).
+          if (isDeepeningFlow()) process.exit(0); // ator = descoberta: permitido
+          // ator = módulo tentando escrever o substrato → violação do princípio 3.
+          block(
+            rel,
+            `módulo ativo "${active}" tentou escrever no substrato (docs/cad/) — ` +
+              `só a descoberta escreve o substrato (aprofundamento sob demanda)`,
+            [],
+          );
+        }
         block(
           rel,
           `escrita fora de pasta_saida (${contract.pasta_saida}) do módulo ativo "${active}"`,

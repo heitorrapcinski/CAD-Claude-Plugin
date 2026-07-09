@@ -1,0 +1,30 @@
+{
+  "tecnica": "event-storming",
+  "metodo_de_origem": "Event Storming (Alberto Brandolini)",
+  "pode_aprofundar": "fontes-autorizadas",
+  "pasta_saida": "docs/event-storming/",
+  "entradas_substrato": [
+    "docs/cad/knowledge-base.md",
+    "docs/cad/evidence-log.md",
+    "docs/cad/vocabulary.md",
+    "docs/cad/business-rules.md",
+    "docs/cad/capabilities.md",
+    "docs/cad/backlog.md"
+  ],
+  "artefatos": [
+    "timeline.md",
+    "flows.md",
+    "hotspots.md",
+    "boundaries.md"
+  ],
+  "vocabulario_proibido": [
+    "MVP / canvas MVP",
+    "persona / persona segmentada",
+    "onda / sequenciador",
+    "linguagem ubíqua",
+    "objeto de valor / value object",
+    "repositório / repository",
+    "subdomínio (Core/Supporting/Generic)",
+    "anticorruption layer / open host service / context map"
+  ]
+}

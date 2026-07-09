@@ -18,6 +18,12 @@ export interface SessionEntry {
   data: string;
   comando: string;
   foco: string;
+  /**
+   * Nº de fontes autorizadas reaprofundadas nesta sessão de /cad:synthesize
+   * (aprofundamento sob demanda — seção 5.1). Omitido quando não houve
+   * aprofundamento (ex.: /cad:discovery ou run com --sem-aprofundamento).
+   */
+  aprofundamentos?: number;
   resultado: string;
 }
 

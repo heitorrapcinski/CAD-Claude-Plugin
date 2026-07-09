@@ -15,16 +15,20 @@ em qualquer artefato de técnica referencia uma linha desta tabela.
 
 - Fontes escaneadas por `/cad:discovery`.
 - Respostas do consultor em `/cad:backlog` (geram evidência de validação humana).
+- Releituras de **aprofundamento sob demanda** disparadas por `/cad:synthesize`
+  (relê um trecho de fonte **já autorizada** apontado por um `EV`, gravando o
+  detalhe fino como evidência nova — seção 5.1).
 
 ## Template (seção 8.1 — copiar fielmente)
 
 ```markdown
 # Log de Evidências
 
-| ID | Afirmação (resumo) | Fonte | Localização | Tipo de fonte | Sessão | Data |
-|---|---|---|---|---|---|---|
-| EV-014 | Aprovação exige 2 alçadas | normativo_credito_v3.pdf | Seção 4.2 | Normativo | 2 | 2026-06-22 |
-| EV-015 | Código implementa 1 alçada | credito/service.py | L142-160 | Código | 1 | 2026-06-20 |
+| ID | Afirmação (resumo) | SRC | Fonte | Localização | Tipo de fonte | Sessão | Data |
+|---|---|---|---|---|---|---|---|
+| EV-014 | Aprovação exige 2 alçadas | SRC-002 | normativo_credito_v3.pdf | Seção 4.2 | Normativo | 2 | 2026-06-22 |
+| EV-015 | Código implementa 1 alçada | SRC-001 | src/service.py | L142-160 | Código | 1 | 2026-06-20 |
+| EV-090 | Classe Proposta tem os campos valor, cpf, periodo _(aprofundamento)_ | SRC-001 | src/service.py | L142-160 | Código | 4 | 2026-06-26 |
 ```
 
 Tipos de fonte: `Normativo`, `Corporativo`, `Código`, `Informal`, `Validação Humana`.
@@ -35,9 +39,21 @@ Tipos de fonte: `Normativo`, `Corporativo`, `Código`, `Informal`, `Validação 
   remova linhas existentes (o histórico de evidências é imutável).
 - `ID` sequencial `EV-NNN`. `Localização` precisa o trecho (seção do normativo,
   intervalo de linhas do código, página do documento).
+- **`SRC` liga a evidência à fonte registrada em `sources.json`** (ex.: `SRC-002`).
+  É o elo que torna o **aprofundamento sob demanda** resolvível por máquina: o caminho
+  real do trecho é composto por `sources.json[SRC].caminho` **+** a `Fonte`/`Localização`
+  desta linha (a `Fonte` é relativa à `caminho` da SRC). Sem `SRC`, o aprofundamento não
+  sabe qual base usar e degrada — por isso toda evidência de fonte escaneada **deve**
+  trazer o `SRC`. Evidência de `Validação Humana` não tem `SRC` (use `—`).
 - `Afirmação (resumo)` é uma **paráfrase curta**, não cópia literal da fonte.
 - Para `/cad:backlog`, registre `Tipo de fonte: Validação Humana` e `Fonte:
   "validação consultor — [data]"`. Esta evidência é a **mais forte** (princípio 5)
   e supera a hierarquia normativa para o ponto resolvido.
+- **Evidência de aprofundamento (seção 5.1):** quando a evidência nasce de uma
+  releitura de aprofundamento (fonte **já autorizada**, apontada por um `EV`
+  anterior), **marque-a visivelmente** para auditoria — anexe a observação
+  `_(aprofundamento)_` ao final da `Afirmação (resumo)`. Mantém o `Tipo de fonte`
+  real (`Código`, `Normativo`…), pois a fonte é a mesma; a marca só sinaliza a
+  **origem** (síntese que releu detalhe fino), não uma fonte nova.
 - A `EV-XXX` criada aqui é o alvo dos marcadores `[Fonte: EV-XXX]` espalhados pelo
   substrato e pelos artefatos de técnica.

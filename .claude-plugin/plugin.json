@@ -2,8 +2,8 @@
   "$schema": "https://json.schemastore.org/claude-code-plugin.json",
   "name": "cad-claude-plugin",
   "displayName": "CAD — Collaborative Augmented Discovery",
-  "version": "0.1.0",
-  "description": "Co-facilitador de descoberta aumentada (CAD): escaneia fontes, extrai fatos com evidência rastreável e sintetiza artefatos fiéis a Lean Inception e DDD sobre um substrato neutro.",
+  "version": "0.2.0",
+  "description": "Co-facilitador de descoberta aumentada (CAD): escaneia fontes, extrai fatos com evidência rastreável e sintetiza artefatos fiéis a Lean Inception, DDD e Event Storming sobre um substrato neutro.",
   "author": {
     "name": "Heitor Rapcinski",
     "email": "heitor.rapcinski@gmail.com"
@@ -14,6 +14,7 @@
     "discovery",
     "lean-inception",
     "ddd",
+    "event-storming",
     "evidence",
     "facilitation",
     "claude-code",

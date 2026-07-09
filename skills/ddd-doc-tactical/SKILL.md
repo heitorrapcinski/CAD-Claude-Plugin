@@ -14,9 +14,17 @@ Modelar os **blocos táticos** por bounded context: **agregados** (com raiz),
 ## Entradas
 
 Lê **apenas** o substrato CAD: `business-rules.md` (→ invariantes),
+`data-structures.md` (→ entidades, objetos de valor, atributos e relações),
 `knowledge-base.md`, `vocabulary.md` e `evidence-log.md`. Usa os contextos de
 `bounded-contexts.md` (deste módulo). Escreve apenas em `docs/ddd/`. Exige
 `business-rules.md` e `bounded-contexts.md` já preenchidos.
+
+**Fonte primária dos atributos: `data-structures.md`.** Campos, valores enumerados,
+exemplos/formatos e relações (multiplicidade) vêm daí como **fato neutro** já
+citando `EV-XXX`. O DDD **interpreta** essas estruturas — decide o que é entidade,
+objeto de valor e a raiz do agregado — mas **não descobre** os campos. Só quando
+`data-structures.md` não cobre um detalhe é que entra o **aprofundamento sob demanda**
+(seção 5.1), como rede de segurança.
 
 ## Template (seção 8.3 — copiar fielmente)
 
@@ -35,7 +43,15 @@ Lê **apenas** o substrato CAD: `business-rules.md` (→ invariantes),
 
 > Eventos de domínio aqui são os do **modelo tático** (publicados por um agregado).
 > A linha do tempo de processo/descoberta de eventos candidatos em filas e APIs é
-> escopo do futuro módulo **Event Storming**, não deste — evitando sobreposição.
+> escopo do módulo **Event Storming** (seção 8.4), não deste — evitando sobreposição.
+
+> **Detalhe de atributo vem do aprofundamento sob demanda (seção 5.1).** Os campos de
+> uma entidade/objeto de valor (ex.: os atributos de `Proposta`) raramente estão no
+> substrato grosso. Quando faltam, a síntese relê — via descoberta — a fonte **já
+> autorizada** apontada por um `EV` (ex.: `credito/service.py`), grava os campos como
+> fato neutro novo (ex.: `EV-090`), e este template os cita. O julgamento "isto é um
+> objeto de valor" continua sendo do DDD; a lista de campos é fato descritivo do
+> substrato.
 ```
 
 ## Como preencher
@@ -46,8 +62,26 @@ Lê **apenas** o substrato CAD: `business-rules.md` (→ invariantes),
   citam `EV-XXX`.
 - **Eventos de domínio** aqui são os do **modelo tático** (publicados por um
   agregado). **Não** modele a descoberta de eventos em filas/APIs/processos — isso
-  é **Event Storming** (módulo futuro), fora deste escopo, para evitar sobreposição.
+  é **Event Storming** (seção 8.4), fora deste escopo, para evitar sobreposição.
+- **Atributos (campos), exemplos e relações vêm primeiro de `data-structures.md`.**
+  Consuma daí os campos, valores enumerados, exemplos/formatos e a multiplicidade das
+  relações — já são fato neutro com `EV`. O DDD apenas **classifica** (isto é entidade,
+  isto é objeto de valor, esta é a raiz) e desenha a fronteira do agregado; o campo em
+  si é **fato descritivo** do substrato. A "Nota de fronteira" de cada estrutura lembra
+  que o agrupamento observado no código **não** é o veredito de fronteira — quem decide
+  é aqui.
+- **Aprofundamento sob demanda é a rede, não a fonte primária (seção 5.1).** Só quando
+  `data-structures.md` **não cobre** um detalhe: **não infira em silêncio nem leia a
+  fonte** aqui — sinalize a lacuna com o **ponteiro de `EV`** que aponta ao código (ex.:
+  `EV-015 → src/Ticket.php`) para o orquestrador aprofundar. Se a fonte já está
+  autorizada e `pode_aprofundar = "fontes-autorizadas"`, a descoberta relê o trecho e
+  grava o detalhe como fato neutro novo (ex.: `EV-090`); então cite esse `EV`. Fonte
+  nova, ou caminho autorizado que não resolve no workspace → `[⚠️ Pendente: BL-XXX]`
+  (consumidor: `ddd`), nunca inferência silenciosa.
 - Fronteira/modelagem incerta → `Incerteza de modelagem: [⚠️ Pendente: BL-XXX]`
   (consumidor: `ddd`); nada de inferência silenciosa.
-- **Vocabulário proibido (Lean):** nada de `MVP`, `persona`, `jornada` (sentido
-  Lean), `onda`/`sequenciador`, `é-não é-faz-não faz`.
+- **Vocabulário proibido:** nada de termos exclusivos da Lean (`MVP`, `persona`,
+  `jornada` sentido Lean, `onda`/`sequenciador`, `é-não é-faz-não faz`) nem do Event
+  Storming (`hotspot`, `evento-pivô`). O vocabulário compartilhado com o ES
+  (`aggregate`, `domain event`, `command`, `policy`, `read model`, `bounded context`)
+  é permitido.

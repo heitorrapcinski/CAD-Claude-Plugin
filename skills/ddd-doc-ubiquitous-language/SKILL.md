@@ -49,5 +49,11 @@ mesmo módulo). Escreve apenas em `docs/ddd/`.
   significados por contexto** (resolve a fronteira). Quando for genuína divergência
   a resolver, **não** invente o desempate — abra `[⚠️ Pendente: BL-XXX]`
   (consumidor: `ddd`) e leve a `/cad:backlog`.
-- **Vocabulário proibido (Lean):** nada de `MVP`, `persona`, `jornada` (sentido
-  Lean), `onda`/`sequenciador`, `é-não é-faz-não faz`.
+- **Lacuna de detalhe fino → aprofundamento (seção 5.1).** Se falta o significado
+  concreto de um termo num contexto e um `EV` já aponta ao código/doc, **não infira
+  em silêncio nem leia a fonte**: sinalize a lacuna com o **ponteiro de `EV`** para o
+  orquestrador aprofundar (só fonte já autorizada). Fonte nova → `[⚠️ Pendente:
+  BL-XXX]` (consumidor: `ddd`).
+- **Vocabulário proibido:** nada de termos exclusivos da Lean (`MVP`, `persona`,
+  `jornada` sentido Lean, `onda`/`sequenciador`, `é-não é-faz-não faz`) nem do Event
+  Storming (`hotspot`, `evento-pivô`). O compartilhado com o ES é permitido.
