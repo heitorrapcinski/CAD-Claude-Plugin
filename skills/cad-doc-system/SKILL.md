@@ -40,7 +40,7 @@ aliases: [Customer]
 tags: [conceito, dominio/cadastro]
 type: concept
 status: confirmed
-source: "[[EV-021]]"
+source: "[[EV-5-a1-003]]"
 author: CAD Discovery
 created: 2026-07-10
 ---
@@ -66,7 +66,7 @@ title: Fluxo - Login
 tags: [fluxo, autenticacao]
 type: flow
 status: confirmed
-source: "[[EV-030]]"
+source: "[[EV-5-a3-004]]"
 author: CAD Discovery
 created: 2026-07-10
 ---

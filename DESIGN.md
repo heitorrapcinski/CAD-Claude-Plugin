@@ -295,6 +295,45 @@ docs/
 Cada técnica nova é uma pasta nova; o substrato `docs/cad/` é compartilhado por
 todas. **Nunca** há conceito de uma técnica dentro da pasta de outra.
 
+### 3.3 Modelo de execução da descoberta (adaptativo, map-reduce)
+
+A `/cad:discovery` **escolhe o modo pelo tamanho do escopo autorizado do run** — sem
+paralelizar por reflexo. O escopo já é humano (o consultor passa fontes por sessão), então
+muitos runs são pequenos e não precisam de subagentes.
+
+- **Escopo pequeno → 1 agente, passes iterativos.** O agente varre e escreve área por área,
+  usando o **vault em disco como memória** entre passes (relê o que precisar). Simples e
+  determinístico.
+- **Escopo grande → map-reduce com subagentes.** Repositório inteiro, muitos diretórios,
+  dump de esquema. O orquestrador reparte o escopo em fatias coesas e dispara um subagente
+  (de propósito geral, com escrita) por fatia. Se o runtime não oferecer subagentes,
+  **degrada** para os passes iterativos.
+
+A separação **map × reduce** é o que preserva os invariantes do CAD sob paralelismo:
+
+| Fase | Ator | Faz |
+|---|---|---|
+| Preparação | Orquestrador | Registra fontes (`SRC-NNN`, **escritor único**), incrementa a sessão, particiona o escopo e atribui um **id** por subagente (`a1`, `a2`…). |
+| **Map** | Subagentes (paralelo) | Cada um varre **só a sua fatia**, captura evidência (`09 Evidence`, id `EV-<sessão>-<agente>-<seq>`) e materializa as notas de Knowledge ligadas por `source:`; abre investigações locais. **Não** escreve MOCs, **não** resolve conflito entre fatias, **não** toca `sources.json`/`state.json`. |
+| **Reduce** | Orquestrador | Consolida os **MOCs** e o **Registro de Evidências**, faz **dedup** de conceito transversal e roda a **detecção de conflito entre fontes** (que só quem vê o todo consegue). |
+
+Dois pontos de projeto sustentam isso:
+
+- **Identidade sem colisão** (padrão worker-id + sequência). `SRC` é atribuído uma vez
+  (escritor único). As evidências usam `EV-<sessão>-<agente>-<seq>` no modo paralelo: a
+  `<sessão>` (do `state.json`) garante unicidade **entre runs**, o `<agente>` (`a1`, `a2`…)
+  garante que dois subagentes nunca colidam, e o `<seq>` é sequencial **por agente** — tudo
+  sem RNG e sem escritor central. No modo de 1 agente, `EV-<sessão>-<seq>`. O código é um
+  handle curto (vira `alias`); a legibilidade vem do **título** da nota. Quem cita a
+  evidência **segue o `[[link]]`**, não interpreta o ID (o hook aceita o formato).
+- **Conflito e navegação são globais.** Detecção de conflito entre fontes, dedup e MOCs são
+  **intrinsecamente reduce** — ficam com o orquestrador, nunca com um subagente. Links
+  `[[...]]` para notas que outra fatia criará ficam pendentes no meio do caminho, o que é
+  **legítimo em Zettelkasten** (sinaliza nota a criar) e é resolvido no reduce.
+
+Os hooks (seção 10) são **agnósticos de quem escreve**: rodam em qualquer `Write`, então o
+paralelismo **não enfraquece** a disciplina de evidência nem a proteção de validação humana.
+
 ---
 
 ## 4. Comandos

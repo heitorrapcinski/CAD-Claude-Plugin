@@ -93,7 +93,7 @@ created:
 ### O campo `source` (o coração da rastreabilidade)
 
 - **Nota de Knowledge (01–08), Decisions (10), Views (12):** `source` aponta para a(s)
-  nota(s) de evidência que a sustentam — via wikilink: `source: "[[EV-014]]"` (ou uma
+  nota(s) de evidência que a sustentam — via wikilink: `source: "[[EV-5-a2-007]]"` (ou uma
   lista de wikilinks). Sem evidência clara, **não afirme**: abra `11 Investigations`.
 - **Nota de Evidence (09):** a nota **é** a fonte. Aqui `source` traz `SRC-XXX` + a
   localização (`SRC-002 · normativo_credito_v3.pdf · Seção 4.2`). `SRC-XXX` liga à fonte
@@ -104,11 +104,38 @@ created:
   no corpo o que disparou a dúvida.
 - **MOC (13):** índice de navegação; deriva de notas já evidenciadas — dispensa `source`.
 
+### Identidade de fontes e evidências (IDs sem colisão)
+
+Discovery pode rodar em **paralelo** (map-reduce com subagentes) para escopo grande — por
+isso os IDs são projetados para **não colidir** entre escritores concorrentes, sem RNG e
+sem escritor central:
+
+- **`SRC-NNN`** (fonte autorizada) é atribuído **uma vez, pelo orquestrador**, ao registrar
+  a fonte em `.cad-plugin/sources.json`. Escritor único, sem concorrência.
+- **`EV-<sessão>-<agente>-<seq>`** (nota de evidência em `09 Evidence`) — padrão worker-id +
+  sequência:
+  - **`<sessão>`** — o número da sessão de discovery (do `state.json`, incrementado pelo
+    orquestrador). Garante unicidade **entre runs** ao longo do tempo.
+  - **`<agente>`** — o id que o orquestrador dá a cada subagente no dispatch (`a1`, `a2`…).
+    Cada subagente é dono do seu espaço de IDs → colisão impossível entre subagentes.
+  - **`<seq>`** — sequencial **por agente**, começando em 1 (cada subagente conta só as
+    próprias evidências, o que erra muito menos que um contador global).
+  - Ex.: `EV-5-a2-007`. No modo de **1 agente** (escopo pequeno) o `<agente>` é omitido:
+    `EV-<sessão>-<seq>` → `EV-5-014`.
+- **Handle curto + título legível.** O código é opaco de propósito (é só a chave estável);
+  a legibilidade vem do **título** da nota, que carrega o resumo, e do código como `alias`:
+  `title: EV-5-a2-007 · Aprovação exige duas alçadas` / `aliases: [EV-5-a2-007]`. Assim o
+  `source:` cita `[[EV-5-a2-007]]` (único e estável) e o grafo do Obsidian segue navegável.
+  Quem cita a evidência **segue o link**, não interpreta o ID.
+- **MOCs e o Registro de Evidências são consolidados só no reduce** (pelo orquestrador),
+  nunca por um subagente — é lá que o domínio/escopo agrupa as evidências, e onde dedup de
+  conceito e conflito entre fontes se resolvem.
+
 ## Componentes permitidos no corpo
 
 - **Markdown** puro (títulos, listas, tabelas, ênfase).
 - **Obsidian**: `[[wikilinks]]` para conectar notas (`[[Cliente]]`, `[[TB_CLIENTE]]`,
-  `[[EV-014]]`); embeds `![[...]]` quando fizer sentido.
+  `[[EV-5-a2-007]]`); embeds `![[...]]` quando fizer sentido.
 - **Mermaid / PlantUML** em cerca de código (` ```mermaid ` / ` ```plantuml `). Diagramas
   substanciais vão em `12 Views` e são referenciados por `[[...]]`.
 - **Callouts** do Obsidian para destacar contexto:

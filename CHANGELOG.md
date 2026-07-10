@@ -25,6 +25,14 @@ engenharia reversa de um System of Record. Skills do substrato: **7 → 9**.
   `11 Investigations`, `12 Views`, `13 MOCs`. Cada nota é atômica, em Markdown pronto para
   o Obsidian, com **frontmatter YAML** (`title`, `aliases`, `tags`, `type`, `status`,
   `source`, `author`, `created`), `[[links internos]]`, callouts e Mermaid/PlantUML.
+- **Descoberta adaptativa (map-reduce com subagentes).** A `/cad:discovery` escolhe o modo
+  pelo tamanho do escopo: **1 agente iterativo** (escopo pequeno, vault em disco como
+  memória entre passes) ou **map-reduce** (escopo grande) — subagentes fazem o *map*
+  (extrair/escrever a sua fatia) e só o orquestrador faz o *reduce* (MOCs, dedup e conflito
+  entre fontes). **IDs sem colisão** (worker-id + sequência): `SRC-NNN` com escritor único e
+  evidências `EV-<sessão>-<agente>-<seq>` por subagente (ou `EV-<sessão>-<seq>` no modo de 1
+  agente). Degrada para passes iterativos se o runtime não tiver subagentes. Documentado na
+  seção 3.3 do `DESIGN.md`.
 - **9 skills novas do substrato**, espelhando as duas partes:
   - Backbone: **`cad-doc-conventions`** (schema de frontmatter, componentes, taxonomia,
     tipos/status de nota, filosofia Knowledge×Discovery — fonte única de convenções).

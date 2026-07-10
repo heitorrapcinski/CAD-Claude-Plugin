@@ -29,7 +29,7 @@ aliases: [Diagrama de Componentes]
 tags: [view, arquitetura]
 type: view
 status: confirmed
-source: "[[EV-041]]"
+source: "[[EV-5-a3-009]]"
 author: CAD Discovery
 created: 2026-07-10
 ---
