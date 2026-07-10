@@ -25,14 +25,18 @@ engenharia reversa de um System of Record. Skills do substrato: **7 → 9**.
   `11 Investigations`, `12 Views`, `13 MOCs`. Cada nota é atômica, em Markdown pronto para
   o Obsidian, com **frontmatter YAML** (`title`, `aliases`, `tags`, `type`, `status`,
   `source`, `author`, `created`), `[[links internos]]`, callouts e Mermaid/PlantUML.
-- **Descoberta adaptativa (map-reduce com subagentes).** A `/cad:discovery` escolhe o modo
-  pelo tamanho do escopo: **1 agente iterativo** (escopo pequeno, vault em disco como
-  memória entre passes) ou **map-reduce** (escopo grande) — subagentes fazem o *map*
-  (extrair/escrever a sua fatia) e só o orquestrador faz o *reduce* (MOCs, dedup e conflito
-  entre fontes). **IDs sem colisão** (worker-id + sequência): `SRC-NNN` com escritor único e
-  evidências `EV-<sessão>-<agente>-<seq>` por subagente (ou `EV-<sessão>-<seq>` no modo de 1
-  agente). Degrada para passes iterativos se o runtime não tiver subagentes. Documentado na
-  seção 3.3 do `DESIGN.md`.
+- **Descoberta com cobertura total, faseada por valor.** A `/cad:discovery` **não negocia
+  escopo nem profundidade** — a fonte autorizada é sempre lida por inteiro, no maior nível de
+  detalhe (coletar menos enviesaria o humano). O que escala com o esforço é o **faseamento**:
+  esforço pequeno = **uma etapa**; esforço grande = **várias etapas de valor** (por
+  módulo/subsistema), cada uma cobrindo integralmente a sua fatia, com o humano decidindo
+  **ordem e checkpoints** (não o quanto coletar) e o `state.json` registrando as etapas para
+  **retomar entre sessões** até 100%. Dentro de uma etapa grande, o trabalho é paralelizado
+  em **map-reduce**: subagentes fazem o *map* (extrair/escrever a sua sub-fatia) e só o
+  orquestrador faz o *reduce* (MOCs, dedup e conflito entre fontes), consolidando contra o
+  vault acumulado. **IDs sem colisão** (worker-id + sequência): `SRC-NNN` com escritor único
+  e evidências `EV-<sessão>-<agente>-<seq>` por subagente (ou `EV-<sessão>-<seq>` no modo de
+  1 agente). Degrada para 1 agente se o runtime não tiver subagentes. Seção 3.3 do `DESIGN.md`.
 - **9 skills novas do substrato**, espelhando as duas partes:
   - Backbone: **`cad-doc-conventions`** (schema de frontmatter, componentes, taxonomia,
     tipos/status de nota, filosofia Knowledge×Discovery — fonte única de convenções).

@@ -295,29 +295,36 @@ docs/
 Cada técnica nova é uma pasta nova; o substrato `docs/cad/` é compartilhado por
 todas. **Nunca** há conceito de uma técnica dentro da pasta de outra.
 
-### 3.3 Modelo de execução da descoberta (adaptativo, map-reduce)
+### 3.3 Modelo de execução da descoberta (cobertura total, faseada por valor)
 
-A `/cad:discovery` **escolhe o modo pelo tamanho do escopo autorizado do run** — sem
-paralelizar por reflexo. O escopo já é humano (o consultor passa fontes por sessão), então
-muitos runs são pequenos e não precisam de subagentes.
+**Cobertura total e profundidade máxima são inegociáveis.** A fonte autorizada é lida por
+inteiro, no maior nível de detalhe — a descoberta **nunca** oferece coletar menos (ou raso)
+para poupar esforço, pois um retrato parcial enviesa o humano. O consultor decide **quais
+fontes** autorizar; uma vez autorizada, a fonte é coberta 100%.
 
-- **Escopo pequeno → 1 agente, passes iterativos.** O agente varre e escreve área por área,
-  usando o **vault em disco como memória** entre passes (relê o que precisar). Simples e
-  determinístico.
-- **Escopo grande → map-reduce com subagentes.** Repositório inteiro, muitos diretórios,
-  dump de esquema. O orquestrador reparte o escopo em fatias coesas e dispara um subagente
-  (de propósito geral, com escrita) por fatia. Se o runtime não oferecer subagentes,
-  **degrada** para os passes iterativos.
+O que escala com o esforço é **só o faseamento** — entregar a cobertura total em **etapas de
+valor**, não reduzir a cobertura:
 
-A separação **map × reduce** é o que preserva os invariantes do CAD sob paralelismo:
+- **Esforço pequeno → uma etapa.** Um passe cobre tudo, usando o **vault em disco como
+  memória** entre áreas.
+- **Esforço grande → várias etapas por valor.** O orquestrador particiona a fonte em fatias
+  coesas (por **módulo/subsistema** de preferência) e as processa **etapa a etapa**, cada uma
+  cobrindo **integralmente** a sua fatia, na maior profundidade. O **humano decide a ordem e
+  os checkpoints** — não o escopo nem a profundidade. Só ao fim da última etapa a cobertura
+  fecha 100%; o `state.json` registra as etapas concluídas para **retomar entre sessões**.
+
+Dentro de uma etapa grande, o trabalho pode ser paralelizado em **map-reduce**. A separação
+**map × reduce** é o que preserva os invariantes do CAD sob paralelismo:
 
 | Fase | Ator | Faz |
 |---|---|---|
-| Preparação | Orquestrador | Registra fontes (`SRC-NNN`, **escritor único**), incrementa a sessão, particiona o escopo e atribui um **id** por subagente (`a1`, `a2`…). |
-| **Map** | Subagentes (paralelo) | Cada um varre **só a sua fatia**, captura evidência (`09 Evidence`, id `EV-<sessão>-<agente>-<seq>`) e materializa as notas de Knowledge ligadas por `source:`; abre investigações locais. **Não** escreve MOCs, **não** resolve conflito entre fatias, **não** toca `sources.json`/`state.json`. |
-| **Reduce** | Orquestrador | Consolida os **MOCs** e o **Registro de Evidências**, faz **dedup** de conceito transversal e roda a **detecção de conflito entre fontes** (que só quem vê o todo consegue). |
+| Preparação | Orquestrador | Registra fontes (`SRC-NNN`, **escritor único**), incrementa a sessão, **monta o plano de etapas** (particiona por valor, sem cortar cobertura) e atribui um **id** por subagente (`a1`, `a2`…). |
+| **Map** | Subagentes (paralelo) | Cada um varre **só a sua sub-fatia** (por inteiro), captura evidência (`09 Evidence`, id `EV-<sessão>-<agente>-<seq>`) e materializa as notas de Knowledge ligadas por `source:`; abre investigações locais. **Não** escreve MOCs, **não** resolve conflito entre fatias, **não** toca `sources.json`/`state.json`. |
+| **Reduce** | Orquestrador | Ao fim da etapa, consolida contra o **vault acumulado**: **MOCs** e **Registro de Evidências**, **dedup** de conceito transversal e **detecção de conflito entre fontes** (que só quem vê o todo consegue), entregando o incremento de valor da etapa. |
 
-Dois pontos de projeto sustentam isso:
+Como o vault em disco **acumula**, o reduce de cada etapa roda contra tudo o que já existe —
+conflito com uma etapa anterior aparece quando a etapa nova aterrissa. Dois pontos de projeto
+sustentam isso:
 
 - **Identidade sem colisão** (padrão worker-id + sequência). `SRC` é atribuído uma vez
   (escritor único). As evidências usam `EV-<sessão>-<agente>-<seq>` no modo paralelo: a
