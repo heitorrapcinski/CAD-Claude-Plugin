@@ -60,10 +60,18 @@ engenharia reversa de um System of Record. Skills do substrato: **7 → 9**.
 - **`/cad:discovery` reescrita** para varrer a fonte por inteiro e materializar o vault:
   captura a evidência primeiro (09), materializa o conhecimento (01–08) ligado a ela, abre
   investigações (11) para lacunas/conflitos e mantém Views (12) e MOCs (13).
+- **Módulos de técnica (Lean/DDD/Event Storming) migrados para o vault.** Os três
+  `module.json` passam a declarar **pastas do vault** em `entradas_substrato`; os 13
+  doc-skills consomem essas pastas e trocam a citação por wikilink — `EV-XXX` →
+  `[[EV-… · resumo|EV-…]]`, cross-refs de substrato por nome de nota (`[[Regra - …]]`,
+  `[[Capacidade - …]]`, glossário/conceitos), e `[⚠️ Pendente: BL-XXX]` →
+  `[⚠️ Pendente: [[Investigação - …]]]`. Os artefatos seguem **fiéis ao método** (só muda a
+  mecânica de citação). `/cad:synthesize` reescrito: valida pastas do vault, abre
+  `11 Investigations` para lacunas de síntese e **nunca lê a fonte**.
 - **Hook `validate-evidence` em dois modos:** para `docs/cad/**` (vault, aninhado) exige
-  **frontmatter com `source:`** não-vazio (isentas `11 Investigations`, `12 Views`,
-  `13 MOCs`); para `docs/<técnica>/*.md` (módulos legados) mantém o cheque inline de
-  `[Fonte: EV-XXX]`/`[⚠️ Pendente: BL-XXX]`.
+  **frontmatter com `source:`** não-vazio (escalar ou lista YAML; isentas `11 Investigations`,
+  `12 Views`, `13 MOCs`); para `docs/<técnica>/*.md` (artefato de técnica) exige que todo
+  bloco factual cite `[[EV-…]]` ou marque `Pendente`.
 - **Hook `protect-human-validation`** passa a reconhecer também `status: validated` no
   frontmatter, além das frases de "validação humana".
 
@@ -88,6 +96,13 @@ engenharia reversa de um System of Record. Skills do substrato: **7 → 9**.
 - Skills `cad-doc-knowledge-base`, `cad-doc-vocabulary`, `cad-doc-business-rules`,
   `cad-doc-capabilities`, `cad-doc-data-structures`, `cad-doc-evidence-log` e
   `cad-doc-backlog` (absorvidas pelas 9 skills novas do vault).
+- **Aprofundamento sob demanda** (o mecanismo pelo qual a síntese relia uma fonte já
+  autorizada para detalhe fino). Como a descoberta agora garante **cobertura total na maior
+  profundidade**, o vault já entrega os atributos/estruturas (`03 Structural`/`06 Data`) e a
+  releitura ficou redundante. Saíram o campo de contrato `pode_aprofundar`, a flag
+  `--sem-aprofundamento`, o contador `aprofundamentos` (`state.json`), o env
+  `CAD_APROFUNDAMENTO` (hook `technique-isolation`) e os helpers `PodeAprofundar`/`canDeepen`
+  (`src/lib/manifest.ts`). O campo `state.json` `backlog_abertos` virou `investigacoes_abertas`.
 
 ## [0.3.0] — 2026-07-09
 

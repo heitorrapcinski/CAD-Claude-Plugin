@@ -1,15 +1,14 @@
 {
   "tecnica": "event-storming",
   "metodo_de_origem": "Event Storming (Alberto Brandolini)",
-  "pode_aprofundar": "fontes-autorizadas",
   "pasta_saida": "docs/event-storming/",
   "entradas_substrato": [
-    "docs/cad/knowledge-base.md",
-    "docs/cad/evidence-log.md",
-    "docs/cad/vocabulary.md",
-    "docs/cad/business-rules.md",
-    "docs/cad/capabilities.md",
-    "docs/cad/backlog.md"
+    "docs/cad/02 Business Knowledge/",
+    "docs/cad/03 Structural Knowledge/",
+    "docs/cad/04 Behavioral Knowledge/",
+    "docs/cad/07 Integrations/",
+    "docs/cad/09 Evidence/",
+    "docs/cad/11 Investigations/"
   ],
   "artefatos": [
     "timeline.md",

@@ -1,14 +1,13 @@
 {
   "tecnica": "lean-inception",
   "metodo_de_origem": "Lean Inception (Paulo Caroli)",
-  "pode_aprofundar": "nao",
   "pasta_saida": "docs/lean-inception/",
   "entradas_substrato": [
-    "docs/cad/knowledge-base.md",
-    "docs/cad/evidence-log.md",
-    "docs/cad/vocabulary.md",
-    "docs/cad/business-rules.md",
-    "docs/cad/capabilities.md"
+    "docs/cad/01 Overview/",
+    "docs/cad/02 Business Knowledge/",
+    "docs/cad/04 Behavioral Knowledge/",
+    "docs/cad/09 Evidence/",
+    "docs/cad/11 Investigations/"
   ],
   "artefatos": [
     "vision.md",

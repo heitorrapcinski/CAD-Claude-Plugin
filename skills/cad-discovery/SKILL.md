@@ -25,9 +25,8 @@ carregue-a antes de escrever qualquer nota.
 - **Argumento `[fontes]`** — lista explícita de caminhos (arquivos ou pastas) e/ou
   normativos a escanear nesta sessão. Se vazio, **pergunte** ao consultor quais fontes
   escanear; **nunca** escaneie por conta própria uma fonte **nova** de sessões anteriores:
-  o escopo de scan é sempre humano. A única releitura automática permitida é a de **fontes
-  já autorizadas**, e ocorre apenas no aprofundamento sob demanda disparado por
-  `/cad:synthesize` (quando os módulos de técnica forem migrados ao vault).
+  o escopo de scan é sempre humano. A síntese (`/cad:synthesize`) **nunca** lê fontes — só
+  a descoberta escaneia, e apenas o que o consultor autorizou.
 - `.cad-plugin/state.json` e `.cad-plugin/sources.json` (se existirem) — sessão atual e
   histórico. Se não existirem, crie-os.
 
@@ -171,8 +170,8 @@ pendente.
   lida por inteiro, no maior nível de detalhe. Esforço grande vira **faseamento** (etapas de
   valor), **nunca** redução de escopo ou profundidade. Não ofereça "coletar só parte" ao
   humano — ofereça **como dividir e em que ordem entregar**.
-- Escopo humano: só as fontes passadas; releitura automática **só** de fontes já autorizadas
-  e apenas no aprofundamento de `/cad:synthesize` — fonte nova sempre volta ao humano.
+- Escopo humano: só as fontes passadas. A síntese nunca lê fontes; ampliar o vault é só da
+  descoberta. Fonte nova sempre volta ao humano.
 - **Identidade sem colisão:** `SRC` é atribuído uma vez pelo orquestrador; `EV` é
   `EV-<sessão>-<agente>-<seq>` por subagente no map-reduce (ou `EV-<sessão>-<seq>` no modo de 1 agente).
   Só o orquestrador faz o reduce (MOCs, dedup, conflito cruzado).

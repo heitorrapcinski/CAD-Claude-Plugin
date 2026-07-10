@@ -1,29 +1,18 @@
 ---
 name: cad-synthesize
-description: Orquestrador /cad:synthesize (técnica + escopo) — roda um módulo de técnica descoberto dinamicamente pelo seu module.json (lean-inception | ddd | event-storming), lendo só o substrato neutro (docs/cad/) e escrevendo só os artefatos na pasta da própria técnica. Suporta aprofundamento sob demanda e a flag --sem-aprofundamento. Marca lacunas de síntese no backlog com consumidor da técnica.
-argument-hint: "<técnica> [escopo] [--sem-aprofundamento]  (ex.: ddd | event-storming timeline)"
+description: Orquestrador /cad:synthesize (técnica + escopo) — roda um módulo de técnica descoberto dinamicamente pelo seu module.json (lean-inception | ddd | event-storming), lendo só o substrato neutro (Knowledge Vault em docs/cad/) e escrevendo só os artefatos na pasta da própria técnica. Marca lacunas de síntese como investigações com consumidor da técnica.
+argument-hint: "<técnica> [escopo]  (ex.: ddd | event-storming timeline)"
 ---
 
 # /cad:synthesize — Síntese por módulo de técnica
 
-> ⚠️ **Pendente de migração (a partir da 0.4.0).** A descoberta passou a produzir um
-> **Knowledge Vault Zettelkasten** em `docs/cad/` (pastas `01…13`), aposentando os arquivos
-> planos `knowledge-base.md`, `evidence-log.md`, `vocabulary.md`, `business-rules.md`,
-> `capabilities.md`, `data-structures.md` e `backlog.md`. Os módulos de técnica
-> (`lean-inception`, `ddd`, `event-storming`) e suas `entradas_substrato` **ainda apontam
-> para esses arquivos** e serão **migrados para ler o vault na 0.5.0**. Até lá, este
-> orquestrador **pode não encontrar as entradas** num projeto descoberto pela nova
-> `/cad:discovery`; nesse caso, informe ao consultor a pendência de migração em vez de
-> inventar conteúdo. As menções abaixo a `evidence-log.md`/`backlog.md`/nomes de arquivo do
-> substrato refletem o modelo **pré-migração**.
-
 ## Objetivo
 
-Executar um **módulo de técnica** sobre o substrato neutro: carregar o contrato
-da técnica, validar que o substrato tem o mínimo necessário, e invocar os
-doc-skills do módulo — que **leem só de `docs/cad/`** e **escrevem só em
-`docs/<técnica>/`**. Lacunas específicas da técnica vão para o backlog marcadas
-com `consumidor: <técnica>`.
+Executar um **módulo de técnica** sobre o substrato neutro (o **Knowledge Vault** em
+`docs/cad/`): carregar o contrato da técnica, validar que o substrato tem o mínimo
+necessário, e invocar os doc-skills do módulo — que **leem só de `docs/cad/`** e
+**escrevem só em `docs/<técnica>/`**. Lacunas específicas da técnica viram notas em
+`11 Investigations` marcadas com `tags: consumidor/<técnica>`.
 
 ## Entradas
 
@@ -36,108 +25,55 @@ com `consumidor: <técnica>`.
   módulo novo passa a valer só por existir seu `module.json` — sem tocar neste
   orquestrador.
 - **Argumento `[escopo]`** (opcional) — restringe a quais artefatos gerar.
-- **Flag `--sem-aprofundamento`** (opcional) — força o **modo conservador**: desliga
-  o aprofundamento sob demanda neste run (ver seção "Aprofundamento sob demanda").
 - O **`module.json`** do módulo correspondente (`skills/<técnica>-module/module.json`)
-  — o contrato enforceável (campos `tecnica`, `metodo_de_origem`, `pode_aprofundar`,
-  `pasta_saida`, `entradas_substrato`, `artefatos`, `vocabulario_proibido`).
-- O substrato neutro em `docs/cad/`; `.cad-plugin/sources.json` (fontes autorizadas)
-  e `.cad-plugin/state.json` (sessão/histórico).
+  — o contrato enforceável (campos `tecnica`, `metodo_de_origem`, `pasta_saida`,
+  `entradas_substrato`, `artefatos`, `vocabulario_proibido`).
+- O substrato neutro em `docs/cad/` e `.cad-plugin/state.json` (sessão/histórico).
 
 ## Procedimento
 
 1. **Descobrir e carregar o contrato.** Varra `skills/*-module/module.json`
    (descoberta dinâmica, sem lista fixa), selecione o contrato cujo `tecnica` bate
    com o argumento e leia-o via `JSON.parse`. Leia também o manifesto humano
-   (`<técnica>-module/SKILL.md`) para a intenção do método. Anote o campo
-   `pode_aprofundar` (`nao` | `fontes-autorizadas`) — ele governa o aprofundamento
-   sob demanda.
-2. **Validar o mínimo do substrato.** Confirme que os arquivos em
-   `entradas_substrato` existem e têm conteúdo suficiente para os artefatos
-   pedidos. Se faltar, **não invente**: aponte exatamente quais itens de backlog
-   resolver antes (sugira `/cad:backlog`) ou ofereça sintetizar com lacunas
-   explícitas marcadas como `[⚠️ Pendente: BL-XXX]`. A decisão é do consultor.
+   (`<técnica>-module/SKILL.md`) para a intenção do método.
+2. **Validar o mínimo do substrato.** Confirme que as **pastas do vault** listadas em
+   `entradas_substrato` existem e contêm notas suficientes para os artefatos pedidos. Se
+   faltar, **não invente**: aponte exatamente quais investigações abertas
+   (`11 Investigations`) resolver antes (sugira `/cad:backlog`), ou que a
+   `/cad:discovery` ainda precisa cobrir aquela área — ou ofereça sintetizar com lacunas
+   explícitas marcadas como `[⚠️ Pendente: [[Investigação - …]]]`. A decisão é do consultor.
 3. **Invocar os doc-skills do módulo.** Para cada artefato em `artefatos` (ou no
    `escopo`), chame o `<técnica>-doc-*` correspondente. Cada um:
-   - lê **apenas** os arquivos de `entradas_substrato`;
+   - lê **apenas** as pastas de `entradas_substrato` (o vault);
    - escreve **apenas** dentro de `pasta_saida`;
-   - herda evidências do substrato — todo bloco factual carrega `[Fonte: EV-XXX]`
-     (referenciando o `evidence-log.md` do substrato) ou `[⚠️ Pendente: BL-XXX]`;
-   - **não cria evidência nova**; quando falta um fato, abre backlog **ou** — se for
-     lacuna de **detalhe fino** com fonte já autorizada — sinaliza o **ponteiro de
-     `EV`** para o aprofundamento sob demanda (próxima seção). O doc-skill **nunca**
-     lê a fonte nem escreve o substrato ele mesmo.
+   - herda a rastreabilidade do substrato — todo bloco factual cita a evidência por
+     `[[EV-… · resumo|EV-…]]` (nota de `09 Evidence`) ou marca
+     `[⚠️ Pendente: [[Investigação - …]]]`;
+   - **não cria evidência nova** e **nunca lê a fonte nem escreve o substrato**. Quando um
+     fato necessário **não está no vault**, abre uma nota em `11 Investigations`
+     (`tags: consumidor/<técnica>`). Ampliar o vault é papel exclusivo da `/cad:discovery`.
 4. **Respeitar o `vocabulario_proibido`.** Nenhum termo de outra técnica pode
    aparecer nos artefatos (o hook de isolamento bloqueia; você deve evitar de
    antemão). Lean não usa "bounded context", "agregado", "linguagem ubíqua"…;
    DDD não usa "MVP", "persona", "jornada (Lean)", "sequenciador", "é-não é"…
-5. **Backlog marcado por consumidor.** Lacunas que só importam para esta técnica
-   entram via `cad-doc-backlog` com `consumidor: <técnica>` e o artefato afetado.
-6. **Proteção de validação humana.** Não sobrescreva blocos de artefato com origem
-   "validação humana"; conflito novo abre `conflito_pós_validação`.
-
-## Aprofundamento sob demanda
-
-Alguns métodos precisam de **detalhe fino** que o substrato grosso não tem — o caso
-canônico é o DDD tático descendo ao nível de **atributos** (campos de uma classe,
-colunas de uma tabela). **Regra de ouro: o módulo continua lendo só o substrato;
-quem toca a fonte é sempre a descoberta.** Quando um doc-skill de módulo esbarra
-numa lacuna de detalhe fino, ele **não** lê a fonte — devolve o **ponteiro de `EV`**
-que já existe e você decide:
-
-1. **Fonte já autorizada + caminho resolvido + `pode_aprofundar == "fontes-autorizadas"`.**
-   O `EV` apontado (ex.: `EV-015`) carrega, no `evidence-log.md`, a coluna `SRC` que o
-   liga a uma fonte **registrada em `sources.json`**. **Resolva o caminho real do trecho
-   compondo `sources.json[SRC].caminho` + a `Fonte`/`Localização` do `EV`** (a `Fonte` é
-   relativa à `caminho` da SRC — ex.: `caminho` `Extração.../glpi` + `Fonte`
-   `src/Ticket.php` = `Extração.../glpi/src/Ticket.php`). Confirme que o arquivo composto
-   **existe no workspace**. Havendo permissão de aprofundar, **você** (orquestrador)
-   invoca os skills de **descoberta** — `cad-doc-knowledge-base` + `cad-doc-evidence-log`
-   (+ `cad-doc-data-structures` quando o detalhe for estrutura/atributo) — para **reler
-   apenas aquele trecho** e gravar o detalhe como **fato neutro novo** (ex.: `EV-090`),
-   marcado como originado de aprofundamento. Ao invocar a descoberta, sinalize o passo
-   com o env `CAD_APROFUNDAMENTO=1` (o hook de isolamento só libera escrita da descoberta
-   no substrato sob esse sinal). Em seguida, o doc-skill **relê o substrato** e escreve o
-   artefato **citando `EV-090`**.
-2. **Fonte autorizada, mas caminho não resolvido no workspace.** Se o `EV` referencia
-   uma fonte de `sources.json` mas o caminho composto (`caminho` + `Fonte`) **não existe**
-   no workspace — ou falta o `SRC` que permitiria compô-lo — **não degrade em silêncio**
-   (o bug que originou "0 releituras"). Abra item de backlog explícito
-   (`consumidor: <técnica>`) sinalizando **"fonte autorizada não localizada — confirmar
-   caminho/base da SRC-XXX"**, e **avise em destaque na saída** que o aprofundamento não
-   pôde reler por caminho irresolvível (não por ausência de permissão). Assim o consultor
-   sabe que basta trazer o código à pasta ou corrigir a base, sem re-escanear do zero.
-3. **Fonte nova, ou `pode_aprofundar == "nao"`, ou flag `--sem-aprofundamento`.**
-   **Não há releitura automática.** Abra item de backlog (`consumidor: <técnica>`)
-   para o humano escopar a fonte (`/cad:discovery`) ou responder (`/cad:backlog`).
-   Nunca invente, nunca infira, **nunca leia uma fonte nova por conta própria**.
-
-Por que preserva a arquitetura: o atributo no artefato **ainda cita um `EV`**
-(auditabilidade); "a classe tem os campos x, y, z" é **descritivo** (substrato),
-enquanto "isto é um objeto de valor" é opinião do módulo (artefato); a escrita no
-substrato é da **descoberta**, não do módulo (isolamento intacto — o hook bloqueia
-um skill de módulo que tente escrever `docs/cad/`); e a releitura fica **restrita a
-fontes que o humano já autorizou** — fonte nova sempre volta
-ao humano.
-
-Conte quantas fontes autorizadas foram reaprofundadas neste run — esse número vai
-para o `state.json` (campo `aprofundamentos` da sessão).
+5. **Lacunas marcadas por consumidor.** Lacunas que só importam para esta técnica viram
+   notas em `11 Investigations` (via `cad-doc-investigations`) com
+   `tags: consumidor/<técnica>` e link para o artefato afetado.
+6. **Proteção de validação humana.** Não sobrescreva blocos/notas com origem "validação
+   humana"; conflito novo abre investigação `conflito_pós_validação`.
 
 ## Saída ao final
 
-Atualize `state.json` (append no histórico), **carimbando o campo `aprofundamentos`**
-com o nº de fontes autorizadas reaprofundadas nesta sessão (0 quando não houve, ou
-sob `--sem-aprofundamento`). Liste os artefatos gerados/atualizados em
-`docs/<técnica>/`, as lacunas de síntese abertas (`consumidor: <técnica>`), os
-aprofundamentos realizados e um resumo de cobertura da técnica.
+Atualize `state.json` (append no histórico). Liste os artefatos gerados/atualizados em
+`docs/<técnica>/`, as lacunas de síntese abertas (`consumidor/<técnica>` em
+`11 Investigations`) e um resumo de cobertura da técnica.
 
 ## Regras inegociáveis
 
-- Lê só o substrato; escreve só na própria pasta.
+- Lê só o substrato (vault); escreve só na própria pasta.
 - Isolamento por técnica — nenhum vazamento de vocabulário entre métodos.
-- Rastreabilidade preservada: todo fato vem do substrato.
+- Rastreabilidade preservada: todo fato vem do substrato e cita `[[EV-…]]`.
 - Fidelidade ao método de origem: templates fixos, sem inventar campos.
-- **Escopo de scan é humano; releitura, só de fontes já autorizadas.** O
-  aprofundamento relê **apenas** fontes registradas em `sources.json`,
-  apontadas por um `EV`. **Fonte nova sempre volta ao humano** (backlog), nunca é
-  lida automaticamente. Só a **descoberta** escreve o substrato; o módulo, nunca.
+- **A síntese nunca lê a fonte nem escreve o substrato.** Se falta um fato no vault, abre
+  investigação (`consumidor/<técnica>`); ampliar o vault é só da `/cad:discovery`. Só a
+  **descoberta** escreve o substrato; o módulo, nunca.

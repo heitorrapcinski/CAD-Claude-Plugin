@@ -1,15 +1,15 @@
 {
   "tecnica": "ddd",
   "metodo_de_origem": "Domain-Driven Design (Eric Evans)",
-  "pode_aprofundar": "fontes-autorizadas",
   "pasta_saida": "docs/ddd/",
   "entradas_substrato": [
-    "docs/cad/knowledge-base.md",
-    "docs/cad/evidence-log.md",
-    "docs/cad/vocabulary.md",
-    "docs/cad/business-rules.md",
-    "docs/cad/capabilities.md",
-    "docs/cad/data-structures.md"
+    "docs/cad/01 Overview/",
+    "docs/cad/02 Business Knowledge/",
+    "docs/cad/03 Structural Knowledge/",
+    "docs/cad/05 Source Code/",
+    "docs/cad/06 Data/",
+    "docs/cad/09 Evidence/",
+    "docs/cad/11 Investigations/"
   ],
   "artefatos": [
     "subdomains.md",

@@ -1,6 +1,6 @@
 ---
 name: ddd-doc-tactical
-description: Gera docs/ddd/aggregates.md — blocos táticos por contexto (agregados, entidades, objetos de valor, invariantes consumindo business-rules.md, eventos de domínio e repositórios). Lê só o substrato CAD. Fiel a Eric Evans.
+description: Gera docs/ddd/aggregates.md — blocos táticos por contexto (agregados, entidades, objetos de valor, invariantes consumindo as regras de negócio do vault, eventos de domínio e repositórios). Lê só o substrato CAD. Fiel a Eric Evans.
 ---
 
 # ddd-doc-tactical — DDD Tático (Agregados)
@@ -8,23 +8,24 @@ description: Gera docs/ddd/aggregates.md — blocos táticos por contexto (agreg
 ## Objetivo
 
 Modelar os **blocos táticos** por bounded context: **agregados** (com raiz),
-**entidades**, **objetos de valor**, **invariantes** (consumindo
-`business-rules.md`), **eventos de domínio** publicados e **repositórios**.
+**entidades**, **objetos de valor**, **invariantes** (consumindo as **regras de
+negócio** do vault), **eventos de domínio** publicados e **repositórios**.
 
 ## Entradas
 
-Lê **apenas** o substrato CAD: `business-rules.md` (→ invariantes),
-`data-structures.md` (→ entidades, objetos de valor, atributos e relações),
-`knowledge-base.md`, `vocabulary.md` e `evidence-log.md`. Usa os contextos de
-`bounded-contexts.md` (deste módulo). Escreve apenas em `docs/ddd/`. Exige
-`business-rules.md` e `bounded-contexts.md` já preenchidos.
+Lê **apenas** o substrato CAD (Knowledge Vault): as **regras de negócio**
+(`02 Business Knowledge/` → invariantes), as **entidades/conceitos** e **tabelas com
+campos** (`03 Structural Knowledge/` e `06 Data/` → entidades, objetos de valor,
+atributos e relações) e as notas de **evidência** (`09 Evidence/`). Usa os contextos de
+`bounded-contexts.md` (deste módulo). Escreve apenas em `docs/ddd/`. Exige regras de
+negócio e `bounded-contexts.md` já preenchidos.
 
-**Fonte primária dos atributos: `data-structures.md`.** Campos, valores enumerados,
-exemplos/formatos e relações (multiplicidade) vêm daí como **fato neutro** já
-citando `EV-XXX`. O DDD **interpreta** essas estruturas — decide o que é entidade,
-objeto de valor e a raiz do agregado — mas **não descobre** os campos. Só quando
-`data-structures.md` não cobre um detalhe é que entra o **aprofundamento sob demanda**,
-como rede de segurança.
+**Fonte primária dos atributos: `03 Structural Knowledge/` e `06 Data/`.** Campos,
+valores enumerados, exemplos/formatos e relações (multiplicidade) vêm dessas notas como
+**fato neutro** já ligado a uma `[[EV-…]]`. O DDD **interpreta** essas estruturas — decide
+o que é entidade, objeto de valor e a raiz do agregado — mas **não descobre** os campos.
+Se um detalhe não está no vault, **não infira**: abre-se `11 Investigations`
+(`consumidor/ddd`); ampliar o vault é papel da `/cad:discovery`.
 
 ## Template (copiar fielmente)
 
@@ -32,53 +33,40 @@ como rede de segurança.
 # Agregados — Contexto [Nome]
 
 ## Agregado: [Raiz do Agregado]
-- **Raiz (entidade):** [ex.: Proposta] [Fonte: EV-XXX]
-- **Entidades:** [ex.: ItemDaProposta] [Fonte: EV-XXX]
-- **Objetos de valor:** [ex.: Valor, CPF, Período] [Fonte: EV-XXX]
+- **Raiz (entidade):** [ex.: Proposta] [[EV-5-a3-040 · Classe Proposta|EV-5-a3-040]]
+- **Entidades:** [ex.: ItemDaProposta] [[EV-5-a3-041 · ItemDaProposta|EV-5-a3-041]]
+- **Objetos de valor:** [ex.: Valor, CPF, Período] [[EV-5-a6-010 · Campos de Proposta|EV-5-a6-010]]
 - **Invariantes (regras que o agregado protege):** [ex.: total = soma dos itens]
-  (→ business-rules.md#BR-007) [Fonte: EV-XXX]
-- **Eventos de domínio publicados:** [ex.: PropostaAprovada, PropostaRecusada] [Fonte: EV-XXX]
-- **Repositório:** [ex.: PropostaRepository] [Fonte: EV-XXX]
-- **Incerteza de modelagem:** [⚠️ Pendente: BL-XXX] — [ex.: fronteira do agregado a confirmar]
+  ([[Regra - Total da proposta]]) [[EV-5-a2-012 · Total é soma dos itens|EV-5-a2-012]]
+- **Eventos de domínio publicados:** [ex.: PropostaAprovada, PropostaRecusada] [[EV-5-a4-050 · Eventos de Proposta|EV-5-a4-050]]
+- **Repositório:** [ex.: PropostaRepository] [[EV-5-a5-020 · PropostaRepository|EV-5-a5-020]]
+- **Incerteza de modelagem:** [⚠️ Pendente: [[Investigação - Fronteira do agregado Proposta]]]
 
 > Eventos de domínio aqui são os do **modelo tático** (publicados por um agregado).
 > A linha do tempo de processo/descoberta de eventos candidatos em filas e APIs é
 > escopo do módulo **Event Storming**, não deste — evitando sobreposição.
-
-> **Detalhe de atributo vem do aprofundamento sob demanda.** Os campos de
-> uma entidade/objeto de valor (ex.: os atributos de `Proposta`) raramente estão no
-> substrato grosso. Quando faltam, a síntese relê — via descoberta — a fonte **já
-> autorizada** apontada por um `EV` (ex.: `credito/service.py`), grava os campos como
-> fato neutro novo (ex.: `EV-090`), e este template os cita. O julgamento "isto é um
-> objeto de valor" continua sendo do DDD; a lista de campos é fato descritivo do
-> substrato.
 ```
 
 ## Como preencher
 
 - Um arquivo/`# Agregados — Contexto [Nome]` por bounded context; uma seção
   `## Agregado:` por agregado, sempre com a **raiz**.
-- **Invariantes** referenciam `business-rules.md#BR-XXX` (a ponte do substrato) e
-  citam `EV-XXX`.
+- **Invariantes** referenciam a nota de regra do substrato por wikilink
+  (`[[Regra - Total da proposta]]`) e citam `[[EV-…|EV-…]]`.
 - **Eventos de domínio** aqui são os do **modelo tático** (publicados por um
   agregado). **Não** modele a descoberta de eventos em filas/APIs/processos — isso
   é **Event Storming**, fora deste escopo, para evitar sobreposição.
-- **Atributos (campos), exemplos e relações vêm primeiro de `data-structures.md`.**
+- **Atributos (campos), exemplos e relações vêm de `03 Structural`/`06 Data`.**
   Consuma daí os campos, valores enumerados, exemplos/formatos e a multiplicidade das
-  relações — já são fato neutro com `EV`. O DDD apenas **classifica** (isto é entidade,
-  isto é objeto de valor, esta é a raiz) e desenha a fronteira do agregado; o campo em
-  si é **fato descritivo** do substrato. A "Nota de fronteira" de cada estrutura lembra
-  que o agrupamento observado no código **não** é o veredito de fronteira — quem decide
-  é aqui.
-- **Aprofundamento sob demanda é a rede, não a fonte primária.** Só quando
-  `data-structures.md` **não cobre** um detalhe: **não infira em silêncio nem leia a
-  fonte** aqui — sinalize a lacuna com o **ponteiro de `EV`** que aponta ao código (ex.:
-  `EV-015 → src/Ticket.php`) para o orquestrador aprofundar. Se a fonte já está
-  autorizada e `pode_aprofundar = "fontes-autorizadas"`, a descoberta relê o trecho e
-  grava o detalhe como fato neutro novo (ex.: `EV-090`); então cite esse `EV`. Fonte
-  nova, ou caminho autorizado que não resolve no workspace → `[⚠️ Pendente: BL-XXX]`
-  (consumidor: `ddd`), nunca inferência silenciosa.
-- Fronteira/modelagem incerta → `Incerteza de modelagem: [⚠️ Pendente: BL-XXX]`
+  relações — já são fato neutro com `[[EV-…]]`. O DDD apenas **classifica** (isto é
+  entidade, isto é objeto de valor, esta é a raiz) e desenha a fronteira do agregado; o
+  campo em si é **fato descritivo** do substrato — o agrupamento observado no código
+  **não** é o veredito de fronteira, quem decide é aqui.
+- **Faltou no vault → investigação, nunca releitura de fonte.** Se `03 Structural`/`06 Data`
+  **não cobre** um detalhe (ex.: os campos de uma entidade): **não infira em silêncio nem
+  leia a fonte** aqui — abra uma nota em `11 Investigations` (`tags: consumidor/ddd`) e
+  marque `[⚠️ Pendente: [[Investigação - …]]]`. Só a `/cad:discovery` amplia o vault.
+- Fronteira/modelagem incerta → `Incerteza de modelagem: [⚠️ Pendente: [[Investigação - …]]]`
   (consumidor: `ddd`); nada de inferência silenciosa.
 - **Vocabulário proibido:** nada de termos exclusivos da Lean (`MVP`, `persona`,
   `jornada` sentido Lean, `onda`/`sequenciador`, `é-não é-faz-não faz`) nem do Event

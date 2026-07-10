@@ -20,8 +20,6 @@ Segue as [convenções do vault](../cad-doc-conventions/SKILL.md).
 - Fontes escaneadas por `/cad:discovery` (no escopo declarado; registradas em
   `.cad-plugin/sources.json` como `SRC-XXX`).
 - Respostas do consultor em `/cad:backlog` (geram evidência de **validação humana**).
-- Releituras de aprofundamento disparadas por `/cad:synthesize` (quando os módulos de
-  técnica forem migrados; releem um trecho de fonte **já autorizada** apontado por um `EV`).
 
 ## Template de nota de evidência (`09 Evidence/EV-XXX ....md`)
 
@@ -98,9 +96,8 @@ created: 2026-07-10
   a evidência é imutável, o título é estável e o link não quebra. **Quando uma nota cita mais
   de uma evidência no `source:`, use uma lista YAML** (um link por item) — vários `[[...]]`
   numa mesma string de frontmatter não resolvem.
-- **Append, nunca sobrescrita:** evidências são **imutáveis**. Uma releitura de
-  aprofundamento cria uma **nota nova** (marque `#aprofundamento` nas tags), nunca edita
-  uma existente.
+- **Append, nunca sobrescrita:** evidências são **imutáveis**. Reescanear uma fonte numa
+  sessão futura cria uma **nota nova**, nunca edita uma existente.
 - **Conflitos:** quando duas evidências divergem, **não esconda** — registre ambas, marque
   a divergência no MOC e abra `11 Investigations` (via `cad-doc-investigations`). A
   hierarquia de fontes (Normativo > Corporativo > Código > Informal) define a versão

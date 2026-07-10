@@ -7,29 +7,14 @@
 import { readFileSync, existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 
-/**
- * Política de aprofundamento sob demanda:
- *   "fontes-autorizadas" → a síntese pode reler uma fonte já autorizada
- *      (registrada em sources.json), apontada por um EV, para extrair detalhe fino;
- *   "nao" → sem releitura automática (a técnica trabalha no nível de produto).
- * Fonte nova sempre volta ao humano (backlog), qualquer que seja o valor.
- */
-export type PodeAprofundar = "nao" | "fontes-autorizadas";
-
 export interface ModuleContract {
   /** nome programático da técnica (ex.: "lean-inception", "ddd") */
   tecnica: string;
   /** nome completo do método, só para prosa */
   metodo_de_origem: string;
-  /**
-   * política de aprofundamento sob demanda (ver PodeAprofundar). Opcional para
-   * compatibilidade com contratos antigos; ausência é tratada como "nao"
-   * (conservador) por `canDeepen`.
-   */
-  pode_aprofundar?: PodeAprofundar;
   /** única pasta onde o módulo escreve (ex.: "docs/lean-inception/") */
   pasta_saida: string;
-  /** únicos arquivos do substrato que o módulo lê */
+  /** únicas pastas do substrato (vault) que o módulo lê */
   entradas_substrato: string[];
   /** artefatos que o módulo produz */
   artefatos: string[];
@@ -66,12 +51,4 @@ export function loadAllContracts(pluginRoot: string): ModuleContract[] {
 /** Normaliza a pasta_saida para um prefixo sem barra final (ex.: "docs/ddd"). */
 export function outputPrefix(contract: ModuleContract): string {
   return contract.pasta_saida.replace(/\/+$/, "");
-}
-
-/**
- * Se o módulo permite aprofundamento sob demanda (releitura de fonte já
- * autorizada). Ausência do campo é tratada como "nao" (modo conservador).
- */
-export function canDeepen(contract: ModuleContract): boolean {
-  return contract.pode_aprofundar === "fontes-autorizadas";
 }

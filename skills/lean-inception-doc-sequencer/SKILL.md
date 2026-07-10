@@ -13,9 +13,9 @@ de ondas. Substitui qualquer priorização por MoSCoW (que **não** é da Lean).
 
 ## Entradas
 
-Lê **apenas** o substrato CAD (`evidence-log.md`) e os artefatos deste módulo
-(`features.md` com as marcações de Confiança/E/$/♥, `journeys.md`). Escreve apenas
-em `docs/lean-inception/`.
+Lê **apenas** o substrato CAD (Knowledge Vault): as notas de **evidência**
+(`09 Evidence/`) e os artefatos deste módulo (`features.md` com as marcações de
+Confiança/E/$/♥, `journeys.md`). Escreve apenas em `docs/lean-inception/`.
 
 ## Template (copiar fielmente)
 
@@ -35,7 +35,7 @@ em `docs/lean-inception/`.
 ## Esforço, tempo e custo (por amostragem de ondas)
 - **Ondas amostradas:** [ex.: 1 e 3]
 - **Tarefas detalhadas / tamanho médio de onda:** [...]
-- **Estimativa MVP1:** [tempo/custo] [Fonte: EV-XXX | ⚠️ Pendente: BL-XXX]
+- **Estimativa MVP1:** [tempo/custo] [[EV-… · resumo|EV-…]] | [⚠️ Pendente: [[Investigação - …]]]
 ```
 
 ## Como preencher
@@ -47,7 +47,7 @@ em `docs/lean-inception/`.
   anterior**.
 - Demarque os **MVPs** na última coluna; um MVP agrupa ondas.
 - A estimativa de esforço/tempo/custo é feita **por amostragem** de ondas (detalha
-  uma ou duas, extrapola), com `[Fonte: EV-XXX]` ou `[⚠️ Pendente: BL-XXX]`.
+  uma ou duas, extrapola), com `[[EV-… · resumo|EV-…]]` ou `[⚠️ Pendente: [[Investigação - …]]]`.
 - Não estime custo/prazo sem evidência — marque pendência (consumidor:
   `lean-inception`).
 - **Vocabulário proibido:** nada de termos de DDD.

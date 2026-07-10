@@ -21,11 +21,14 @@ do método**.
 - **Técnica:** `ddd`
 - **Método de origem:** Domain-Driven Design (Eric Evans)
 - **Pasta de saída (única):** `docs/ddd/`
-- **Entradas do substrato:** `knowledge-base.md`, `evidence-log.md`,
-  `vocabulary.md`, `business-rules.md`, `capabilities.md`, `data-structures.md`. As
-  pontes-chave são `vocabulary` (→ linguagem ubíqua por contexto), `business-rules`
-  (→ invariantes dos agregados), `capabilities` (→ subdomínios/bounded contexts) e
-  `data-structures` (→ entidades, objetos de valor, atributos e relações dos agregados).
+- **Entradas do substrato (pastas do vault):** `01 Overview/`, `02 Business Knowledge/`,
+  `03 Structural Knowledge/`, `05 Source Code/`, `06 Data/`, `09 Evidence/` e
+  `11 Investigations/`. As pontes-chave: o **glossário** (`01 Overview`) e os **conceitos**
+  (`03 Structural`) → linguagem ubíqua por contexto; as **regras de negócio**
+  (`02 Business`) → invariantes dos agregados; as **capacidades** (`02 Business`) →
+  subdomínios/bounded contexts; as **entidades/tabelas com campos** (`03 Structural`/
+  `06 Data`) → entidades, objetos de valor, atributos e relações dos agregados; os
+  **módulos de código** (`05 Source Code`) → mapeamento de bounded context ao código.
 - **Artefatos:** `subdomains.md`, `bounded-contexts.md`, `ubiquitous-language.md`,
   `context-map.md`, `aggregates.md`.
 - **Vocabulário proibido** (assinaturas **exclusivas** de outras técnicas, barradas
@@ -45,18 +48,19 @@ do método**.
 
 ## Mínimo necessário do substrato (orientação para `/cad:synthesize`)
 
-`subdomains.md` apoia-se em `capabilities.md`; `bounded-contexts.md` precisa de
-módulos de código evidenciados; `ubiquitous-language.md` consome `vocabulary.md`
-(conflitos viram significados por contexto); `aggregates.md` exige
-`business-rules.md` (invariantes) e `bounded-contexts.md` já preenchidos, e consome
-`data-structures.md` para atributos/relações (na falta, cai no aprofundamento sob
-demanda). Faltando
-o mínimo, **não invente**: abra backlog `consumidor: ddd` ou marque
-`[⚠️ Pendente: BL-XXX]`.
+`subdomains.md` apoia-se nas **capacidades** (`02 Business`); `bounded-contexts.md` precisa
+de **módulos de código** evidenciados (`05 Source Code`); `ubiquitous-language.md` consome o
+**glossário/conceitos** (`01 Overview`/`03 Structural`) — conflitos (em `11 Investigations`)
+viram significados por contexto; `aggregates.md` exige **regras de negócio** (`02 Business`,
+invariantes) e `bounded-contexts.md` já preenchidos, e consome as **entidades/tabelas com
+campos** (`03 Structural`/`06 Data`) para atributos/relações. Faltando o mínimo, **não
+invente**: abra uma nota em `11 Investigations` (`tags: consumidor/ddd`) ou marque
+`[⚠️ Pendente: [[Investigação - …]]]`.
 
 ## Regras
 
-- Lê só o substrato; escreve só em `docs/ddd/`.
-- Todo bloco factual carrega `[Fonte: EV-XXX]` ou `[⚠️ Pendente: BL-XXX]`.
+- Lê só o substrato (vault); escreve só em `docs/ddd/`.
+- Todo bloco factual cita a evidência por wikilink — `[[EV-… · resumo|EV-…]]` — ou marca
+  `[⚠️ Pendente: [[Investigação - …]]]`.
 - Fidelidade a Eric Evans — templates fixos, sem inventar campos.
-- Nada de vocabulário da Lean Inception.
+- Nada de vocabulário da Lean Inception nem assinaturas exclusivas do Event Storming.

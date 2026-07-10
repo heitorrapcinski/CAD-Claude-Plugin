@@ -8,9 +8,9 @@
 //       para uma nota de 09 Evidence). Exceções (fonte opcional): as pastas de
 //       navegação/representação/backlog — "11 Investigations", "12 Views" e "13 MOCs".
 //
-//   (2) Legado por técnica — docs/<técnica>/*.md (módulos ainda não migrados ao vault).
-//       Mantém o cheque inline: todo bloco factual precisa citar [Fonte: EV-XXX],
-//       → EV-XXX, ou marcar pendência [⚠️ Pendente: BL-XXX].
+//   (2) Artefato de técnica — docs/<técnica>/*.md. Todo bloco factual precisa citar
+//       uma evidência do vault — [[EV-… |EV-…]] (contém EV-…) — ou marcar pendência
+//       com "Pendente" ([⚠️ Pendente: [[Investigação - …]]]).
 //
 // Se faltar, bloqueia (exit 2) e devolve o motivo. Sem dependências em runtime.
 
@@ -180,9 +180,9 @@ async function main(): Promise<void> {
   if (!rel || !rel.endsWith(".md")) process.exit(0);
 
   const isVault = rel.startsWith("docs/cad/");
-  // legado: docs/<dir>/<arquivo>.md (exatamente um nível), fora de docs/cad/.
-  const isLegacyTechnique = !isVault && /^docs\/[^/]+\/[^/]+\.md$/.test(rel);
-  if (!isVault && !isLegacyTechnique) process.exit(0);
+  // artefato de técnica: docs/<dir>/<arquivo>.md (um nível), fora de docs/cad/.
+  const isTechnique = !isVault && /^docs\/[^/]+\/[^/]+\.md$/.test(rel);
+  if (!isVault && !isTechnique) process.exit(0);
 
   // PostToolUse: o arquivo já foi gravado — lê do disco para ver o conteúdo final.
   const content = existsSync(fp)
@@ -203,12 +203,12 @@ async function main(): Promise<void> {
     process.exit(0);
   }
 
-  // modo legado por técnica
+  // modo artefato de técnica
   const offenders = findUncitedFactualBlocks(content);
   if (offenders.length > 0) {
     process.stderr.write(
-      `[CAD] validate-evidence: bloco factual sem evidência em ${rel} (artefato de técnica legado).\n` +
-        `Todo bloco factual precisa de [Fonte: EV-XXX] ou [⚠️ Pendente: BL-XXX].\n` +
+      `[CAD] validate-evidence: bloco factual sem evidência em ${rel} (artefato de técnica).\n` +
+        `Todo bloco factual precisa citar [[EV-…|EV-…]] ou marcar [⚠️ Pendente: [[Investigação - …]]].\n` +
         `Blocos sem citação:\n` +
         offenders.map((b) => "  • " + b).join("\n") +
         "\n",

@@ -13,10 +13,10 @@ marcações de **Esforço / Negócio / UX**.
 
 ## Entradas
 
-Lê **apenas** o substrato CAD (`capabilities.md`, `business-rules.md`,
-`knowledge-base.md`, `evidence-log.md`) e os artefatos já gerados deste mesmo
-módulo (`objectives.md`, `personas.md`) para as colunas/linhas. Escreve apenas em
-`docs/lean-inception/`.
+Lê **apenas** o substrato CAD (Knowledge Vault): `02 Business Knowledge/` (capacidades e
+regras), `04 Behavioral Knowledge/` (fluxos/casos de uso) e as notas de **evidência**
+(`09 Evidence/`); e os artefatos já gerados deste mesmo módulo (`objectives.md`,
+`personas.md`) para as colunas/linhas. Escreve apenas em `docs/lean-inception/`.
 
 ## Template (copiar fielmente)
 
@@ -30,7 +30,7 @@ módulo (`objectives.md`, `personas.md`) para as colunas/linhas. Escreve apenas 
 
 | Funcionalidade | Persona | Objetivo | Confiança | Esforço | Negócio | UX | Jornada de origem |
 |---|---|---|---|---|---|---|---|
-| [func] [Fonte: EV-XXX] | [apelido] | [objetivo] | 🟢/🟡/🔴 | EE | $$ | ♥♥♥ | Jornada: [nome] |
+| [func] [[EV-… · resumo|EV-…]] | [apelido] | [objetivo] | 🟢/🟡/🔴 | EE | $$ | ♥♥♥ | Jornada: [nome] |
 
 > Funcionalidade 🔴 marcada com "X" (baixa confiança técnica E de negócio/UX):
 > descartar ou esclarecer antes de prosseguir. Funcionalidade sem persona
@@ -39,8 +39,8 @@ módulo (`objectives.md`, `personas.md`) para as colunas/linhas. Escreve apenas 
 
 ## Como preencher
 
-- Cada funcionalidade carrega `[Fonte: EV-XXX]`; sem evidência, `[⚠️ Pendente:
-  BL-XXX]` (consumidor: `lean-inception`).
+- Cada funcionalidade carrega `[[EV-… · resumo|EV-…]]`; sem evidência,
+  `[⚠️ Pendente: [[Investigação - …]]]` (consumidor: `lean-inception`).
 - **Confiança** pelo semáforo: 🟢 alto, 🟡 médio, 🔴 baixo — combinando confiança
   **técnica** ("como fazer") × **negócio/UX** ("o que fazer").
 - Marcações: **Esforço** `E/EE/EEE`, **Negócio** `$/$$/$$$`, **UX** `♥/♥♥/♥♥♥`.

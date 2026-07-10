@@ -12,18 +12,19 @@ empatia** opcional. Responde "para quem estamos construindo".
 
 ## Entradas
 
-Lê **apenas** o substrato CAD (`knowledge-base.md`, `vocabulary.md`,
-`capabilities.md`, `evidence-log.md`). Escreve apenas em `docs/lean-inception/`.
+Lê **apenas** o substrato CAD (Knowledge Vault): `01 Overview/` (stakeholders/usuários),
+`02 Business Knowledge/` (papéis, capacidades) e as notas de **evidência** (`09 Evidence/`).
+Escreve apenas em `docs/lean-inception/`.
 
 ## Template (copiar fielmente)
 
 ```markdown
 # Personas — [Nome do Produto]
 
-## Persona: [Apelido] [Fonte: EV-XXX]
-- **Perfil:** [idade, papel/ocupação, formação, contexto] [Fonte: EV-XXX]
-- **Comportamento:** [traços comportamentais] [Fonte: EV-XXX]
-- **Necessidades:** [necessidades específicas] [Fonte: EV-XXX | ⚠️ Pendente: BL-XXX]
+## Persona: [Apelido] [[EV-… · resumo|EV-…]]
+- **Perfil:** [idade, papel/ocupação, formação, contexto] [[EV-… · resumo|EV-…]]
+- **Comportamento:** [traços comportamentais] [[EV-… · resumo|EV-…]]
+- **Necessidades:** [necessidades específicas] [[EV-… · resumo|EV-…]] | [⚠️ Pendente: [[Investigação - …]]]
 
 ### Mapa de empatia (opcional)
 - **Vejo:** [...] · **Ouço:** [...] · **Penso/Sinto:** [...] · **Falo/Faço:** [...]
@@ -34,8 +35,8 @@ Lê **apenas** o substrato CAD (`knowledge-base.md`, `vocabulary.md`,
 
 - Uma seção `## Persona:` por persona, com **Apelido** memorável.
 - **Perfil** (substantivos/contexto), **Comportamento** (traços) e **Necessidades**
-  (específicas) — cada um lastreado em `[Fonte: EV-XXX]`; o que faltar vira
-  `[⚠️ Pendente: BL-XXX]` (consumidor: `lean-inception`).
+  (específicas) — cada um lastreado em `[[EV-… · resumo|EV-…]]`; o que faltar vira
+  `[⚠️ Pendente: [[Investigação - …]]]` (consumidor: `lean-inception`).
 - O **mapa de empatia** é **opcional**; só inclua os quadrantes com evidência.
 - Persona é construída a partir de fatos do substrato sobre usuários — **não
   invente** perfis verossímeis sem fonte.
