@@ -330,9 +330,13 @@ sustentam isso:
   (escritor único). As evidências usam `EV-<sessão>-<agente>-<seq>` no modo paralelo: a
   `<sessão>` (do `state.json`) garante unicidade **entre runs**, o `<agente>` (`a1`, `a2`…)
   garante que dois subagentes nunca colidam, e o `<seq>` é sequencial **por agente** — tudo
-  sem RNG e sem escritor central. No modo de 1 agente, `EV-<sessão>-<seq>`. O código é um
-  handle curto (vira `alias`); a legibilidade vem do **título** da nota. Quem cita a
-  evidência **segue o `[[link]]`**, não interpreta o ID (o hook aceita o formato).
+  sem RNG e sem escritor central. No modo de 1 agente, `EV-<sessão>-<seq>`. O título da nota
+  é `EV-<id> · <resumo>`; para **evitar links órfãos**, as citações linkam a evidência **pelo
+  título completo** com o código como exibição (`[[EV-5-a2-007 · … |EV-5-a2-007]]`), nunca
+  pelo código sozinho — o Obsidian resolve `[[...]]` por nome de arquivo, não por `alias`.
+  Como a evidência é imutável, o título é estável e o link não quebra. Com **várias**
+  evidências, o `source:` é uma **lista YAML** (um link por item) — vários `[[...]]` numa
+  mesma string de frontmatter não resolvem. O hook `validate-evidence` aceita ambas as formas.
 - **Conflito e navegação são globais.** Detecção de conflito entre fontes, dedup e MOCs são
   **intrinsecamente reduce** — ficam com o orquestrador, nunca com um subagente. Links
   `[[...]]` para notas que outra fatia criará ficam pendentes no meio do caminho, o que é

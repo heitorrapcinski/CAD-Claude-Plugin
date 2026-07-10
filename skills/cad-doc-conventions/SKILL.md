@@ -93,8 +93,12 @@ created:
 ### O campo `source` (o coração da rastreabilidade)
 
 - **Nota de Knowledge (01–08), Decisions (10), Views (12):** `source` aponta para a(s)
-  nota(s) de evidência que a sustentam — via wikilink: `source: "[[EV-5-a2-007]]"` (ou uma
-  lista de wikilinks). Sem evidência clara, **não afirme**: abra `11 Investigations`.
+  nota(s) de evidência que a sustentam — via wikilink **pelo título completo da nota**, com
+  o código como texto de exibição. **Uma** evidência (escalar):
+  `source: "[[EV-5-a2-007 · Aprovação exige duas alçadas|EV-5-a2-007]]"`. **Várias**
+  evidências → **lista YAML**, um link por item (ver a regra de referência abaixo). **Não**
+  cite pelo código sozinho (`[[EV-5-a2-007]]`). Sem evidência clara, **não afirme**: abra
+  `11 Investigations`.
 - **Nota de Evidence (09):** a nota **é** a fonte. Aqui `source` traz `SRC-XXX` + a
   localização (`SRC-002 · normativo_credito_v3.pdf · Seção 4.2`). `SRC-XXX` liga à fonte
   autorizada registrada em `.cad-plugin/sources.json`.
@@ -122,20 +126,47 @@ sem escritor central:
     próprias evidências, o que erra muito menos que um contador global).
   - Ex.: `EV-5-a2-007`. No modo de **1 agente** (escopo pequeno) o `<agente>` é omitido:
     `EV-<sessão>-<seq>` → `EV-5-014`.
-- **Handle curto + título legível.** O código é opaco de propósito (é só a chave estável);
-  a legibilidade vem do **título** da nota, que carrega o resumo, e do código como `alias`:
-  `title: EV-5-a2-007 · Aprovação exige duas alçadas` / `aliases: [EV-5-a2-007]`. Assim o
-  `source:` cita `[[EV-5-a2-007]]` (único e estável) e o grafo do Obsidian segue navegável.
-  Quem cita a evidência **segue o link**, não interpreta o ID.
+- **Handle curto + título legível.** O código é a chave estável; a legibilidade vem do
+  **título** da nota, que carrega o resumo: `title: EV-5-a2-007 · Aprovação exige duas
+  alçadas`. Mantenha também `aliases: [EV-5-a2-007]` (ajuda busca/autocomplete).
 - **MOCs e o Registro de Evidências são consolidados só no reduce** (pelo orquestrador),
   nunca por um subagente — é lá que o domínio/escopo agrupa as evidências, e onde dedup de
   conceito e conflito entre fontes se resolvem.
 
+### Como referenciar uma evidência (evite links órfãos)
+
+O Obsidian resolve `[[...]]` **pelo nome do arquivo** primeiro; um link para um **alias** de
+frontmatter pode **não resolver** e vira um **nó órfão** no grafo. Por isso:
+
+- **Sempre linke pelo título completo** da nota de evidência (o nome do arquivo), e use
+  `|` para exibir o código curto:
+  `[[EV-5-a2-007 · Aprovação exige duas alçadas|EV-5-a2-007]]`.
+- **Nunca** cite a evidência pelo código sozinho (`[[EV-5-a2-007]]`) — mesmo com `aliases`
+  definido, o link pode ficar órfão.
+- Como as evidências são **imutáveis**, o título completo é **estável** — o link não quebra.
+- Vale para o `source:` do frontmatter, para o corpo das notas e para os MOCs.
+- **Várias evidências no `source:` → use uma lista YAML**, um link por item. Vários
+  `[[...]]` **numa mesma string não funcionam** (o Obsidian não separa e perde os links):
+
+  ```yaml
+  # ✔ correto (lista YAML)
+  source:
+    - "[[EV-1-001 · CommonITILObject define statuses|EV-1-001]]"
+    - "[[EV-1-007 · Matriz de prioridade|EV-1-007]]"
+
+  # ✘ errado (vários links numa string só)
+  source: "[[EV-1-001]], [[EV-1-007]]"
+  ```
+
+  No **corpo** da nota (fora do frontmatter), vários `[[...]]` na mesma linha funcionam
+  normalmente — a restrição da lista é só do frontmatter.
+
 ## Componentes permitidos no corpo
 
 - **Markdown** puro (títulos, listas, tabelas, ênfase).
-- **Obsidian**: `[[wikilinks]]` para conectar notas (`[[Cliente]]`, `[[TB_CLIENTE]]`,
-  `[[EV-5-a2-007]]`); embeds `![[...]]` quando fizer sentido.
+- **Obsidian**: `[[wikilinks]]` para conectar notas (`[[Cliente]]`, `[[TB_CLIENTE]]`; para
+  evidências, pelo título completo — `[[EV-5-a2-007 · Aprovação exige duas alçadas|EV-5-a2-007]]`);
+  embeds `![[...]]` quando fizer sentido.
 - **Mermaid / PlantUML** em cerca de código (` ```mermaid ` / ` ```plantuml `). Diagramas
   substanciais vão em `12 Views` e são referenciados por `[[...]]`.
 - **Callouts** do Obsidian para destacar contexto:

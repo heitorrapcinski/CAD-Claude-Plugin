@@ -67,6 +67,22 @@ engenharia reversa de um System of Record. Skills do substrato: **7 → 9**.
 - **Hook `protect-human-validation`** passa a reconhecer também `status: validated` no
   frontmatter, além das frases de "validação humana".
 
+### Corrigido
+
+- **Links órfãos de evidência no Obsidian.** Referenciar uma evidência pelo **código
+  sozinho** (`[[EV-5-a2-007]]`) não resolvia — o Obsidian resolve `[[...]]` pelo **nome do
+  arquivo**, não pelo `alias` de frontmatter, gerando nós órfãos no grafo. Convenção
+  corrigida: citar a evidência **pelo título completo** com o código como exibição —
+  `[[EV-5-a2-007 · Aprovação exige duas alçadas|EV-5-a2-007]]`. Como as evidências são
+  imutáveis, o título é estável e o link não quebra. Ajustado em `cad-doc-conventions`
+  (nova regra "Como referenciar uma evidência"), `cad-doc-evidence`, `cad-discovery` e nos
+  exemplos das skills do vault.
+- **Múltiplas evidências no `source:` do frontmatter.** Vários `[[...]]` numa **mesma
+  string** não resolvem no Obsidian (não há separação por vírgula). Convenção: usar **lista
+  YAML** (um link por item). O hook `validate-evidence` foi ajustado para reconhecer
+  `source:` tanto na forma **escalar** quanto em **lista YAML** — antes, a lista deixava o
+  valor inline vazio e a nota era bloqueada indevidamente.
+
 ### Removido
 
 - Skills `cad-doc-knowledge-base`, `cad-doc-vocabulary`, `cad-doc-business-rules`,

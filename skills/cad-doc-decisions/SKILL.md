@@ -34,7 +34,7 @@ aliases: [ADR-003]
 tags: [adr, arquitetura]
 type: adr
 status: confirmed
-source: "[[EV-5-a3-009]]"
+source: "[[EV-5-a3-009 · Billing Module emite cobranças|EV-5-a3-009]]"
 author: CAD Discovery
 created: 2026-07-10
 ---
@@ -55,7 +55,7 @@ Uso de banco relacional único, sem particionamento por domínio.
 - Acoplamento de dados entre [[Módulo Financeiro]] e cadastro.
 
 ## Evidência
-- [[EV-5-a3-009]], [[EV-5-a4-002]]
+- [[EV-5-a3-009 · Billing Module emite cobranças|EV-5-a3-009]], [[EV-5-a4-002 · TB_CLIENTE persiste dados de Cliente|EV-5-a4-002]]
 ```
 
 Para **premissa** use `type: decision`, `status: inferred` e deixe claro no corpo que é uma

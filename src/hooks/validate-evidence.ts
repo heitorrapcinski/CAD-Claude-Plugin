@@ -57,14 +57,32 @@ function frontmatterLines(content: string): string[] | null {
   return null; // abertura sem fechamento
 }
 
-/** Valor (sem aspas) de uma chave de topo do frontmatter, ou "" se ausente/vazia. */
-function frontmatterValue(fm: string[], key: string): string {
-  const re = new RegExp(`^${key}:\\s*(.*)$`);
-  for (const line of fm) {
-    const m = re.exec(line);
-    if (m) return m[1].trim().replace(/^["']|["']$/g, "").trim();
+/**
+ * A chave `source` tem valor? Aceita duas formas do YAML:
+ *   - inline escalar:  `source: "[[EV-…]]"`
+ *   - lista YAML:      `source:` seguido de itens indentados `  - "[[EV-…]]"`
+ * (Vários links numa mesma string não funcionam no Obsidian — por isso a lista.)
+ */
+function hasSourceValue(fm: string[]): boolean {
+  for (let i = 0; i < fm.length; i++) {
+    const m = /^source:(.*)$/.exec(fm[i]);
+    if (!m) continue;
+    const inline = m[1].trim().replace(/^["']|["']$/g, "").trim();
+    if (inline !== "") return true;
+    // sem valor inline → procura itens indentados (lista) logo abaixo
+    for (let j = i + 1; j < fm.length; j++) {
+      const line = fm[j];
+      if (line.trim() === "") continue; // linha em branco dentro do bloco
+      if (/^\s+\S/.test(line)) {
+        const t = line.trim().replace(/^-\s*/, "").replace(/^["']|["']$/g, "").trim();
+        if (t !== "") return true; // item de lista com conteúdo
+      } else {
+        break; // próxima chave de topo → bloco de source vazio
+      }
+    }
+    return false;
   }
-  return "";
+  return false;
 }
 
 /** Pasta imediatamente sob docs/cad/ (ex.: "03 Structural Knowledge"). */
@@ -81,8 +99,8 @@ function vaultViolation(rel: string, content: string): string | null {
     return "nota do vault sem frontmatter YAML (--- no topo)";
   }
   if (SOURCE_EXEMPT.has(vaultFolder(rel))) return null;
-  if (frontmatterValue(fm, "source") === "") {
-    return 'nota de conhecimento sem `source:` no frontmatter (aponte para uma nota de 09 Evidence, ex.: source: "[[EV-014]]")';
+  if (!hasSourceValue(fm)) {
+    return 'nota de conhecimento sem `source:` no frontmatter (aponte para uma nota de 09 Evidence — escalar `source: "[[EV-…]]"` ou lista YAML de links)';
   }
   return null;
 }

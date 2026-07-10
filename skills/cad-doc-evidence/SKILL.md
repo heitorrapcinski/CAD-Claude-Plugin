@@ -70,11 +70,11 @@ created: 2026-07-10
 # MOC · Registro de Evidências
 
 ## SRC-002 · normativo_credito_v3.pdf (Normativo)
-- [[EV-5-a2-007]] — Aprovação exige duas alçadas
-- ⚠️ conflita com [[EV-5-a1-011]] → ver [[Investigação - Alçadas de Aprovação]]
+- [[EV-5-a2-007 · Aprovação exige duas alçadas|EV-5-a2-007]] — Aprovação exige duas alçadas
+- ⚠️ conflita com [[EV-5-a1-011 · Código implementa uma alçada|EV-5-a1-011]] → ver [[Investigação - Alçadas de Aprovação]]
 
 ## SRC-001 · credito/ (Código)
-- [[EV-5-a1-011]] — Código implementa uma alçada
+- [[EV-5-a1-011 · Código implementa uma alçada|EV-5-a1-011]] — Código implementa uma alçada
 ```
 
 ## Como preencher
@@ -91,6 +91,13 @@ created: 2026-07-10
   `source: "validação humana (consultor) — <data>"` e não tem `SRC`.
 - **Sustenta:** liste, via `[[...]]`, as notas de Knowledge que esta evidência apoia
   (relação inversa do `source:` delas). Mantém o grafo do Obsidian navegável nos dois sentidos.
+- **Como esta evidência é referenciada (evite órfãos):** as notas que citam esta evidência
+  devem linká-la **pelo título completo** (o nome do arquivo), exibindo o código:
+  `[[EV-5-a2-007 · Aprovação exige duas alçadas|EV-5-a2-007]]`. Um link pelo **código sozinho**
+  (`[[EV-5-a2-007]]`) pode não resolver — mesmo com `aliases` — e vira nó órfão no grafo. Como
+  a evidência é imutável, o título é estável e o link não quebra. **Quando uma nota cita mais
+  de uma evidência no `source:`, use uma lista YAML** (um link por item) — vários `[[...]]`
+  numa mesma string de frontmatter não resolvem.
 - **Append, nunca sobrescrita:** evidências são **imutáveis**. Uma releitura de
   aprofundamento cria uma **nota nova** (marque `#aprofundamento` nas tags), nunca edita
   uma existente.

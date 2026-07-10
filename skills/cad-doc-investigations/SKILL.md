@@ -42,8 +42,8 @@ created: 2026-07-10
 > A aprovação exige uma ou duas alçadas?
 
 ## Contexto / conflito
-- [[EV-5-a2-007]] (normativo) diz **duas** alçadas.
-- [[EV-5-a1-011]] (código) implementa **uma**.
+- [[EV-5-a2-007 · Aprovação exige duas alçadas|EV-5-a2-007]] (normativo) diz **duas** alçadas.
+- [[EV-5-a1-011 · Código implementa uma alçada|EV-5-a1-011]] (código) implementa **uma**.
 - Versão priorizada pela hierarquia (Normativo > Código): **duas** — mas há divergência real.
 
 ## Afeta

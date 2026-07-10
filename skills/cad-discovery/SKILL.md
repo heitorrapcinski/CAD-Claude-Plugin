@@ -117,7 +117,10 @@ Para cada etapa do plano, na ordem definida:
 - **Id do agente:** o tag dado no dispatch (ex.: `a2`) — use-o nos IDs de evidência:
   `EV-<sessão>-<agente>-<seq>` (ex.: `EV-5-a2-007`), com `<seq>` sequencial **por agente**,
   começando em 1. IDs **sem colisão** entre subagentes e entre runs, sem escritor central.
-  O código vira `alias`; o **título** da nota carrega o resumo legível.
+  O **título** da nota é `EV-<id> · <resumo>`; ao referenciar a evidência, linke **pelo
+  título completo** com o código como exibição —
+  `[[EV-5-a2-007 · Aprovação exige duas alçadas|EV-5-a2-007]]` (nunca `[[EV-5-a2-007]]`
+  sozinho, que fica órfão no grafo).
 - **Skills a seguir:** [`cad-doc-conventions`](../cad-doc-conventions/SKILL.md) (backbone) +
   as de camada conforme o conteúdo — `cad-doc-evidence` (09), `cad-doc-business` (01–02),
   `cad-doc-system` (03–04), `cad-doc-technical` (05–08), `cad-doc-decisions` (10),

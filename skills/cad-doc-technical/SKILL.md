@@ -47,7 +47,7 @@ title: Billing Module
 tags: [modulo, codigo]
 type: module
 status: confirmed
-source: "[[EV-5-a3-009]]"
+source: "[[EV-5-a3-009 · Billing Module emite cobranças|EV-5-a3-009]]"
 author: CAD Discovery
 created: 2026-07-10
 ---
@@ -72,7 +72,7 @@ aliases: [Tabela de Clientes]
 tags: [tabela, dados]
 type: table
 status: confirmed
-source: "[[EV-5-a4-002]]"
+source: "[[EV-5-a4-002 · TB_CLIENTE persiste dados de Cliente|EV-5-a4-002]]"
 author: CAD Discovery
 created: 2026-07-10
 ---
