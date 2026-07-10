@@ -6,6 +6,17 @@ argument-hint: "<técnica> [escopo] [--sem-aprofundamento]  (ex.: ddd | event-st
 
 # /cad:synthesize — Síntese por módulo de técnica
 
+> ⚠️ **Pendente de migração (a partir da 0.4.0).** A descoberta passou a produzir um
+> **Knowledge Vault Zettelkasten** em `docs/cad/` (pastas `01…13`), aposentando os arquivos
+> planos `knowledge-base.md`, `evidence-log.md`, `vocabulary.md`, `business-rules.md`,
+> `capabilities.md`, `data-structures.md` e `backlog.md`. Os módulos de técnica
+> (`lean-inception`, `ddd`, `event-storming`) e suas `entradas_substrato` **ainda apontam
+> para esses arquivos** e serão **migrados para ler o vault na 0.5.0**. Até lá, este
+> orquestrador **pode não encontrar as entradas** num projeto descoberto pela nova
+> `/cad:discovery`; nesse caso, informe ao consultor a pendência de migração em vez de
+> inventar conteúdo. As menções abaixo a `evidence-log.md`/`backlog.md`/nomes de arquivo do
+> substrato refletem o modelo **pré-migração**.
+
 ## Objetivo
 
 Executar um **módulo de técnica** sobre o substrato neutro: carregar o contrato

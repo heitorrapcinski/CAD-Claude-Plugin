@@ -6,17 +6,19 @@ fatos com **evidência rastreável**, detecta divergências, e depois **sintetiz
 esse conhecimento em artefatos fiéis a métodos específicos — **Lean Inception**
 (Paulo Caroli), **DDD** (Eric Evans) e **Event Storming** (Alberto Brandolini).
 
-> Versão `0.3.0`. Racional de design (princípios, arquitetura, contrato de módulo):
+> Versão `0.4.0`. Racional de design (princípios, arquitetura, contrato de módulo):
 > [`DESIGN.md`](DESIGN.md). Histórico de mudanças: [`CHANGELOG.md`](CHANGELOG.md).
 
 ## Conceito
 
 O CAD separa **descoberta** de **método**:
 
-- **Substrato neutro** (`docs/cad/`) — conhecimento descritivo, sem opinião
-  metodológica: base de conhecimento, log de evidências, vocabulário, regras de
-  negócio, capacidades, **estruturas de dados** (campos, exemplos, formato, relações,
-  em nível conceitual/lógico e sem tecnologia) e backlog.
+- **Substrato neutro = Knowledge Vault** (`docs/cad/`) — conhecimento descritivo,
+  independente de metodologia, estruturado como **notas Zettelkasten prontas para o
+  Obsidian** numa taxonomia numerada `01…13`, dividida em **Knowledge (01–08)** — o que é /
+  por que existe / do que é composto / como funciona / como foi implementado / como opera —
+  e **Discovery (09–13)** — evidências, decisões, investigações, visões e mapas de
+  navegação. Cada nota tem frontmatter YAML, `[[links]]`, callouts e Mermaid.
 - **Módulos de técnica** (`docs/lean-inception/`, `docs/ddd/`,
   `docs/event-storming/`) — cada um lê apenas o substrato e escreve apenas a sua
   própria pasta, produzindo artefatos fiéis ao método de origem. **Nenhuma técnica
@@ -24,35 +26,43 @@ O CAD separa **descoberta** de **método**:
   complementares (ES e DDD: `aggregate`, `domain event`, `command`, `policy`,
   `read model`, `bounded context`) não é barrado; só as assinaturas **exclusivas**.
 
-Tudo se apoia em um princípio inegociável: **sem evidência, sem afirmação**.
-Cada bloco factual carrega `[Fonte: EV-XXX]` ou `[⚠️ Pendente: BL-XXX]`, e a
-**validação humana** (resposta do consultor via `/cad:backlog`) é a evidência
-mais forte de todas.
+Tudo se apoia em um princípio inegociável: **sem evidência, sem afirmação**. No vault, a
+rastreabilidade vive no **frontmatter `source:`** de cada nota, apontando para uma nota de
+**`09 Evidence`** (que guarda o artefato real: trecho de código, SQL, log, config,
+entrevista); um MOC **Registro de Evidências** (`13 MOCs`) indexa tudo. A **validação
+humana** (resposta do consultor via `/cad:backlog` sobre uma nota de `11 Investigations`) é
+a evidência mais forte de todas.
 
-**Estruturas de dados e aprofundamento sob demanda.** A descoberta front-carrega as
-estruturas de dados em `data-structures.md` (campos, exemplos, formato, relações), que
-o DDD tático consome como **fonte primária** de atributos. Quando ainda falta detalhe
-**fino**, a síntese relê **apenas fontes já autorizadas** (apontadas por um `EV` em
-`sources.json`, resolvendo o caminho pela coluna `SRC` do `evidence-log`), via os
-skills de descoberta, grava o detalhe como **fato neutro novo** e o módulo então o
-cita — o aprofundamento é a **rede**, não o caminho principal. O módulo **nunca** lê a
-fonte nem escreve o substrato; **fonte nova sempre volta ao humano** (backlog).
-Configurável por módulo (`pode_aprofundar`) e por run (`--sem-aprofundamento`).
+> ⚠️ **Migração em andamento (0.4.0 → 0.5.0).** Esta versão migrou **a descoberta e o
+> substrato** para o Knowledge Vault. Os módulos de técnica (`lean-inception`, `ddd`,
+> `event-storming`) ainda leem o substrato plano antigo (`knowledge-base.md`,
+> `evidence-log.md`, `data-structures.md`, `backlog.md`…) e serão **migrados para ler o
+> vault na 0.5.0**; até lá, `/cad:synthesize` avisa a pendência em vez de inventar conteúdo.
+> A descrição de **aprofundamento sob demanda** abaixo refere-se ao modelo pré-migração.
+
+**Aprofundamento sob demanda (módulos legados).** Quando falta detalhe **fino**, a síntese
+relê **apenas fontes já autorizadas** (apontadas por um `EV` em `sources.json`), via os
+skills de descoberta, grava o detalhe como **fato neutro novo** e o módulo então o cita — o
+aprofundamento é a **rede**, não o caminho principal. O módulo **nunca** lê a fonte nem
+escreve o substrato; **fonte nova sempre volta ao humano**. Configurável por módulo
+(`pode_aprofundar`) e por run (`--sem-aprofundamento`).
 
 ## Comandos
 
 | Comando | Função |
 |---|---|
-| `/cad:discovery [fontes]` | Registra as fontes em `.cad-plugin/sources.json`, escaneia só elas e popula o substrato neutro. Abre backlog para o que não tem evidência e exibe os IDs ao final. |
-| `/cad:synthesize <técnica> [escopo]` | Roda um módulo de técnica (`lean-inception` \| `ddd` \| `event-storming`, descoberto dinamicamente pelo `module.json`): lê o substrato e gera os artefatos da técnica em `docs/<técnica>/`. Faz **aprofundamento sob demanda** (relê fonte já autorizada para detalhe fino); `--sem-aprofundamento` força o modo conservador. |
-| `/cad:backlog [id...]` | Apresenta pendências em formulário, grava a resposta como evidência "Validação Humana" e atualiza os documentos afetados. |
+| `/cad:discovery [fontes]` | Registra as fontes em `.cad-plugin/sources.json`, escaneia só elas por inteiro e estrutura o conhecimento como um Knowledge Vault Zettelkasten em `docs/cad/` (notas `01…13` com frontmatter e `[[links]]`). Abre notas em `11 Investigations` para o que não tem evidência e exibe as investigações abertas ao final. |
+| `/cad:synthesize <técnica> [escopo]` | Roda um módulo de técnica (`lean-inception` \| `ddd` \| `event-storming`, descoberto dinamicamente pelo `module.json`): lê o substrato e gera os artefatos da técnica em `docs/<técnica>/`. **Pendente de migração ao vault (0.5.0).** Faz **aprofundamento sob demanda** (relê fonte já autorizada para detalhe fino); `--sem-aprofundamento` força o modo conservador. |
+| `/cad:backlog [nota...]` | Apresenta as investigações abertas (`11 Investigations`) em formulário, grava a resposta como evidência "Validação Humana" em `09 Evidence` e propaga a atualização às notas afetadas. |
 
-## Skills (26)
+## Skills (28)
 
 - **3 orquestradores:** `cad-discovery`, `cad-synthesize`, `cad-backlog`.
-- **7 do substrato neutro:** `cad-doc-knowledge-base`, `cad-doc-evidence-log`,
-  `cad-doc-vocabulary`, `cad-doc-business-rules`, `cad-doc-capabilities`,
-  `cad-doc-data-structures`, `cad-doc-backlog`.
+- **9 do substrato neutro (Knowledge Vault):** `cad-doc-conventions` (backbone);
+  Knowledge — `cad-doc-business` (01+02), `cad-doc-system` (03+04),
+  `cad-doc-technical` (05+06+07+08); Discovery — `cad-doc-evidence` (09),
+  `cad-doc-decisions` (10), `cad-doc-investigations` (11), `cad-doc-views` (12),
+  `cad-doc-mocs` (13).
 - **Módulo Lean Inception (7):** `lean-inception-module` (+ `module.json`) e
   `lean-inception-doc-product-framing` / `-personas` / `-features` / `-journeys` /
   `-sequencer` / `-mvp-canvas`.
@@ -74,21 +84,28 @@ Compilados para `build/hooks/*.cjs` e referenciados em
 
 | Hook | Evento | Função |
 |---|---|---|
-| `validate-evidence` | `PostToolUse` `Write\|Edit` | Bloqueia bloco factual sem `[Fonte: EV-XXX]`/`[⚠️ Pendente: BL-XXX]` em `docs/<dir>/*.md` (princípio 1). |
-| `protect-human-validation` | `PreToolUse` `Write\|Edit` | Impede remover/sobrescrever bloco de origem "validação humana" fora de `/cad:backlog` (princípio 7). Exceção sinalizada por `CAD_BACKLOG_FLOW=1`. |
+| `validate-evidence` | `PostToolUse` `Write\|Edit` | **Dois modos.** Em `docs/cad/**` (vault) exige frontmatter com `source:` não-vazio (isentas `11 Investigations`/`12 Views`/`13 MOCs`); em `docs/<técnica>/*.md` (legado) mantém o cheque inline `[Fonte: EV-XXX]`/`[⚠️ Pendente: BL-XXX]` (princípio 1). |
+| `protect-human-validation` | `PreToolUse` `Write\|Edit` | Impede remover/sobrescrever nota/bloco de origem "validação humana" (frase ou `status: validated`) fora de `/cad:backlog` (princípio 7). Exceção sinalizada por `CAD_BACKLOG_FLOW=1`. |
 | `technique-isolation` | `PreToolUse` `Write\|Edit` | Bloqueia escrita fora da `pasta_saida` ou com termo do `vocabulario_proibido` (princípio 3). Técnica ativa opcional via `CAD_ACTIVE_TECHNIQUE`. No **aprofundamento sob demanda**, `CAD_APROFUNDAMENTO=1` libera a escrita da **descoberta** no substrato; um skill de **módulo** que tente escrever `docs/cad/` é bloqueado. |
 
 ## Entregáveis gerados no repositório do cliente
 
 ```
 docs/
-  cad/            # substrato neutro: knowledge-base, evidence-log, vocabulary,
-                  # business-rules, capabilities, data-structures, backlog
+  cad/            # Knowledge Vault (Zettelkasten/Obsidian) — notas com frontmatter
+    01 Overview/               09 Evidence/
+    02 Business Knowledge/     10 Decisions/
+    03 Structural Knowledge/   11 Investigations/   (substitui o backlog)
+    04 Behavioral Knowledge/   12 Views/
+    05 Source Code/            13 MOCs/
+    06 Data/
+    07 Integrations/           # Knowledge = 01–08 · Discovery = 09–13
+    08 Operational Architecture/
   lean-inception/ # vision, product-enfn, objectives, personas, features,
-                  # journeys, sequencer, mvp-canvas
+                  # journeys, sequencer, mvp-canvas   (pendente de migração ao vault)
   ddd/            # subdomains, bounded-contexts, ubiquitous-language,
-                  # context-map, aggregates
-  event-storming/ # timeline, flows, hotspots, boundaries
+                  # context-map, aggregates           (pendente de migração ao vault)
+  event-storming/ # timeline, flows, hotspots, boundaries  (pendente de migração)
 .cad-plugin/      # controle em JSON (oculto): state.json, sources.json
 ```
 

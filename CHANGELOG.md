@@ -5,6 +5,62 @@ Todas as mudanças relevantes deste plugin. O formato segue, de modo leve,
 [SemVer](https://semver.org/lang/pt-BR/). O racional de design vive em
 [`DESIGN.md`](DESIGN.md); este arquivo é o histórico de mudanças.
 
+## [0.4.0] — 2026-07-10
+
+Nova **estratégia de extração de conhecimento na descoberta**: o substrato neutro deixa
+de ser 7 arquivos planos e passa a ser um **Knowledge Vault Zettelkasten/Obsidian** para
+engenharia reversa de um System of Record. Skills do substrato: **7 → 9**.
+
+> **Escopo.** Esta versão migra **apenas** a descoberta e o substrato. Os módulos de
+> técnica (`lean-inception`, `ddd`, `event-storming`) ainda leem os arquivos planos antigos
+> e ficam **pendentes de migração para o vault na 0.5.0** — `/cad:synthesize` avisa a
+> pendência em vez de inventar conteúdo.
+
+### Adicionado
+
+- **Knowledge Vault em `docs/cad/`** — taxonomia numerada `01…13`, dividida na filosofia
+  **Knowledge (01–08)** × **Discovery (09–13)**: `01 Overview`, `02 Business Knowledge`,
+  `03 Structural Knowledge`, `04 Behavioral Knowledge`, `05 Source Code`, `06 Data`,
+  `07 Integrations`, `08 Operational Architecture`, `09 Evidence`, `10 Decisions`,
+  `11 Investigations`, `12 Views`, `13 MOCs`. Cada nota é atômica, em Markdown pronto para
+  o Obsidian, com **frontmatter YAML** (`title`, `aliases`, `tags`, `type`, `status`,
+  `source`, `author`, `created`), `[[links internos]]`, callouts e Mermaid/PlantUML.
+- **9 skills novas do substrato**, espelhando as duas partes:
+  - Backbone: **`cad-doc-conventions`** (schema de frontmatter, componentes, taxonomia,
+    tipos/status de nota, filosofia Knowledge×Discovery — fonte única de convenções).
+  - Knowledge: **`cad-doc-business`** (01+02), **`cad-doc-system`** (03+04),
+    **`cad-doc-technical`** (05+06+07+08).
+  - Discovery: **`cad-doc-evidence`** (09 + MOC Registro de Evidências),
+    **`cad-doc-decisions`** (10), **`cad-doc-investigations`** (11),
+    **`cad-doc-views`** (12), **`cad-doc-mocs`** (13).
+
+### Alterado
+
+- **Rastreabilidade no frontmatter + `09 Evidence`.** Some o `evidence-log.md` monolítico
+  (`EV-XXX` em tabela) e os marcadores inline `[Fonte: EV-XXX]`: a evidência vira uma
+  **nota** em `09 Evidence` (o artefato real — trecho de código, SQL, log, config,
+  entrevista), e cada nota de conhecimento aponta para ela via `source:` / `[[EV-XXX]]`. Um
+  **MOC "Registro de Evidências"** (13) indexa tudo. Mantêm-se `SRC-XXX`/`sources.json`.
+- **Backlog → `11 Investigations`.** O `backlog.md` (`BL-XXX`) é substituído por notas de
+  investigação (perguntas, hipóteses, conflitos, lacunas), com `status`
+  (`open`/`conflicting`/`confirmed`/`validated`). O comando **`/cad:backlog` permanece**,
+  repaginado para conduzir a **validação humana** sobre essas notas (a evidência mais forte).
+- **`/cad:discovery` reescrita** para varrer a fonte por inteiro e materializar o vault:
+  captura a evidência primeiro (09), materializa o conhecimento (01–08) ligado a ela, abre
+  investigações (11) para lacunas/conflitos e mantém Views (12) e MOCs (13).
+- **Hook `validate-evidence` em dois modos:** para `docs/cad/**` (vault, aninhado) exige
+  **frontmatter com `source:`** não-vazio (isentas `11 Investigations`, `12 Views`,
+  `13 MOCs`); para `docs/<técnica>/*.md` (módulos legados) mantém o cheque inline de
+  `[Fonte: EV-XXX]`/`[⚠️ Pendente: BL-XXX]`.
+- **Hook `protect-human-validation`** passa a reconhecer também `status: validated` no
+  frontmatter, além das frases de "validação humana".
+
+### Removido
+
+- Skills `cad-doc-knowledge-base`, `cad-doc-vocabulary`, `cad-doc-business-rules`,
+  `cad-doc-capabilities`, `cad-doc-data-structures`, `cad-doc-evidence-log` e
+  `cad-doc-backlog` (absorvidas pelas 9 skills novas do vault).
+
 ## [0.3.0] — 2026-07-09
 
 Estruturas de dados no substrato neutro e uma reorganização da documentação que
