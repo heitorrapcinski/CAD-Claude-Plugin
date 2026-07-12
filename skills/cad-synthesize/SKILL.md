@@ -1,6 +1,6 @@
 ---
 name: cad-synthesize
-description: Orquestrador /cad:synthesize (técnica + escopo) — roda um módulo de técnica descoberto dinamicamente pelo seu module.json (lean-inception | ddd | event-storming), lendo só o substrato neutro (Knowledge Vault em docs/cad/) e escrevendo só os artefatos na pasta da própria técnica. Marca lacunas de síntese como investigações com consumidor da técnica.
+description: Orquestrador /cad:synthesize (técnica + escopo) — roda um módulo de técnica descoberto dinamicamente pelo seu module.json (lean-inception | ddd | event-storming), lendo só o substrato neutro (Knowledge Vault em docs/knowledge-vault/) e escrevendo só os artefatos na pasta da própria técnica. Marca lacunas de síntese como investigações com consumidor da técnica.
 argument-hint: "<técnica> [escopo]  (ex.: ddd | event-storming timeline)"
 ---
 
@@ -9,8 +9,8 @@ argument-hint: "<técnica> [escopo]  (ex.: ddd | event-storming timeline)"
 ## Objetivo
 
 Executar um **módulo de técnica** sobre o substrato neutro (o **Knowledge Vault** em
-`docs/cad/`): carregar o contrato da técnica, validar que o substrato tem o mínimo
-necessário, e invocar os doc-skills do módulo — que **leem só de `docs/cad/`** e
+`docs/knowledge-vault/`): carregar o contrato da técnica, validar que o substrato tem o mínimo
+necessário, e invocar os doc-skills do módulo — que **leem só de `docs/knowledge-vault/`** e
 **escrevem só em `docs/<técnica>/`**. Lacunas específicas da técnica viram notas em
 `11 Investigations` marcadas com `tags: consumidor/<técnica>`.
 
@@ -28,7 +28,7 @@ necessário, e invocar os doc-skills do módulo — que **leem só de `docs/cad/
 - O **`module.json`** do módulo correspondente (`skills/<técnica>-module/module.json`)
   — o contrato enforceável (campos `tecnica`, `metodo_de_origem`, `pasta_saida`,
   `entradas_substrato`, `artefatos`, `vocabulario_proibido`).
-- O substrato neutro em `docs/cad/` e `.cad-plugin/state.json` (sessão/histórico).
+- O substrato neutro em `docs/knowledge-vault/` e `.cad-plugin/state.json` (sessão/histórico).
 
 ## Procedimento
 

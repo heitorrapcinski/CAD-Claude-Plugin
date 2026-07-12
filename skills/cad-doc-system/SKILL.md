@@ -1,6 +1,6 @@
 ---
 name: cad-doc-system
-description: Gera as notas de Knowledge das pastas 03 Structural Knowledge (do que o sistema é composto) e 04 Behavioral Knowledge (como funciona) do vault docs/cad/ — conceitos, componentes, módulos, serviços, interfaces, relações; fluxos, casos de uso, algoritmos, máquinas de estado, jobs. Notas Zettelkasten neutras (sem tecnologia nem método), rastreadas por evidência. Invocado por /cad:discovery e /cad:backlog.
+description: Gera as notas de Knowledge das pastas 03 Structural Knowledge (do que o sistema é composto) e 04 Behavioral Knowledge (como funciona) do vault docs/knowledge-vault/ — conceitos, componentes, módulos, serviços, interfaces, relações; fluxos, casos de uso, algoritmos, máquinas de estado, jobs. Notas Zettelkasten neutras (sem tecnologia nem método), rastreadas por evidência. Invocado por /cad:discovery e /cad:backlog.
 ---
 
 # cad-doc-system — Structural & Behavioral Knowledge (03–04)

@@ -17,7 +17,7 @@ externos** e — vermelhos, impossíveis de ignorar — os **hotspots**: os pont
 tensão, contradição e dúvida.
 
 Neste plugin, o Event Storming é o **terceiro consumidor** do substrato neutro do
-CAD. Ele **interpreta** os fatos já descobertos em `docs/cad/` como uma linha do
+CAD. Ele **interpreta** os fatos já descobertos em `docs/knowledge-vault/` como uma linha do
 tempo colaborativa; **não descobre** fatos novos por conta própria. O que é opinião
 do método — o que é um **evento-pivô**, onde ficam as **fronteiras candidatas** — é
 julgamento do Event Storming, não descoberta crua.

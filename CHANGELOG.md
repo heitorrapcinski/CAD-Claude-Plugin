@@ -18,7 +18,7 @@ engenharia reversa de um System of Record. Skills do substrato: **7 → 9**.
 
 ### Adicionado
 
-- **Knowledge Vault em `docs/cad/`** — taxonomia numerada `01…13`, dividida na filosofia
+- **Knowledge Vault em `docs/knowledge-vault/`** — taxonomia numerada `01…13`, dividida na filosofia
   **Knowledge (01–08)** × **Discovery (09–13)**: `01 Overview`, `02 Business Knowledge`,
   `03 Structural Knowledge`, `04 Behavioral Knowledge`, `05 Source Code`, `06 Data`,
   `07 Integrations`, `08 Operational Architecture`, `09 Evidence`, `10 Decisions`,
@@ -68,7 +68,7 @@ engenharia reversa de um System of Record. Skills do substrato: **7 → 9**.
   `[⚠️ Pendente: [[Investigação - …]]]`. Os artefatos seguem **fiéis ao método** (só muda a
   mecânica de citação). `/cad:synthesize` reescrito: valida pastas do vault, abre
   `11 Investigations` para lacunas de síntese e **nunca lê a fonte**.
-- **Hook `validate-evidence` em dois modos:** para `docs/cad/**` (vault, aninhado) exige
+- **Hook `validate-evidence` em dois modos:** para `docs/knowledge-vault/**` (vault, aninhado) exige
   **frontmatter com `source:`** não-vazio (escalar ou lista YAML; isentas `11 Investigations`,
   `12 Views`, `13 MOCs`); para `docs/<técnica>/*.md` (artefato de técnica) exige que todo
   bloco factual cite `[[EV-…]]` ou marque `Pendente`.
@@ -112,7 +112,7 @@ desacopla o plugin da especificação. Skills: **25 → 26**.
 ### Adicionado
 
 - **Estruturas de dados no substrato neutro** — novo artefato
-  `docs/cad/data-structures.md` e skill **`cad-doc-data-structures`**. A descoberta
+  `docs/knowledge-vault/data-structures.md` e skill **`cad-doc-data-structures`**. A descoberta
   passa a **front-carregar** as estruturas de dados do código e da documentação em
   nível **conceitual/lógico e neutro**: campos, valores enumerados, **exemplos de
   preenchimento**, **formato/tamanho derivado** dos exemplos e **relações com
@@ -138,7 +138,7 @@ desacopla o plugin da especificação. Skills: **25 → 26**.
 
 ### Documentação
 
-- **Especificação versionada → `DESIGN.md` vivo.** `docs/cad-plugin-spec-v13.md`
+- **Especificação versionada → `DESIGN.md` vivo.** `docs/knowledge-vault-plugin-spec-v13.md`
   (v13.8) vira `DESIGN.md` na raiz, **desversionado**: sai o andaime de versão
   (frontmatter `versao`/`substitui` e as seções "0.x — o que mudou de vX→vY", que
   duplicavam este CHANGELOG). A versão vive no `package.json`, o histórico aqui, o
@@ -164,7 +164,7 @@ Entram duas funcionalidades: módulo Event Storming e aprofundamento sob demanda
 - **Módulo de técnica Event Storming (Alberto Brandolini)** — 1 manifesto +
   4 doc-skills:
   - `event-storming-module` (+ `module.json`): pasta `docs/event-storming/`,
-    6 entradas de substrato (inclui `docs/cad/backlog.md`, de onde saem os
+    6 entradas de substrato (inclui `docs/knowledge-vault/backlog.md`, de onde saem os
     hotspots), 4 artefatos e vocabulário exclusivo proibido.
   - `event-storming-doc-timeline` (`timeline.md` — eventos de domínio no passado +
     eventos-pivô), `event-storming-doc-flows` (`flows.md` — fatias Ator → Comando →
@@ -196,7 +196,7 @@ Entram duas funcionalidades: módulo Event Storming e aprofundamento sob demanda
 - **Descoberta dinâmica de módulos** — `cad-synthesize` seleciona a técnica pelo
   glob de `skills/*-module/module.json` (sem lista fixa de técnicas no código).
 - **Hook `technique-isolation`** — diferencia ator-descoberta (env
-  `CAD_APROFUNDAMENTO`, que libera a escrita da descoberta em `docs/cad/`) de
+  `CAD_APROFUNDAMENTO`, que libera a escrita da descoberta em `docs/knowledge-vault/`) de
   ator-módulo (bloqueado ao tentar escrever o substrato).
 - **Princípio 6 refinado** em `cad-discovery`/`cad-synthesize`: releitura
   automática só de fontes já autorizadas; fonte nova sempre volta ao humano.

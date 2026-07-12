@@ -1,6 +1,6 @@
 ---
 name: cad-discovery
-description: Orquestrador /cad:discovery — escaneia exatamente as fontes indicadas pelo consultor e estrutura o conhecimento como um Knowledge Vault Zettelkasten/Obsidian em docs/cad/ (notas com frontmatter, [[links]], evidências rastreáveis nas pastas 01–13). Cobertura total e profundidade máxima são inegociáveis; quando o esforço é grande, o trabalho é FASEADO em etapas de valor (por módulo), nunca reduzido. Abre notas em 11 Investigations para o que não tem evidência. Não gera nenhum artefato de técnica.
+description: Orquestrador /cad:discovery — escaneia exatamente as fontes indicadas pelo consultor e estrutura o conhecimento como um Knowledge Vault Zettelkasten/Obsidian em docs/knowledge-vault/ (notas com frontmatter, [[links]], evidências rastreáveis nas pastas 01–13). Cobertura total e profundidade máxima são inegociáveis; quando o esforço é grande, o trabalho é FASEADO em etapas de valor (por módulo), nunca reduzido. Abre notas em 11 Investigations para o que não tem evidência. Não gera nenhum artefato de técnica.
 argument-hint: "[fontes...]  (ex.: credito/ normativo_credito_v3.pdf)"
 ---
 
@@ -10,7 +10,7 @@ argument-hint: "[fontes...]  (ex.: credito/ normativo_credito_v3.pdf)"
 
 Escanear **somente** as fontes que o consultor passou e **percorrê-las por inteiro**,
 estruturando o conhecimento extraído como um **Knowledge Vault** pronto para o Obsidian em
-`docs/cad/`: notas atômicas em Markdown, com **frontmatter YAML**, `[[links internos]]`,
+`docs/knowledge-vault/`: notas atômicas em Markdown, com **frontmatter YAML**, `[[links internos]]`,
 callouts e Mermaid, organizadas na taxonomia numerada `01…13`. Cada afirmação é rastreável
 até uma **nota de evidência** (`09 Evidence`). Tudo que não tem evidência clara vira uma
 nota em `11 Investigations`. **Este comando nunca gera artefato de técnica** (nada em
@@ -149,7 +149,7 @@ iii. **Aplicar a regra de evidência** (detalhe em `cad-doc-conventions`):
      investigação. (Conflito **entre** fatias/etapas é resolvido no reduce.)
    - Nota já validada por humano → **nunca sobrescreva**; conflito novo abre investigação
      `conflito_pós_validação`.
-iv. **Não tocar em nenhuma pasta de técnica.** Discovery escreve só em `docs/cad/`.
+iv. **Não tocar em nenhuma pasta de técnica.** Discovery escreve só em `docs/knowledge-vault/`.
 
 ## Saída ao final (por etapa e ao encerrar)
 

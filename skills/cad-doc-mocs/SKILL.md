@@ -1,6 +1,6 @@
 ---
 name: cad-doc-mocs
-description: Gerencia a pasta 13 MOCs do vault docs/cad/ — Maps of Content que funcionam como índices navegáveis do vault (MOC - Arquitetura, - Código, - Dados, - Integrações, - Processos, - Operação, - Evidências). Conectam notas relacionadas e facilitam a navegação. Invocado por /cad:discovery e /cad:backlog.
+description: Gerencia a pasta 13 MOCs do vault docs/knowledge-vault/ — Maps of Content que funcionam como índices navegáveis do vault (MOC - Arquitetura, - Código, - Dados, - Integrações, - Processos, - Operação, - Evidências). Conectam notas relacionadas e facilitam a navegação. Invocado por /cad:discovery e /cad:backlog.
 ---
 
 # cad-doc-mocs — MOCs (13) (substrato neutro)

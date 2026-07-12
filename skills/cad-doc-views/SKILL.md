@@ -1,6 +1,6 @@
 ---
 name: cad-doc-views
-description: Gerencia a pasta 12 Views do vault docs/cad/ — representações gráficas do sistema (diagramas Mermaid/PlantUML, fluxogramas, diagramas de arquitetura/dados/sequência, timelines). Uma mesma informação pode ter várias visões; cada View deriva de notas já evidenciadas e liga a elas. Invocado por /cad:discovery e /cad:backlog.
+description: Gerencia a pasta 12 Views do vault docs/knowledge-vault/ — representações gráficas do sistema (diagramas Mermaid/PlantUML, fluxogramas, diagramas de arquitetura/dados/sequência, timelines). Uma mesma informação pode ter várias visões; cada View deriva de notas já evidenciadas e liga a elas. Invocado por /cad:discovery e /cad:backlog.
 ---
 
 # cad-doc-views — Views (12) (substrato neutro)

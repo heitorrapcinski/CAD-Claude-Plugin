@@ -1,6 +1,6 @@
 ---
 name: cad-doc-decisions
-description: Gerencia a pasta 10 Decisions do vault docs/cad/ — conclusões da engenharia reversa: ADRs (decisões arquiteturais identificadas), premissas assumidas e hipóteses confirmadas. Notas Zettelkasten rastreadas por evidência. Invocado por /cad:discovery e /cad:backlog.
+description: Gerencia a pasta 10 Decisions do vault docs/knowledge-vault/ — conclusões da engenharia reversa: ADRs (decisões arquiteturais identificadas), premissas assumidas e hipóteses confirmadas. Notas Zettelkasten rastreadas por evidência. Invocado por /cad:discovery e /cad:backlog.
 ---
 
 # cad-doc-decisions — Decisions (10) (substrato neutro)

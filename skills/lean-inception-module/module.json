@@ -3,11 +3,11 @@
   "metodo_de_origem": "Lean Inception (Paulo Caroli)",
   "pasta_saida": "docs/lean-inception/",
   "entradas_substrato": [
-    "docs/cad/01 Overview/",
-    "docs/cad/02 Business Knowledge/",
-    "docs/cad/04 Behavioral Knowledge/",
-    "docs/cad/09 Evidence/",
-    "docs/cad/11 Investigations/"
+    "docs/knowledge-vault/01 Overview/",
+    "docs/knowledge-vault/02 Business Knowledge/",
+    "docs/knowledge-vault/04 Behavioral Knowledge/",
+    "docs/knowledge-vault/09 Evidence/",
+    "docs/knowledge-vault/11 Investigations/"
   ],
   "artefatos": [
     "vision.md",

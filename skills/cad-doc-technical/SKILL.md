@@ -1,6 +1,6 @@
 ---
 name: cad-doc-technical
-description: Gera as notas de Knowledge das pastas 05 Source Code (como foi implementado), 06 Data (que informações manipula), 07 Integrations (com quem se comunica) e 08 Operational Architecture (como opera em produção) do vault docs/cad/ — engenharia reversa de código, dados, integrações e arquitetura operacional. Notas Zettelkasten rastreadas por evidência. Invocado por /cad:discovery e /cad:backlog.
+description: Gera as notas de Knowledge das pastas 05 Source Code (como foi implementado), 06 Data (que informações manipula), 07 Integrations (com quem se comunica) e 08 Operational Architecture (como opera em produção) do vault docs/knowledge-vault/ — engenharia reversa de código, dados, integrações e arquitetura operacional. Notas Zettelkasten rastreadas por evidência. Invocado por /cad:discovery e /cad:backlog.
 ---
 
 # cad-doc-technical — Source Code · Data · Integrations · Operational Architecture (05–08)

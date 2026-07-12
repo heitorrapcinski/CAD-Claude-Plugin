@@ -3,13 +3,13 @@
   "metodo_de_origem": "Domain-Driven Design (Eric Evans)",
   "pasta_saida": "docs/ddd/",
   "entradas_substrato": [
-    "docs/cad/01 Overview/",
-    "docs/cad/02 Business Knowledge/",
-    "docs/cad/03 Structural Knowledge/",
-    "docs/cad/05 Source Code/",
-    "docs/cad/06 Data/",
-    "docs/cad/09 Evidence/",
-    "docs/cad/11 Investigations/"
+    "docs/knowledge-vault/01 Overview/",
+    "docs/knowledge-vault/02 Business Knowledge/",
+    "docs/knowledge-vault/03 Structural Knowledge/",
+    "docs/knowledge-vault/05 Source Code/",
+    "docs/knowledge-vault/06 Data/",
+    "docs/knowledge-vault/09 Evidence/",
+    "docs/knowledge-vault/11 Investigations/"
   ],
   "artefatos": [
     "subdomains.md",

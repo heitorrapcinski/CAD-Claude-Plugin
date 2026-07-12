@@ -3,12 +3,12 @@
   "metodo_de_origem": "Event Storming (Alberto Brandolini)",
   "pasta_saida": "docs/event-storming/",
   "entradas_substrato": [
-    "docs/cad/02 Business Knowledge/",
-    "docs/cad/03 Structural Knowledge/",
-    "docs/cad/04 Behavioral Knowledge/",
-    "docs/cad/07 Integrations/",
-    "docs/cad/09 Evidence/",
-    "docs/cad/11 Investigations/"
+    "docs/knowledge-vault/02 Business Knowledge/",
+    "docs/knowledge-vault/03 Structural Knowledge/",
+    "docs/knowledge-vault/04 Behavioral Knowledge/",
+    "docs/knowledge-vault/07 Integrations/",
+    "docs/knowledge-vault/09 Evidence/",
+    "docs/knowledge-vault/11 Investigations/"
   ],
   "artefatos": [
     "timeline.md",

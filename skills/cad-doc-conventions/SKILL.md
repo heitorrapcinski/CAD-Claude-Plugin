@@ -7,7 +7,7 @@ description: Convenção única do Knowledge Vault do CAD — schema de frontmat
 
 ## Objetivo
 
-Definir **como toda nota do substrato é escrita**, para que `docs/cad/` seja um
+Definir **como toda nota do substrato é escrita**, para que `docs/knowledge-vault/` seja um
 **Knowledge Vault** coeso e navegável no Obsidian: um conjunto de notas atômicas em
 Markdown, cada uma rastreável até uma evidência. Esta skill é a **fonte única** das
 convenções; as demais skills de substrato (`cad-doc-business`, `-system`, `-technical`,
@@ -15,7 +15,7 @@ convenções; as demais skills de substrato (`cad-doc-business`, `-system`, `-te
 apontam para cá em vez de repetir as regras.
 
 O vault é **independente de metodologia** (DDD, TOGAF, C4, UML…): descreve o sistema como
-ele realmente existe. Opinião de método vive **fora** de `docs/cad/`, nos módulos de
+ele realmente existe. Opinião de método vive **fora** de `docs/knowledge-vault/`, nos módulos de
 técnica (`/cad:synthesize`).
 
 ## Filosofia — Knowledge × Discovery
@@ -31,7 +31,7 @@ O vault separa **o conhecimento** do **processo que o produziu**:
 Toda nota de **Knowledge** idealmente aponta, via `source:`, para uma ou mais notas de
 **Evidence** (`09 Evidence`). É isso que torna o vault uma **Knowledge Base rastreável**.
 
-## Taxonomia (pastas `docs/cad/01…13`)
+## Taxonomia (pastas `docs/knowledge-vault/01…13`)
 
 A numeração é **guia** — pode variar por sistema; o que **não** varia é a separação
 Knowledge×Discovery e a exigência de frontmatter + rastreabilidade.
@@ -203,5 +203,5 @@ humana (via `/cad:backlog`) supera todas.
 ## Vocabulário proibido
 
 O substrato é **neutro**: nenhum conceito de técnica (bounded context, agregado, MVP,
-persona, jornada Lean, evento-pivô, linguagem ubíqua…) entra nas notas de `docs/cad/`.
+persona, jornada Lean, evento-pivô, linguagem ubíqua…) entra nas notas de `docs/knowledge-vault/`.
 Esses conceitos são opinião de método e vivem só nas pastas de técnica (`docs/<técnica>/`).

@@ -1,6 +1,6 @@
 ---
 name: cad-doc-business
-description: Gera as notas de Knowledge das pastas 01 Overview (o que é o sistema) e 02 Business Knowledge (por que existe) do vault docs/cad/ — visão geral, glossário, stakeholders, tecnologias; processos, capacidades, regras de negócio, papéis, eventos de negócio. Notas Zettelkasten neutras, rastreadas por evidência. Invocado por /cad:discovery e /cad:backlog.
+description: Gera as notas de Knowledge das pastas 01 Overview (o que é o sistema) e 02 Business Knowledge (por que existe) do vault docs/knowledge-vault/ — visão geral, glossário, stakeholders, tecnologias; processos, capacidades, regras de negócio, papéis, eventos de negócio. Notas Zettelkasten neutras, rastreadas por evidência. Invocado por /cad:discovery e /cad:backlog.
 ---
 
 # cad-doc-business — Overview & Business Knowledge (01–02)

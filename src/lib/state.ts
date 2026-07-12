@@ -25,7 +25,7 @@ export interface State {
   sessao_atual: number;
   plugin_versao: string;
   ultima_atualizacao: string;
-  /** Nº de notas abertas em docs/cad/11 Investigations (lacunas/conflitos pendentes). */
+  /** Nº de notas abertas em docs/knowledge-vault/11 Investigations (lacunas/conflitos pendentes). */
   investigacoes_abertas: number;
   historico: SessionEntry[];
 }

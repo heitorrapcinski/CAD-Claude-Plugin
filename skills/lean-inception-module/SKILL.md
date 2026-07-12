@@ -12,7 +12,7 @@ produto certo**: parte de uma visão de produto e, através de uma sequência de
 atividades colaborativas, chega ao escopo de um **MVP** (Produto Mínimo Viável).
 Neste plugin, a Lean Inception é o **primeiro consumidor** do substrato neutro do
 CAD: ela **não descobre** fatos — ela **sintetiza** os fatos já descobertos em
-`docs/cad/` nos artefatos do método.
+`docs/knowledge-vault/` nos artefatos do método.
 
 ## Contrato (ver `module.json`)
 

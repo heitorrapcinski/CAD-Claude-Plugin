@@ -24,7 +24,7 @@ Três comandos cobrem o ciclo:
 - **`/cad:discovery [fontes]`** — escaneia exatamente as fontes indicadas pelo
   consultor (código, documentação, normativos), percorrendo-as por inteiro, e estrutura o
   conhecimento como um **Knowledge Vault** (Zettelkasten/Obsidian) no **substrato neutro**
-  (`docs/cad/`): notas atômicas com frontmatter, distribuídas na taxonomia `01…13`
+  (`docs/knowledge-vault/`): notas atômicas com frontmatter, distribuídas na taxonomia `01…13`
   (Knowledge 01–08 · Discovery 09–13). Tudo que não tem evidência clara vira uma nota em
   `11 Investigations`.
 - **`/cad:synthesize <técnica> [escopo]`** — roda um **módulo de técnica**: lê o
@@ -55,7 +55,7 @@ os módulos o consomem, lendo as pastas do vault e citando as evidências por `[
    **descritivo e independente de método**. Opinião metodológica (priorizar,
    sequenciar, delimitar contextos, nomear eventos) vive **somente** nos módulos de
    técnica (`/cad:synthesize`).
-3. **Isolamento por técnica.** Cada módulo lê apenas `docs/cad/` (o substrato) e
+3. **Isolamento por técnica.** Cada módulo lê apenas `docs/knowledge-vault/` (o substrato) e
    escreve apenas a sua própria pasta `docs/<técnica>/`. **Nenhum módulo lê ou
    escreve artefatos de outra técnica.** A fidelidade ao método é garantida pela
    fronteira de pasta + skill, e reforçada por hook (seção 10).
@@ -239,7 +239,7 @@ embutido nos orquestradores, na pasta oculta `.cad-plugin/`:
 
 ### 3.2 Estrutura gerada no projeto do cliente (entregáveis)
 
-A separação substrato × método aparece diretamente na árvore de pastas. `docs/cad/`
+A separação substrato × método aparece diretamente na árvore de pastas. `docs/knowledge-vault/`
 é a base neutra; cada outra pasta de `docs/` pertence a uma técnica e contém
 **apenas** artefatos daquela técnica.
 
@@ -287,7 +287,7 @@ docs/
   # impact-mapping/ , user-story-mapping/ , ...  (consumidores futuros, seção 12)
 ```
 
-Cada técnica nova é uma pasta nova; o substrato `docs/cad/` é compartilhado por
+Cada técnica nova é uma pasta nova; o substrato `docs/knowledge-vault/` é compartilhado por
 todas. **Nunca** há conceito de uma técnica dentro da pasta de outra.
 
 ### 3.3 Modelo de execução da descoberta (cobertura total, faseada por valor)
@@ -348,7 +348,7 @@ paralelismo **não enfraquece** a disciplina de evidência nem a proteção de v
 |---|---|
 | `/cad:discovery [fontes]` | Registra as fontes em `sources.json` → escaneia apenas elas, por inteiro → captura a evidência em `09 Evidence` (via `cad-doc-evidence`) e materializa o conhecimento como notas do vault via `cad-doc-conventions` (backbone) + `cad-doc-business` (01–02), `cad-doc-system` (03–04), `cad-doc-technical` (05–08), `cad-doc-decisions` (10), `cad-doc-views` (12), `cad-doc-mocs` (13) → abre `cad-doc-investigations` (11) para lacunas/conflitos. **Não gera nenhum artefato de técnica.** Respeita a proteção de notas validadas por humano (princípio 7). |
 | `/cad:synthesize <técnica> [escopo]` | Carrega o manifesto do módulo da técnica (ex.: `lean-inception-module`) → valida que as pastas do vault em `entradas_substrato` têm notas suficientes (senão sugere `/cad:discovery` ou aponta as investigações abertas) → invoca os skills de documento daquele módulo, que **leem só as pastas do vault** e escrevem **só em `docs/<técnica>/`**, citando as evidências por `[[EV-…]]` → quando falta um fato no vault, abre `11 Investigations` (`consumidor/<técnica>`). A síntese **nunca** lê a fonte. |
-| `/cad:backlog [nota...]` | Invoca `cad-doc-investigations` para listar as investigações abertas (`11 Investigations`), filtradas por título quando informado; sem argumento, lista todas abertas → formulário de perguntas → grava resposta como evidência "Validação Humana" em `09 Evidence` (via `cad-doc-evidence`, sob `CAD_BACKLOG_FLOW=1`) → propaga a atualização às notas afetadas, no substrato (`docs/cad/`) ou no módulo da técnica indicada. |
+| `/cad:backlog [nota...]` | Invoca `cad-doc-investigations` para listar as investigações abertas (`11 Investigations`), filtradas por título quando informado; sem argumento, lista todas abertas → formulário de perguntas → grava resposta como evidência "Validação Humana" em `09 Evidence` (via `cad-doc-evidence`, sob `CAD_BACKLOG_FLOW=1`) → propaga a atualização às notas afetadas, no substrato (`docs/knowledge-vault/`) ou no módulo da técnica indicada. |
 
 Não há comando separado para vocabulário/glossário ou relatório de cobertura:
 conflito de definição é um tipo de item de backlog; o status de cobertura é saída
@@ -376,11 +376,11 @@ barrados nestes artefatos). O `module.json` do módulo Lean Inception:
   "metodo_de_origem": "Lean Inception (Paulo Caroli)",
   "pasta_saida": "docs/lean-inception/",
   "entradas_substrato": [
-    "docs/cad/01 Overview/",
-    "docs/cad/02 Business Knowledge/",
-    "docs/cad/04 Behavioral Knowledge/",
-    "docs/cad/09 Evidence/",
-    "docs/cad/11 Investigations/"
+    "docs/knowledge-vault/01 Overview/",
+    "docs/knowledge-vault/02 Business Knowledge/",
+    "docs/knowledge-vault/04 Behavioral Knowledge/",
+    "docs/knowledge-vault/09 Evidence/",
+    "docs/knowledge-vault/11 Investigations/"
   ],
   "artefatos": [
     "vision.md",
@@ -415,13 +415,13 @@ entidades/objetos de valor/atributos/relações) e os **módulos de código** (`
   "metodo_de_origem": "Domain-Driven Design (Eric Evans)",
   "pasta_saida": "docs/ddd/",
   "entradas_substrato": [
-    "docs/cad/01 Overview/",
-    "docs/cad/02 Business Knowledge/",
-    "docs/cad/03 Structural Knowledge/",
-    "docs/cad/05 Source Code/",
-    "docs/cad/06 Data/",
-    "docs/cad/09 Evidence/",
-    "docs/cad/11 Investigations/"
+    "docs/knowledge-vault/01 Overview/",
+    "docs/knowledge-vault/02 Business Knowledge/",
+    "docs/knowledge-vault/03 Structural Knowledge/",
+    "docs/knowledge-vault/05 Source Code/",
+    "docs/knowledge-vault/06 Data/",
+    "docs/knowledge-vault/09 Evidence/",
+    "docs/knowledge-vault/11 Investigations/"
   ],
   "artefatos": [
     "subdomains.md",
@@ -452,12 +452,12 @@ O terceiro módulo, o Event Storming, também instancia o contrato. Ele consome 
   "metodo_de_origem": "Event Storming (Alberto Brandolini)",
   "pasta_saida": "docs/event-storming/",
   "entradas_substrato": [
-    "docs/cad/02 Business Knowledge/",
-    "docs/cad/03 Structural Knowledge/",
-    "docs/cad/04 Behavioral Knowledge/",
-    "docs/cad/07 Integrations/",
-    "docs/cad/09 Evidence/",
-    "docs/cad/11 Investigations/"
+    "docs/knowledge-vault/02 Business Knowledge/",
+    "docs/knowledge-vault/03 Structural Knowledge/",
+    "docs/knowledge-vault/04 Behavioral Knowledge/",
+    "docs/knowledge-vault/07 Integrations/",
+    "docs/knowledge-vault/09 Evidence/",
+    "docs/knowledge-vault/11 Investigations/"
   ],
   "artefatos": [
     "timeline.md",
@@ -492,7 +492,7 @@ O terceiro módulo, o Event Storming, também instancia o contrato. Ele consome 
 Regras do contrato (válidas para todo módulo):
 
 1. **Lê só o substrato.** As únicas entradas permitidas são as **pastas do vault**
-   (`docs/cad/…`) listadas em `entradas_substrato`. O módulo **não** lê `docs/` de
+   (`docs/knowledge-vault/…`) listadas em `entradas_substrato`. O módulo **não** lê `docs/` de
    outra técnica.
 2. **Escreve só na própria pasta.** Toda saída vai para `pasta_saida`. Tentativa de
    escrever fora dela é bloqueada por hook (seção 10).
@@ -526,7 +526,7 @@ fonte (código/doc/norma)
 > fonte: abre uma nota em `11 Investigations` (`consumidor/<técnica>`). Ampliar o vault é
 > papel exclusivo da `/cad:discovery`, que já front-carrega as estruturas de dados
 > (`03 Structural`/`06 Data`) na maior profundidade. Isso mantém o isolamento intacto (o
-> módulo **nunca** escreve `docs/cad/`) e a auditabilidade (todo fato cita um `[[EV-…]]`).
+> módulo **nunca** escreve `docs/knowledge-vault/`) e a auditabilidade (todo fato cita um `[[EV-…]]`).
 
 ---
 
@@ -610,7 +610,7 @@ ser autossuficiente em runtime (não depende deste documento). Este documento de
 
 | Pasta | Técnica | Templates canônicos em |
 |---|---|---|
-| `docs/cad/` | substrato neutro (Knowledge Vault) | `skills/cad-doc-*/SKILL.md` — conventions, business, system, technical, evidence, decisions, investigations, views, mocs |
+| `docs/knowledge-vault/` | substrato neutro (Knowledge Vault) | `skills/cad-doc-*/SKILL.md` — conventions, business, system, technical, evidence, decisions, investigations, views, mocs |
 | `docs/lean-inception/` | Lean Inception | `skills/lean-inception-doc-*/SKILL.md` |
 | `docs/ddd/` | DDD | `skills/ddd-doc-*/SKILL.md` |
 | `docs/event-storming/` | Event Storming | `skills/event-storming-doc-*/SKILL.md` |
@@ -635,7 +635,7 @@ As decisões estruturais que sustentam o resto do documento (o *porquê* de cada
 1. **Reposicionamento:** o plugin é o **CAD** (metodologia de descoberta), e a Lean
    Inception é o **primeiro consumidor**, não o teto da proposta.
 2. **Três comandos:** `/cad:discovery`, `/cad:synthesize <técnica>`, `/cad:backlog`.
-3. **Substrato neutro × módulos de técnica:** `docs/cad/` guarda conhecimento
+3. **Substrato neutro × módulos de técnica:** `docs/knowledge-vault/` guarda conhecimento
    descritivo; `docs/<técnica>/` guarda artefatos opinativos de um método só.
 4. **Isolamento por técnica** é princípio não-negociável (princípio 3),
    reforçado por hook: módulo lê só o substrato, escreve só na própria pasta, e tem
@@ -721,14 +721,14 @@ para ler o `module.json` de cada técnica).
 
 | Hook | Evento | Função |
 |---|---|---|
-| **Validação de evidência** | `PostToolUse`, matcher `Write\|Edit` | **Dois modos.** Em `docs/cad/**/*.md` (vault): exige frontmatter YAML e, nas notas de conhecimento (01–10), um `source:` não-vazio (escalar ou lista YAML) — isentas as pastas de navegação/backlog `11 Investigations`, `12 Views` e `13 MOCs`. Em `docs/<técnica>/*.md` (artefato de técnica, um nível): exige que todo bloco factual cite `[[EV-…]]` (contém `EV-…`) ou marque `Pendente`. Bloqueia (exit 2) com o motivo — reforça o princípio 1. |
+| **Validação de evidência** | `PostToolUse`, matcher `Write\|Edit` | **Dois modos.** Em `docs/knowledge-vault/**/*.md` (vault): exige frontmatter YAML e, nas notas de conhecimento (01–10), um `source:` não-vazio (escalar ou lista YAML) — isentas as pastas de navegação/backlog `11 Investigations`, `12 Views` e `13 MOCs`. Em `docs/<técnica>/*.md` (artefato de técnica, um nível): exige que todo bloco factual cite `[[EV-…]]` (contém `EV-…`) ou marque `Pendente`. Bloqueia (exit 2) com o motivo — reforça o princípio 1. |
 | **Proteção de validação humana** | `PreToolUse`, matcher `Write\|Edit`, filtrado a `docs/**/*.md` | Bloqueia remoção/sobrescrita de nota/bloco com origem "validação humana" (frase de fonte ou `status: validated` no frontmatter) fora de `/cad:backlog` (`CAD_BACKLOG_FLOW=1`) — reforça o princípio 7. |
 | **Isolamento por técnica** | `PreToolUse`, matcher `Write\|Edit` | Lê o `module.json` do módulo em execução e bloqueia se: (a) a escrita for fora de `pasta_saida`; ou (b) o conteúdo contiver algum termo de `vocabulario_proibido` — reforça o princípio 3 (não-misturar técnicas). |
 
 > **Substrato só é escrito pela descoberta.** Um skill de **módulo** que tente escrever em
-> `docs/cad/` é bloqueado pelo hook de isolamento — é exatamente a violação que ele existe
+> `docs/knowledge-vault/` é bloqueado pelo hook de isolamento — é exatamente a violação que ele existe
 > para impedir. O módulo escreve só em `docs/<técnica>/`; a descoberta (`cad-doc-*`), só em
-> `docs/cad/`.
+> `docs/knowledge-vault/`.
 
 ---
 

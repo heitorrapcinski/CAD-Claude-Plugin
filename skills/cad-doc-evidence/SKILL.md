@@ -1,6 +1,6 @@
 ---
 name: cad-doc-evidence
-description: Gerencia a pasta 09 Evidence do vault docs/cad/ — notas de evidência (EV-XXX) que guardam o artefato real (trecho de código, SQL, log, print, entrevista, config) que sustenta cada afirmação, mais o MOC "Registro de Evidências" em 13 MOCs. É a âncora de rastreabilidade: toda nota de Knowledge aponta para cá via source:. Invocado por /cad:discovery, /cad:synthesize e /cad:backlog.
+description: Gerencia a pasta 09 Evidence do vault docs/knowledge-vault/ — notas de evidência (EV-XXX) que guardam o artefato real (trecho de código, SQL, log, print, entrevista, config) que sustenta cada afirmação, mais o MOC "Registro de Evidências" em 13 MOCs. É a âncora de rastreabilidade: toda nota de Knowledge aponta para cá via source:. Invocado por /cad:discovery, /cad:synthesize e /cad:backlog.
 ---
 
 # cad-doc-evidence — Evidence (09) + Registro de Evidências (substrato neutro)

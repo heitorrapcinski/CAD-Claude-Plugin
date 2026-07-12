@@ -7,8 +7,8 @@
 // Sem técnica ativa declarada, associa o destino pela pasta e ainda assim aplica
 // o veto de vocabulário. Zero dependências em runtime.
 //
-// O substrato (docs/cad/) é escrito só pela DESCOBERTA. Um skill de MÓDULO que tente
-// escrever docs/cad/ é a violação que o hook existe para impedir, e é bloqueado.
+// O substrato (docs/knowledge-vault/) é escrito só pela DESCOBERTA. Um skill de MÓDULO que tente
+// escrever docs/knowledge-vault/ é a violação que o hook existe para impedir, e é bloqueado.
 
 import { loadAllContracts, outputPrefix, ModuleContract } from "../lib/manifest.js";
 
@@ -121,11 +121,11 @@ async function main(): Promise<void> {
       const prefix = outputPrefix(contract);
       // (a) módulo ativo escrevendo fora da própria pasta_saida.
       if (!rel.startsWith(prefix + "/")) {
-        if (rel.startsWith("docs/cad/")) {
+        if (rel.startsWith("docs/knowledge-vault/")) {
           // Substrato neutro: NÃO é território de módulo. Só a descoberta o escreve.
           block(
             rel,
-            `módulo ativo "${active}" tentou escrever no substrato (docs/cad/) — ` +
+            `módulo ativo "${active}" tentou escrever no substrato (docs/knowledge-vault/) — ` +
               `só a descoberta escreve o substrato`,
             [],
           );

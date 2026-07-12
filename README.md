@@ -13,7 +13,7 @@ esse conhecimento em artefatos fiéis a métodos específicos — **Lean Incepti
 
 O CAD separa **descoberta** de **método**:
 
-- **Substrato neutro = Knowledge Vault** (`docs/cad/`) — conhecimento descritivo,
+- **Substrato neutro = Knowledge Vault** (`docs/knowledge-vault/`) — conhecimento descritivo,
   independente de metodologia, estruturado como **notas Zettelkasten prontas para o
   Obsidian** numa taxonomia numerada `01…13`, dividida em **Knowledge (01–08)** — o que é /
   por que existe / do que é composto / como funciona / como foi implementado / como opera —
@@ -44,7 +44,7 @@ fonte**: quando falta um fato no vault, o módulo abre uma nota em `11 Investiga
 
 | Comando | Função |
 |---|---|
-| `/cad:discovery [fontes]` | Registra as fontes em `.cad-plugin/sources.json`, escaneia só elas por inteiro e estrutura o conhecimento como um Knowledge Vault Zettelkasten em `docs/cad/` (notas `01…13` com frontmatter e `[[links]]`). Abre notas em `11 Investigations` para o que não tem evidência e exibe as investigações abertas ao final. |
+| `/cad:discovery [fontes]` | Registra as fontes em `.cad-plugin/sources.json`, escaneia só elas por inteiro e estrutura o conhecimento como um Knowledge Vault Zettelkasten em `docs/knowledge-vault/` (notas `01…13` com frontmatter e `[[links]]`). Abre notas em `11 Investigations` para o que não tem evidência e exibe as investigações abertas ao final. |
 | `/cad:synthesize <técnica> [escopo]` | Roda um módulo de técnica (`lean-inception` \| `ddd` \| `event-storming`, descoberto dinamicamente pelo `module.json`): lê as pastas do vault e gera os artefatos da técnica em `docs/<técnica>/`, citando as evidências por `[[EV-…]]`. Lacuna de síntese vira nota em `11 Investigations` (`consumidor/<técnica>`); a síntese nunca lê a fonte. |
 | `/cad:backlog [nota...]` | Apresenta as investigações abertas (`11 Investigations`) em formulário, grava a resposta como evidência "Validação Humana" em `09 Evidence` e propaga a atualização às notas afetadas. |
 
@@ -77,9 +77,9 @@ Compilados para `build/hooks/*.cjs` e referenciados em
 
 | Hook | Evento | Função |
 |---|---|---|
-| `validate-evidence` | `PostToolUse` `Write\|Edit` | **Dois modos.** Em `docs/cad/**` (vault) exige frontmatter com `source:` não-vazio (isentas `11 Investigations`/`12 Views`/`13 MOCs`); em `docs/<técnica>/*.md` (legado) mantém o cheque inline `[Fonte: EV-XXX]`/`[⚠️ Pendente: BL-XXX]` (princípio 1). |
+| `validate-evidence` | `PostToolUse` `Write\|Edit` | **Dois modos.** Em `docs/knowledge-vault/**` (vault) exige frontmatter com `source:` não-vazio (isentas `11 Investigations`/`12 Views`/`13 MOCs`); em `docs/<técnica>/*.md` (legado) mantém o cheque inline `[Fonte: EV-XXX]`/`[⚠️ Pendente: BL-XXX]` (princípio 1). |
 | `protect-human-validation` | `PreToolUse` `Write\|Edit` | Impede remover/sobrescrever nota/bloco de origem "validação humana" (frase ou `status: validated`) fora de `/cad:backlog` (princípio 7). Exceção sinalizada por `CAD_BACKLOG_FLOW=1`. |
-| `technique-isolation` | `PreToolUse` `Write\|Edit` | Bloqueia escrita fora da `pasta_saida` ou com termo do `vocabulario_proibido` (princípio 3). Técnica ativa opcional via `CAD_ACTIVE_TECHNIQUE`. Um skill de **módulo** que tente escrever `docs/cad/` é bloqueado — só a descoberta escreve o substrato. |
+| `technique-isolation` | `PreToolUse` `Write\|Edit` | Bloqueia escrita fora da `pasta_saida` ou com termo do `vocabulario_proibido` (princípio 3). Técnica ativa opcional via `CAD_ACTIVE_TECHNIQUE`. Um skill de **módulo** que tente escrever `docs/knowledge-vault/` é bloqueado — só a descoberta escreve o substrato. |
 
 ## Entregáveis gerados no repositório do cliente
 

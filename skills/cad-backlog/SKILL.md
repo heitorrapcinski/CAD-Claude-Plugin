@@ -1,6 +1,6 @@
 ---
 name: cad-backlog
-description: Orquestrador /cad:backlog [nota...] — apresenta as investigações abertas (11 Investigations) em formulário ao consultor, grava a resposta como evidência "Validação Humana" (a mais forte de todas) e propaga a atualização às notas afetadas, no substrato (docs/cad/) ou no módulo da técnica indicada.
+description: Orquestrador /cad:backlog [nota...] — apresenta as investigações abertas (11 Investigations) em formulário ao consultor, grava a resposta como evidência "Validação Humana" (a mais forte de todas) e propaga a atualização às notas afetadas, no substrato (docs/knowledge-vault/) ou no módulo da técnica indicada.
 argument-hint: "[nota...]  (ex.: \"Alçadas de Aprovação\"; sem argumento lista todas as abertas)"
 ---
 
@@ -20,9 +20,9 @@ sobre essas notas.
 
 - **Argumento `[nota...]`** (opcional) — títulos/aliases de investigações específicas. Sem
   argumento, lista **todas** as investigações abertas (`status: open`/`conflicting`).
-- `docs/cad/11 Investigations/` — as notas de pendência (via
+- `docs/knowledge-vault/11 Investigations/` — as notas de pendência (via
   [`cad-doc-investigations`](../cad-doc-investigations/SKILL.md)).
-- As notas afetadas (linkadas em **Afeta**), no substrato (`docs/cad/`) ou no módulo da
+- As notas afetadas (linkadas em **Afeta**), no substrato (`docs/knowledge-vault/`) ou no módulo da
   técnica (indicado pela tag `consumidor/<técnica>`).
 
 ## Procedimento

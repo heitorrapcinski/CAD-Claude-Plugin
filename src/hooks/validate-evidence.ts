@@ -2,7 +2,7 @@
 //
 // Reforça o princípio "sem evidência, sem afirmação". Opera em dois modos:
 //
-//   (1) Vault Zettelkasten — docs/cad/**/*.md (Knowledge Base rastreável). Toda nota
+//   (1) Vault Zettelkasten — docs/knowledge-vault/**/*.md (Knowledge Base rastreável). Toda nota
 //       precisa de frontmatter YAML, e as notas de conhecimento precisam de um campo
 //       `source:` não-vazio (a rastreabilidade agora vive no frontmatter, apontando
 //       para uma nota de 09 Evidence). Exceções (fonte opcional): as pastas de
@@ -38,7 +38,7 @@ function docsRelative(p: string): string | null {
   return m ? m[1] : null;
 }
 
-// ── Modo 1: vault Zettelkasten (docs/cad/**) ──────────────────────────────────
+// ── Modo 1: vault Zettelkasten (docs/knowledge-vault/**) ──────────────────────────────────
 
 // Pastas do vault isentas do campo `source:` (índices, visões, backlog de dúvidas).
 const SOURCE_EXEMPT = new Set(["11 Investigations", "12 Views", "13 MOCs"]);
@@ -85,9 +85,9 @@ function hasSourceValue(fm: string[]): boolean {
   return false;
 }
 
-/** Pasta imediatamente sob docs/cad/ (ex.: "03 Structural Knowledge"). */
+/** Pasta imediatamente sob docs/knowledge-vault/ (ex.: "03 Structural Knowledge"). */
 function vaultFolder(rel: string): string {
-  const rest = rel.slice("docs/cad/".length);
+  const rest = rel.slice("docs/knowledge-vault/".length);
   const slash = rest.indexOf("/");
   return slash < 0 ? "" : rest.slice(0, slash);
 }
@@ -179,8 +179,8 @@ async function main(): Promise<void> {
   const rel = docsRelative(fp);
   if (!rel || !rel.endsWith(".md")) process.exit(0);
 
-  const isVault = rel.startsWith("docs/cad/");
-  // artefato de técnica: docs/<dir>/<arquivo>.md (um nível), fora de docs/cad/.
+  const isVault = rel.startsWith("docs/knowledge-vault/");
+  // artefato de técnica: docs/<dir>/<arquivo>.md (um nível), fora de docs/knowledge-vault/.
   const isTechnique = !isVault && /^docs\/[^/]+\/[^/]+\.md$/.test(rel);
   if (!isVault && !isTechnique) process.exit(0);
 
