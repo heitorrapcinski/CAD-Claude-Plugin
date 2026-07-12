@@ -85,7 +85,7 @@ Compilados para `build/hooks/*.cjs` e referenciados em
 
 ```
 docs/
-  cad/            # Knowledge Vault (Zettelkasten/Obsidian) — notas com frontmatter
+  knowledge-vault/             # Knowledge Vault (Zettelkasten/Obsidian) — notas com frontmatter
     01 Overview/               09 Evidence/
     02 Business Knowledge/     10 Decisions/
     03 Structural Knowledge/   11 Investigations/   (substitui o backlog)
