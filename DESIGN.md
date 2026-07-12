@@ -713,7 +713,7 @@ As decisões estruturais que sustentam o resto do documento (o *porquê* de cada
 
 ## 10. Hooks (enforcement determinístico)
 
-Em `hooks/hooks.json`, carregados quando o plugin está habilitado. Os três hooks são
+Em `hooks/hooks.json`, carregados quando o plugin está habilitado. Os quatro hooks são
 TypeScript (`src/hooks/*.ts`) compilados para `.cjs` autossuficientes (ver seção 11)
 e referenciados como `node ${CLAUDE_PLUGIN_ROOT}/build/hooks/<hook>.cjs`. Não têm
 dependência em runtime — usam só a stdlib do Node e `JSON.parse` nativo (inclusive
@@ -724,6 +724,7 @@ para ler o `module.json` de cada técnica).
 | **Validação de evidência** | `PostToolUse`, matcher `Write\|Edit` | **Dois modos.** Em `docs/knowledge-vault/**/*.md` (vault): exige frontmatter YAML e, nas notas de conhecimento (01–10), um `source:` não-vazio (escalar ou lista YAML) — isentas as pastas de navegação/backlog `11 Investigations`, `12 Views` e `13 MOCs`. Em `docs/<técnica>/*.md` (artefato de técnica, um nível): exige que todo bloco factual cite `[[EV-…]]` (contém `EV-…`) ou marque `Pendente`. Bloqueia (exit 2) com o motivo — reforça o princípio 1. |
 | **Proteção de validação humana** | `PreToolUse`, matcher `Write\|Edit`, filtrado a `docs/**/*.md` | Bloqueia remoção/sobrescrita de nota/bloco com origem "validação humana" (frase de fonte ou `status: validated` no frontmatter) fora de `/cad:backlog` (`CAD_BACKLOG_FLOW=1`) — reforça o princípio 7. |
 | **Isolamento por técnica** | `PreToolUse`, matcher `Write\|Edit` | Lê o `module.json` do módulo em execução e bloqueia se: (a) a escrita for fora de `pasta_saida`; ou (b) o conteúdo contiver algum termo de `vocabulario_proibido` — reforça o princípio 3 (não-misturar técnicas). |
+| **Sintaxe do Obsidian** | `PostToolUse`, matcher `Write\|Edit`, filtrado a `docs/**/*.md` | Lint incremental de armadilhas de sintaxe que quebram o render/grafo **silenciosamente** (o Obsidian não acusa erro): pipe do alias não escapado em `[[…\|…]]` dentro de tabela, wikilink/embed não fechado, frontmatter aberto sem fechar, cerca de código ímpar. Não valida "a linguagem toda" — coleção curada de invariantes de alta precisão, extensível pela lista `RULES`. Bloqueia (exit 2) com linha e dica de correção. |
 
 > **Substrato só é escrito pela descoberta.** Um skill de **módulo** que tente escrever em
 > `docs/knowledge-vault/` é bloqueado pelo hook de isolamento — é exatamente a violação que ele existe
@@ -780,6 +781,7 @@ cad-claude-plugin/
 ├── src/
 │   ├── hooks/
 │   │   ├── validate-evidence.ts
+│   │   ├── validate-obsidian-syntax.ts
 │   │   ├── protect-human-validation.ts
 │   │   └── technique-isolation.ts
 │   └── lib/

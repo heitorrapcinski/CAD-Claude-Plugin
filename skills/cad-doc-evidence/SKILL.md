@@ -53,7 +53,11 @@ Tipos de fonte: `Normativo`, `Corporativo`, `Código`, `Informal`, `Validação 
 
 ## MOC "Registro de Evidências" (`13 MOCs/Registro de Evidências.md`)
 
-Índice navegável de todas as evidências, agrupadas por `SRC`, com marcação de conflitos:
+Índice navegável de todas as evidências, agrupadas por `SRC`, com marcação de conflitos.
+O template abaixo usa **lista com marcador** — nela o pipe do alias (`[[título|código]]`) é
+inofensivo. **Se optar por montar o MOC como tabela** (ex.: colunas ID/Resumo/Localização),
+**escape o pipe do alias como `\|`** dentro das células — senão o `|` é lido como separador
+de coluna, o link quebra e as colunas deslocam (ver [convenções](../cad-doc-conventions/SKILL.md)):
 
 ```markdown
 ---

@@ -145,6 +145,10 @@ frontmatter pode **não resolver** e vira um **nó órfão** no grafo. Por isso:
   definido, o link pode ficar órfão.
 - Como as evidências são **imutáveis**, o título completo é **estável** — o link não quebra.
 - Vale para o `source:` do frontmatter, para o corpo das notas e para os MOCs.
+- **Dentro de célula de tabela, escape o pipe do alias como `\|`** — em tabela Markdown o `|`
+  é separador de coluna, então um link com alias não escapado quebra a célula e o link vira
+  texto cru. Em tabela: `| [[EV-5-a2-007 · Aprovação exige duas alçadas\|EV-5-a2-007]] | … |`.
+  Fora de tabela (listas, corpo, frontmatter), use `|` normal.
 - **Várias evidências no `source:` → use uma lista YAML**, um link por item. Vários
   `[[...]]` **numa mesma string não funcionam** (o Obsidian não separa e perde os links):
 

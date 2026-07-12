@@ -90,6 +90,17 @@ engenharia reversa de um System of Record. Skills do substrato: **7 → 9**.
   YAML** (um link por item). O hook `validate-evidence` foi ajustado para reconhecer
   `source:` tanto na forma **escalar** quanto em **lista YAML** — antes, a lista deixava o
   valor inline vazio e a nota era bloqueada indevidamente.
+- **Pipe do alias não escapado em wikilink dentro de tabela.** Num MOC montado como tabela,
+  `[[título|código]]` numa célula quebrava o render: em tabela Markdown o `|` é separador de
+  coluna, então o link virava texto cru e as colunas deslocavam (observado no MOC "Registro
+  de Evidências"). A convenção mandava a forma com alias, mas só exemplificava em **lista**,
+  onde o `|` é inofensivo — a interseção "alias dentro de tabela" nunca fora coberta. Regra
+  adicionada em `cad-doc-conventions` e `cad-doc-evidence`: **em célula de tabela, escape o
+  pipe como `\|`** (`[[título\|código]]`); fora de tabela, `|` normal. Como rede de segurança,
+  novo hook **PostToolUse `validate-obsidian-syntax`** — lint incremental de sintaxe do
+  Obsidian que quebra o render silenciosamente (pipe-em-tabela, wikilink/embed não fechado,
+  frontmatter aberto sem fechar, cerca de código ímpar), bloqueando (exit 2) `docs/**/*.md`
+  malformado para o próprio Claude corrigir.
 
 ### Removido
 

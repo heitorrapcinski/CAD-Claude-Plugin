@@ -20,6 +20,7 @@ const pkg = JSON.parse(
 
 const hooks = [
   "src/hooks/validate-evidence.ts",
+  "src/hooks/validate-obsidian-syntax.ts",
   "src/hooks/protect-human-validation.ts",
   "src/hooks/technique-isolation.ts",
 ];
