@@ -13,9 +13,10 @@ e os **Objetivos do produto**. Responde "que produto é este, para quem e por qu
 
 ## Entradas
 
-Lê **apenas** o substrato CAD: `knowledge-base.md`, `vocabulary.md`,
-`business-rules.md`, `capabilities.md` e `evidence-log.md` (para as `EV-XXX`).
-Escreve apenas em `docs/lean-inception/`.
+Lê **apenas** o substrato CAD (Knowledge Vault): `01 Overview/` (o que é / glossário),
+`02 Business Knowledge/` (problema, benefício, objetivos) e as notas de **evidência**
+(`09 Evidence/`). Escreve apenas em `docs/lean-inception/`. Cada bloco factual cita a
+evidência por `[[EV-… · resumo|EV-…]]`.
 
 ## Templates (copiar fielmente)
 
@@ -24,16 +25,16 @@ Escreve apenas em `docs/lean-inception/`.
 ```markdown
 # Visão do Produto — [Nome]
 
-Para [cliente final] [Fonte: EV-XXX]
-cujo [problema que precisa ser resolvido] [Fonte: EV-XXX]
+Para [cliente final] [[EV-… · resumo|EV-…]]
+cujo [problema que precisa ser resolvido] [[EV-… · resumo|EV-…]]
 o [nome do produto]
 é um [categoria do produto]
-que [benefício-chave, razão para adquiri-lo] [Fonte: EV-XXX]
+que [benefício-chave, razão para adquiri-lo] [[EV-… · resumo|EV-…]]
 diferentemente de [alternativa da concorrência]
-o nosso produto [diferença-chave] [Fonte: EV-XXX]
+o nosso produto [diferença-chave] [[EV-… · resumo|EV-…]]
 
 ## Lacunas
-[⚠️ Pendente: BL-XXX] — [lacuna para fechar a frase]
+[⚠️ Pendente: [[Investigação - …]]] — [lacuna para fechar a frase]
 ```
 
 ### `product-enfn.md` — É / Não é / Faz / Não faz
@@ -45,11 +46,11 @@ o nosso produto [diferença-chave] [Fonte: EV-XXX]
 
 | É (substantivo/adjetivo) | Não é |
 |---|---|
-| [característica] [Fonte: EV-XXX] | [...] [Fonte: EV-XXX] |
+| [característica] [[EV-… · resumo|EV-…]] | [...] [[EV-… · resumo|EV-…]] |
 
 | Faz (verbo/ação) | Não faz |
 |---|---|
-| [ação] [Fonte: EV-XXX] | [...] [Fonte: EV-XXX] |
+| [ação] [[EV-… · resumo|EV-…]] | [...] [[EV-… · resumo|EV-…]] |
 ```
 
 ### `objectives.md` — Objetivos do produto (3 principais) + trade-offs (opcional)
@@ -57,9 +58,9 @@ o nosso produto [diferença-chave] [Fonte: EV-XXX]
 ```markdown
 # Objetivos do Produto — [Nome]
 
-1. [Objetivo de negócio] [Fonte: EV-XXX]
-2. [Objetivo de negócio] [Fonte: EV-XXX]
-3. [Objetivo de negócio] [Fonte: EV-XXX]
+1. [Objetivo de negócio] [[EV-… · resumo|EV-…]]
+2. [Objetivo de negócio] [[EV-… · resumo|EV-…]]
+3. [Objetivo de negócio] [[EV-… · resumo|EV-…]]
 
 ## Trade-offs (opcional)
 | Categoria | Nível de importância (1 = menos importante) |
@@ -70,8 +71,8 @@ o nosso produto [diferença-chave] [Fonte: EV-XXX]
 
 ## Como preencher
 
-- Cada linha da Visão e cada célula da tabela carregam `[Fonte: EV-XXX]`; o que
-  não houver evidência vira `[⚠️ Pendente: BL-XXX]` (consumidor: `lean-inception`)
+- Cada linha da Visão e cada célula da tabela carregam `[[EV-… · resumo|EV-…]]`; o que
+  não houver evidência vira `[⚠️ Pendente: [[Investigação - …]]]` (consumidor: `lean-inception`)
   — em `vision.md`, liste-as na seção **Lacunas**.
 - **É** com substantivos/adjetivos; **Faz** com verbos/ações — respeite a dica.
 - Objetivos: prefira **3 principais**, de negócio, derivados do substrato.

@@ -14,9 +14,9 @@ emitem ou consomem eventos do fluxo. São apenas **candidatos** — insumo para 
 
 ## Entradas
 
-Lê **apenas** o substrato CAD: `knowledge-base.md`, `evidence-log.md` e
-`capabilities.md` (sistemas). Usa os eventos-pivô de `timeline.md` (deste módulo).
-Escreve apenas em `docs/event-storming/`.
+Lê **apenas** o substrato CAD (Knowledge Vault): `07 Integrations/` (sistemas externos),
+`04 Behavioral Knowledge/` (eventos) e as notas de **evidência** (`09 Evidence/`). Usa os
+eventos-pivô de `timeline.md` (deste módulo). Escreve apenas em `docs/event-storming/`.
 
 ## Template (copiar fielmente)
 
@@ -29,27 +29,28 @@ Escreve apenas em `docs/event-storming/`.
 
 | Contexto candidato | Eventos incluídos | Delimitado até o pivô | Evidência |
 |---|---|---|---|
-| Captação de Pedidos | Pedido Registrado, … | "Pagamento Aprovado" | → EV-071, EV-072 |
+| Captação de Pedidos | Pedido Registrado, … | "Pagamento Aprovado" | [[EV-5-a4-071 · POST /orders|EV-5-a4-071]], [[EV-5-a7-072 · Fila payments.approved|EV-5-a7-072]] |
 
 ## Sistemas externos
 > Sistemas externos (rosa) que emitem ou consomem eventos do fluxo.
 
 | Sistema externo | Emite / Consome | Evento(s) | Evidência |
 |---|---|---|---|
-| Gateway de Pagamento | emite | Pagamento Aprovado / Recusado | → EV-072 |
+| Gateway de Pagamento | emite | Pagamento Aprovado / Recusado | [[EV-5-a7-072 · Fila payments.approved|EV-5-a7-072]] |
 ```
 
 ## Como preencher
 
 - **Contextos candidatos:** agrupe os eventos da `timeline.md` **entre** dois
-  eventos-pivô; o pivô que fecha o grupo é a fronteira candidata. Cite as `EV-XXX`
-  dos eventos incluídos. São **candidatos** — o DDD decide a fronteira final.
+  eventos-pivô; o pivô que fecha o grupo é a fronteira candidata. Cite as evidências
+  (`[[EV-…|EV-…]]`) dos eventos incluídos. São **candidatos** — o DDD decide a fronteira final.
 - **Sistemas externos:** liste quem **emite** ou **consome** eventos do fluxo
-  (gateways, filas de terceiros, integrações), com o(s) evento(s) e `EV-XXX`.
-- **Lacuna de detalhe fino** (ex.: falta confirmar qual sistema emite um evento, e
-  um `EV` já aponta à integração): **não infira em silêncio**. Sinalize com o
-  **ponteiro de `EV`** para o orquestrador aprofundar; fonte nova →
-  `[⚠️ Pendente: BL-XXX]` (consumidor: event-storming).
+  (gateways, filas de terceiros, integrações) — a partir de `07 Integrations/` — com o(s)
+  evento(s) e a evidência por wikilink.
+- **Faltou no vault → investigação, nunca releitura de fonte.** Se falta confirmar qual
+  sistema emite um evento: **não infira em silêncio nem leia a fonte** — abra uma nota em
+  `11 Investigations` (`tags: consumidor/event-storming`) e marque
+  `[⚠️ Pendente: [[Investigação - …]]]`.
 - **Vocabulário proibido:** nada de termos exclusivos da Lean ou só-DDD. Em
   particular, **não** classifique subdomínios (Core/Supporting/Generic) nem padrões
   de integração (ACL/OHS/mapa de contextos) — isso é DDD. `bounded context` é termo

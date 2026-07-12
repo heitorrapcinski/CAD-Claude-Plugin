@@ -22,6 +22,10 @@
           {
             "type": "command",
             "command": "node ${CLAUDE_PLUGIN_ROOT}/build/hooks/validate-evidence.cjs"
+          },
+          {
+            "type": "command",
+            "command": "node ${CLAUDE_PLUGIN_ROOT}/build/hooks/validate-obsidian-syntax.cjs"
           }
         ]
       }

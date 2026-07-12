@@ -17,7 +17,7 @@ externos** e — vermelhos, impossíveis de ignorar — os **hotspots**: os pont
 tensão, contradição e dúvida.
 
 Neste plugin, o Event Storming é o **terceiro consumidor** do substrato neutro do
-CAD. Ele **interpreta** os fatos já descobertos em `docs/cad/` como uma linha do
+CAD. Ele **interpreta** os fatos já descobertos em `docs/knowledge-vault/` como uma linha do
 tempo colaborativa; **não descobre** fatos novos por conta própria. O que é opinião
 do método — o que é um **evento-pivô**, onde ficam as **fronteiras candidatas** — é
 julgamento do Event Storming, não descoberta crua.
@@ -26,13 +26,12 @@ julgamento do Event Storming, não descoberta crua.
 
 - **Técnica:** `event-storming`
 - **Método de origem:** Event Storming (Alberto Brandolini)
-- **Pode aprofundar:** `fontes-autorizadas` — a síntese pode reler uma fonte **já
-  autorizada** (apontada por um `EV`) para extrair detalhe fino, via os skills de
-  descoberta; fonte nova sempre volta ao humano.
 - **Pasta de saída (única):** `docs/event-storming/`
-- **Entradas do substrato:** `knowledge-base.md`, `evidence-log.md`, `vocabulary.md`,
-  `business-rules.md`, `capabilities.md` e — específico deste módulo —
-  `backlog.md`, do qual saem os **hotspots** (conflitos e lacunas já registrados).
+- **Entradas do substrato (pastas do vault):** `02 Business Knowledge/` (regras →
+  políticas), `03 Structural Knowledge/` (agregados/read models/conceitos),
+  `04 Behavioral Knowledge/` (fluxos/eventos/jobs → timeline e fatias),
+  `07 Integrations/` (filas/APIs/sistemas externos → boundaries), `09 Evidence/` e —
+  fonte dos **hotspots** — `11 Investigations/` (conflitos e lacunas já registrados).
 - **Artefatos:** `timeline.md`, `flows.md`, `hotspots.md`, `boundaries.md`.
 - **Vocabulário proibido** (assinaturas **exclusivas** de outras técnicas, barradas
   por hook): termos da Lean (`MVP / canvas MVP`, `persona / persona segmentada`,
@@ -54,17 +53,18 @@ julgamento do Event Storming, não descoberta crua.
 |---|---|---|
 | Espinha dorsal | `timeline.md` (eventos de domínio + eventos-pivô) | `event-storming-doc-timeline` |
 | Design | `flows.md` (ator → comando → agregado → evento → read model → política) | `event-storming-doc-flows` |
-| Tensão | `hotspots.md` (conflitos/dúvidas, vindos do backlog) | `event-storming-doc-hotspots` |
+| Tensão | `hotspots.md` (conflitos/dúvidas, vindos de `11 Investigations`) | `event-storming-doc-hotspots` |
 | Fronteiras | `boundaries.md` (contextos candidatos + sistemas externos) | `event-storming-doc-boundaries` |
 
 ## Mínimo necessário do substrato (orientação para `/cad:synthesize`)
 
-`timeline.md` apoia-se em `knowledge-base.md` e `evidence-log.md` (eventos com
-origem rastreável em código/filas/APIs/BD). `flows.md` precisa da timeline e das
-regras de negócio (`business-rules.md`) para as políticas. `hotspots.md` consome
-`backlog.md` e `evidence-log.md` (conflitos e lacunas já detectados). `boundaries.md`
-depende dos eventos-pivô de `timeline.md`. Faltando o mínimo, **não invente**: abra
-backlog `consumidor: event-storming` ou marque `[⚠️ Pendente: BL-XXX]`.
+`timeline.md` apoia-se em `04 Behavioral Knowledge/` e `09 Evidence/` (eventos com origem
+rastreável em código/filas/APIs/BD). `flows.md` precisa da timeline e das **regras de
+negócio** (`02 Business Knowledge/`) para as políticas. `hotspots.md` consome
+`11 Investigations/` (conflitos e lacunas já detectados). `boundaries.md` depende dos
+eventos-pivô de `timeline.md` e das integrações (`07 Integrations/`). Faltando o mínimo,
+**não invente**: abra uma nota em `11 Investigations` (`tags: consumidor/event-storming`)
+ou marque `[⚠️ Pendente: [[Investigação - …]]]`.
 
 ## Fronteira com o DDD
 
@@ -75,8 +75,9 @@ ubíqua por contexto, mapa de contextos com ACL/OHS). Os eventos-pivô de
 
 ## Regras
 
-- Lê só o substrato; escreve só em `docs/event-storming/`.
-- Todo bloco factual carrega `[Fonte: EV-XXX]` ou `[⚠️ Pendente: BL-XXX]`.
+- Lê só o substrato (vault); escreve só em `docs/event-storming/`.
+- Todo bloco factual cita a evidência por wikilink — `[[EV-… · resumo|EV-…]]` — ou marca
+  `[⚠️ Pendente: [[Investigação - …]]]`.
 - Fidelidade a Alberto Brandolini — templates fixos, sem inventar campos.
 - Nada de vocabulário exclusivo da Lean Inception ou do DDD; o vocabulário
   compartilhado com o DDD é permitido.

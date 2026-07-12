@@ -14,9 +14,10 @@ fronteiras de contexto (insumo para `boundaries.md`).
 
 ## Entradas
 
-Lê **apenas** o substrato CAD: `knowledge-base.md` e `evidence-log.md` (eventos com
-origem), `business-rules.md` e `capabilities.md` (fases do processo). Escreve apenas
-em `docs/event-storming/`.
+Lê **apenas** o substrato CAD (Knowledge Vault): `04 Behavioral Knowledge/` (fluxos,
+eventos, jobs — os eventos com origem), `02 Business Knowledge/` (fases do processo) e as
+notas de **evidência** (`09 Evidence/`). Escreve apenas em `docs/event-storming/`. Cada
+bloco factual cita a evidência por `[[EV-… · resumo|EV-…]]`.
 
 ## Template (copiar fielmente)
 
@@ -28,11 +29,11 @@ em `docs/event-storming/`.
 
 | # | Evento de domínio (passado) | Fase | Pivô? | Origem (código/fila/API/BD) | Evidência |
 |---|---|---|---|---|---|
-| 1 | Pedido Registrado | Captação | — | POST /orders → OrderCreated | → EV-071 |
-| 2 | Pagamento Aprovado | Pagamento | ⭐ | fila `payments.approved` | → EV-072 |
-| 3 | Pedido Faturado | Faturamento | — | billing/service.py L88 | → EV-073 |
+| 1 | Pedido Registrado | Captação | — | POST /orders → OrderCreated | [[EV-5-a4-071 · POST /orders|EV-5-a4-071]] |
+| 2 | Pagamento Aprovado | Pagamento | ⭐ | fila `payments.approved` | [[EV-5-a7-072 · Fila payments.approved|EV-5-a7-072]] |
+| 3 | Pedido Faturado | Faturamento | — | billing/service.py L88 | [[EV-5-a4-073 · billing/service.py|EV-5-a4-073]] |
 
-> Evento sem origem rastreável: [⚠️ Pendente: BL-XXX] (consumidor: event-storming).
+> Evento sem origem rastreável: [⚠️ Pendente: [[Investigação - Origem do evento …]]] (consumidor: event-storming).
 ```
 
 ## Como preencher
@@ -41,16 +42,14 @@ em `docs/event-storming/`.
   (`Pedido Registrado`, `Pagamento Aprovado`), nunca um comando no imperativo.
 - **Ordem cronológica** por linha; agrupe por `Fase` do processo.
 - **Origem + evidência.** Cada evento cita a origem concreta (endpoint, fila,
-  arquivo/linha, tabela) e `→ EV-XXX` do `evidence-log.md`.
+  arquivo/linha, tabela) e a evidência por `[[EV-…|EV-…]]` (nota de `09 Evidence`).
 - **Pivô (⭐).** Marque como pivô o evento que fecha uma fase e abre outra — é o que
   sugere uma fronteira candidata em `boundaries.md`. Ser pivô é **julgamento do
   método**, não descoberta crua.
-- **Lacuna de detalhe fino** (ex.: falta a origem exata de um evento que um `EV` já
-  aponta): **não infira em silêncio**. Sinalize a lacuna com o **ponteiro de `EV`**
-  existente para o orquestrador aprofundar: se a fonte já está autorizada
-  e `pode_aprofundar = "fontes-autorizadas"`, a descoberta relê o trecho e grava um
-  `EV` novo e neutro; senão, abra `[⚠️ Pendente: BL-XXX]` (consumidor:
-  event-storming).
+- **Faltou no vault → investigação, nunca releitura de fonte.** Se falta a origem exata
+  de um evento: **não infira em silêncio nem leia a fonte** — abra uma nota em
+  `11 Investigations` (`tags: consumidor/event-storming`) e marque
+  `[⚠️ Pendente: [[Investigação - …]]]`. Ampliar o vault é papel da `/cad:discovery`.
 - **Vocabulário proibido:** nada de termos exclusivos da Lean (`MVP`, `persona`,
   `onda`/`sequenciador`) ou só-DDD (`linguagem ubíqua`, `objeto de valor`,
   `repositório`, `subdomínio`, `ACL/OHS/mapa de contextos`). `domain event`,

@@ -32,9 +32,10 @@ function docsRelative(p: string): string | null {
   return m ? m[1] : null;
 }
 
-// Origem "validação humana": tipo de fonte, fonte de resolução, etc.
+// Origem "validação humana": frase de fonte/resolução no corpo OU marca no frontmatter
+// do vault (`source: "validação humana…"` / `status: validated`).
 const HUMAN =
-  /(valida[çc][ãa]o\s+(humana|consultor|do\s+consultor))|(resolu[çc][ãa]o\s+humana)/i;
+  /(valida[çc][ãa]o\s+(humana|consultor|do\s+consultor))|(resolu[çc][ãa]o\s+humana)|(^\s*status:\s*validated\s*$)/i;
 
 function isBacklogFlow(): boolean {
   const v = process.env.CAD_BACKLOG_FLOW;

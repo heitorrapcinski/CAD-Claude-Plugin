@@ -12,15 +12,17 @@ produto certo**: parte de uma visão de produto e, através de uma sequência de
 atividades colaborativas, chega ao escopo de um **MVP** (Produto Mínimo Viável).
 Neste plugin, a Lean Inception é o **primeiro consumidor** do substrato neutro do
 CAD: ela **não descobre** fatos — ela **sintetiza** os fatos já descobertos em
-`docs/cad/` nos artefatos do método.
+`docs/knowledge-vault/` nos artefatos do método.
 
 ## Contrato (ver `module.json`)
 
 - **Técnica:** `lean-inception`
 - **Método de origem:** Lean Inception (Paulo Caroli)
 - **Pasta de saída (única):** `docs/lean-inception/`
-- **Entradas do substrato (únicas leituras):** `knowledge-base.md`,
-  `evidence-log.md`, `vocabulary.md`, `business-rules.md`, `capabilities.md`.
+- **Entradas do substrato (pastas do vault):** `01 Overview/` (visão/escopo/glossário),
+  `02 Business Knowledge/` (processos, capacidades, regras, papéis → personas/features),
+  `04 Behavioral Knowledge/` (fluxos/casos de uso → jornadas), `09 Evidence/` e
+  `11 Investigations/`.
 - **Artefatos:** `vision.md`, `product-enfn.md`, `objectives.md`, `personas.md`,
   `features.md`, `journeys.md`, `sequencer.md`, `mvp-canvas.md`.
 - **Vocabulário proibido** (de outras técnicas, barrado por hook): `bounded
@@ -41,15 +43,17 @@ CAD: ela **não descobre** fatos — ela **sintetiza** os fatos já descobertos 
 ## Mínimo necessário do substrato (orientação para `/cad:synthesize`)
 
 A definição do produto e as personas precisam de fatos sobre usuários, problema e
-benefício no `knowledge-base`/`vocabulary`. Features e jornadas dependem de
-capacidades (`capabilities.md`) e regras (`business-rules.md`). O `mvp-canvas.md`
-exige objetivos, personas, jornadas e sequenciador já preenchidos. Faltando o
-mínimo, **não invente**: abra backlog `consumidor: lean-inception` ou marque
-`[⚠️ Pendente: BL-XXX]` no artefato.
+benefício em `01 Overview/`/`02 Business Knowledge/`. Features e jornadas dependem de
+**capacidades** e **regras** (`02 Business Knowledge/`) e de **fluxos/casos de uso**
+(`04 Behavioral Knowledge/`). O `mvp-canvas.md` exige objetivos, personas, jornadas e
+sequenciador já preenchidos. Faltando o mínimo, **não invente**: abra uma nota em
+`11 Investigations` (`tags: consumidor/lean-inception`) ou marque
+`[⚠️ Pendente: [[Investigação - …]]]` no artefato.
 
 ## Regras
 
-- Lê só o substrato; escreve só em `docs/lean-inception/`.
-- Todo bloco factual carrega `[Fonte: EV-XXX]` ou `[⚠️ Pendente: BL-XXX]`.
+- Lê só o substrato (vault); escreve só em `docs/lean-inception/`.
+- Todo bloco factual cita a evidência por wikilink — `[[EV-… · resumo|EV-…]]` — ou marca
+  `[⚠️ Pendente: [[Investigação - …]]]`.
 - Fidelidade ao livro de Caroli — templates fixos, sem inventar campos.
 - Nada de vocabulário de DDD/outras técnicas.

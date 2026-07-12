@@ -1,56 +1,62 @@
 ---
 name: cad-backlog
-description: Orquestrador /cad:backlog [id...] — apresenta pendências (lacunas e conflitos) em formulário ao consultor, grava a resposta como evidência "Validação Humana" (a mais forte de todas) e atualiza os documentos afetados, no substrato ou no módulo da técnica indicada.
-argument-hint: "[id...]  (ex.: BL-003 BL-007; sem argumento lista todas as abertas)"
+description: Orquestrador /cad:backlog [nota...] — apresenta as investigações abertas (11 Investigations) em formulário ao consultor, grava a resposta como evidência "Validação Humana" (a mais forte de todas) e propaga a atualização às notas afetadas, no substrato (docs/knowledge-vault/) ou no módulo da técnica indicada.
+argument-hint: "[nota...]  (ex.: \"Alçadas de Aprovação\"; sem argumento lista todas as abertas)"
 ---
 
-# /cad:backlog — Resolução de pendências por validação humana
+# /cad:backlog — Resolução de investigações por validação humana
 
 ## Objetivo
 
-Transformar pendências do backlog em **evidência de validação humana** — a fonte
-mais forte da hierarquia, pois é julgamento informado do especialista
-sobre o caso concreto. Resolve lacunas e conflitos, registra a resposta como
-evidência e propaga a atualização aos documentos afetados.
+Transformar as **investigações** abertas (`11 Investigations`) em **evidência de validação
+humana** — a fonte mais forte da hierarquia, pois é julgamento informado do especialista
+sobre o caso concreto. Resolve lacunas e conflitos, registra a resposta como uma nota de
+evidência e propaga a atualização às notas afetadas.
+
+O antigo `backlog.md` foi substituído pela pasta `11 Investigations`; este comando opera
+sobre essas notas.
 
 ## Entradas
 
-- **Argumento `[id...]`** (opcional) — lista de IDs (`BL-003 BL-007`). Sem
-  argumento, lista **todas** as pendências abertas.
-- `docs/cad/backlog.md` — a fila de pendências (via `cad-doc-backlog`).
-- O documento afetado de cada item (coluna `Artefato afetado`), no substrato
-  (`docs/cad/`) ou no módulo da técnica (coluna `Consumidor`).
+- **Argumento `[nota...]`** (opcional) — títulos/aliases de investigações específicas. Sem
+  argumento, lista **todas** as investigações abertas (`status: open`/`conflicting`).
+- `docs/knowledge-vault/11 Investigations/` — as notas de pendência (via
+  [`knowledge-vault-doc-investigations`](../knowledge-vault-doc-investigations/SKILL.md)).
+- As notas afetadas (linkadas em **Afeta**), no substrato (`docs/knowledge-vault/`) ou no módulo da
+  técnica (indicado pela tag `consumidor/<técnica>`).
 
 ## Procedimento
 
-1. **Listar pendências.** Invoque `cad-doc-backlog` para listar os itens abertos,
-   filtrados pelos IDs quando informados. Mostre tipo, consumidor, lacuna/conflito
-   e artefato afetado de cada um. Para `conflito_definição`, apresente a definição
-   priorizada (por hierarquia) **e** todos os conflitos detectados.
-2. **Formulário ao consultor.** Para cada item, faça uma pergunta clara e objetiva.
+1. **Listar investigações.** Via `knowledge-vault-doc-investigations`, liste as notas abertas,
+   filtradas pelos títulos quando informados. Para cada uma mostre o tipo (lacuna,
+   `conflito_definição`, `conflito_pós_validação`…), o consumidor (tag) e as notas
+   afetadas. Em conflito, apresente a versão priorizada (por hierarquia) **e** todas as
+   evidências divergentes.
+2. **Formulário ao consultor.** Para cada investigação, faça uma pergunta clara e objetiva.
    Aguarde a resposta — **não preencha por conta própria** (é o espírito do CAD).
-3. **Gravar a resposta como evidência.** Via `cad-doc-evidence-log`, crie uma
-   entrada `EV-NNN` com tipo de fonte **`Validação Humana`** e fonte
-   `"validação consultor — [data]"`. Esta evidência **supera a hierarquia
+3. **Gravar a resposta como evidência.** Sinalize o fluxo com `CAD_BACKLOG_FLOW=1` e, via
+   [`knowledge-vault-doc-evidence`](../knowledge-vault-doc-evidence/SKILL.md), crie uma nota de evidência `EV-NNN`
+   em `09 Evidence` com `type: evidence`, `status: validated` e
+   `source: "validação humana (consultor) — <data>"`. Esta evidência **supera a hierarquia
    normativa** para o ponto em questão.
-4. **Atualizar o(s) documento(s) afetado(s).** Propague a resolução para o artefato
-   citado — no substrato (`knowledge-base`, `vocabulary`, `business-rules`,
-   `capabilities`) ou no módulo da técnica (`docs/<técnica>/...`). Substitua o
-   marcador `[⚠️ Pendente: BL-XXX]` pelo conteúdo confirmado com `[Fonte: EV-NNN]`.
-   Marque o bloco como de **origem validação humana** (passa a ser protegido).
-5. **Fechar o item.** Em `backlog.md`, mude `Status` para resolvido, preenchendo
-   `Resposta`, `Fonte resposta` e `Data`.
+4. **Propagar às notas afetadas.** Atualize as notas citadas em **Afeta** — no substrato ou
+   no módulo da técnica. Aponte o `source:` delas para a nova evidência de validação e mude
+   seu `status` para `validated`. O bloco/nota validado passa a ser **protegido**.
+5. **Resolver a investigação.** Na nota de `11 Investigations`, preencha a seção
+   **Resolução**, mude `status` para `validated` e ligue-a à evidência criada. Quando a
+   resolução vira conclusão, considere promover a uma nota em `10 Decisions` (hipótese
+   confirmada).
 
 ## Observações
 
-- **Único canal de sobrescrita de bloco validado.** Os hooks bloqueiam alterar um
-  bloco de origem "validação humana" fora deste fluxo. Aqui, e só aqui, ela é
+- **Único canal de sobrescrita de nota validada.** Os hooks bloqueiam alterar uma nota de
+  origem "validação humana" fora deste fluxo (`CAD_BACKLOG_FLOW=1`). Aqui, e só aqui, ela é
   permitida — inclusive para resolver `conflito_pós_validação`.
-- Não há comando separado de glossário ou cobertura: conflito de definição é um
-  tipo de item de backlog; cobertura é saída de discovery/synthesize.
+- Não há comando separado de glossário ou cobertura: conflito de definição é uma
+  investigação; cobertura é saída de discovery/synthesize.
 
 ## Regras inegociáveis
 
 - Validação humana é a evidência mais forte.
-- Toda resolução vira evidência rastreável.
-- Apêndice no `evidence-log`, nunca sobrescrita do histórico de evidências.
+- Toda resolução vira uma nota de evidência rastreável (`09 Evidence`).
+- Evidências são imutáveis: a validação cria nota **nova**, nunca reescreve histórico.

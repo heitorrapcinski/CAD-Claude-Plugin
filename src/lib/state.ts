@@ -18,12 +18,6 @@ export interface SessionEntry {
   data: string;
   comando: string;
   foco: string;
-  /**
-   * Nº de fontes autorizadas reaprofundadas nesta sessão de /cad:synthesize
-   * (aprofundamento sob demanda — seção 5.1). Omitido quando não houve
-   * aprofundamento (ex.: /cad:discovery ou run com --sem-aprofundamento).
-   */
-  aprofundamentos?: number;
   resultado: string;
 }
 
@@ -31,7 +25,8 @@ export interface State {
   sessao_atual: number;
   plugin_versao: string;
   ultima_atualizacao: string;
-  backlog_abertos: number;
+  /** Nº de notas abertas em docs/knowledge-vault/11 Investigations (lacunas/conflitos pendentes). */
+  investigacoes_abertas: number;
   historico: SessionEntry[];
 }
 
@@ -66,19 +61,19 @@ function writeJson(path: string, value: unknown): void {
 export function appendSession(
   statePath: string,
   entry: SessionEntry,
-  backlogAbertos: number,
+  investigacoesAbertas: number,
 ): State {
   const state = readJson<State>(statePath, {
     sessao_atual: 0,
     plugin_versao: PLUGIN_VERSION,
     ultima_atualizacao: entry.data,
-    backlog_abertos: 0,
+    investigacoes_abertas: 0,
     historico: [],
   });
   state.historico.push(entry);
   state.sessao_atual = entry.sessao;
   state.ultima_atualizacao = entry.data;
-  state.backlog_abertos = backlogAbertos;
+  state.investigacoes_abertas = investigacoesAbertas;
   state.plugin_versao = PLUGIN_VERSION;
   writeJson(statePath, state);
   return state;

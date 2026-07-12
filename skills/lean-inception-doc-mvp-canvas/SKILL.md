@@ -12,23 +12,24 @@ na ordem do livro**. É o artefato de fechamento da Lean Inception.
 
 ## Entradas
 
-Lê **apenas** o substrato CAD (`evidence-log.md`) e os artefatos deste módulo
-(`objectives.md`, `personas.md`, `journeys.md`, `sequencer.md`). Escreve apenas em
-`docs/lean-inception/`. Exige objetivos, personas, jornadas e sequenciador já
-preenchidos; faltando, aponte o backlog antes de gerar.
+Lê **apenas** o substrato CAD (Knowledge Vault): as notas de **evidência**
+(`09 Evidence/`) e os artefatos deste módulo (`objectives.md`, `personas.md`,
+`journeys.md`, `sequencer.md`). Escreve apenas em `docs/lean-inception/`. Exige objetivos,
+personas, jornadas e sequenciador já preenchidos; faltando, aponte as investigações abertas
+(`11 Investigations`) antes de gerar.
 
 ## Template (copiar fielmente)
 
 ```markdown
 # Canvas MVP — [Nome do MVP]
 
-1. **Proposta do MVP** — Qual é a proposta deste MVP? [Fonte: EV-XXX]
-2. **Personas segmentadas** — Para quem é? Dá para testar num grupo menor? [Fonte: EV-XXX]
+1. **Proposta do MVP** — Qual é a proposta deste MVP? [[EV-… · resumo|EV-…]]
+2. **Personas segmentadas** — Para quem é? Dá para testar num grupo menor? [[EV-… · resumo|EV-…]]
 3. **Jornadas** — Quais jornadas são atendidas/melhoradas? (→ journeys.md)
 4. **Funcionalidades** — O que vamos construir / que ações serão melhoradas? (→ sequencer.md)
-5. **Resultado esperado** — Que aprendizado/resultado buscamos? [Fonte: EV-XXX | ⚠️ Pendente: BL-XXX]
-6. **Métricas para validar as hipóteses do negócio** — Como medir os resultados? [Fonte: EV-XXX | ⚠️ Pendente: BL-XXX]
-7. **Custo e Cronograma** — Custo e data prevista para a entrega? [Fonte: EV-XXX | ⚠️ Pendente: BL-XXX]
+5. **Resultado esperado** — Que aprendizado/resultado buscamos? [[EV-… · resumo|EV-…]] | [⚠️ Pendente: [[Investigação - …]]]
+6. **Métricas para validar as hipóteses do negócio** — Como medir os resultados? [[EV-… · resumo|EV-…]] | [⚠️ Pendente: [[Investigação - …]]]
+7. **Custo e Cronograma** — Custo e data prevista para a entrega? [[EV-… · resumo|EV-…]] | [⚠️ Pendente: [[Investigação - …]]]
 ```
 
 ## Como preencher
@@ -37,7 +38,7 @@ preenchidos; faltando, aponte o backlog antes de gerar.
 - **Faça no máximo três canvas MVP** (um por MVP do sequenciador) e só preencha os
   dos **primeiros** MVPs — fiel à recomendação de Caroli de não ir longe demais.
 - Blocos 3 e 4 referenciam `journeys.md` e `sequencer.md`; os blocos factuais
-  carregam `[Fonte: EV-XXX]` e o que falta vira `[⚠️ Pendente: BL-XXX]`
+  carregam `[[EV-… · resumo|EV-…]]` e o que falta vira `[⚠️ Pendente: [[Investigação - …]]]`
   (consumidor: `lean-inception`).
 - Resultado esperado, métricas e custo/cronograma costumam exigir validação humana
   — se não houver evidência, **deixe a pendência explícita**.
