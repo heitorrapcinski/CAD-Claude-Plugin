@@ -57,7 +57,7 @@ necessário, e invocar os doc-skills do módulo — que **leem só de `docs/know
    antemão). Lean não usa "bounded context", "agregado", "linguagem ubíqua"…;
    DDD não usa "MVP", "persona", "jornada (Lean)", "sequenciador", "é-não é"…
 5. **Lacunas marcadas por consumidor.** Lacunas que só importam para esta técnica viram
-   notas em `11 Investigations` (via `cad-doc-investigations`) com
+   notas em `11 Investigations` (via `knowledge-vault-doc-investigations`) com
    `tags: consumidor/<técnica>` e link para o artefato afetado.
 6. **Proteção de validação humana.** Não sobrescreva blocos/notas com origem "validação
    humana"; conflito novo abre investigação `conflito_pós_validação`.

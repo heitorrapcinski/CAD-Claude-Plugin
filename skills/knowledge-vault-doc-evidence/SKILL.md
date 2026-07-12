@@ -1,9 +1,9 @@
 ---
-name: cad-doc-evidence
+name: knowledge-vault-doc-evidence
 description: Gerencia a pasta 09 Evidence do vault docs/knowledge-vault/ — notas de evidência (EV-XXX) que guardam o artefato real (trecho de código, SQL, log, print, entrevista, config) que sustenta cada afirmação, mais o MOC "Registro de Evidências" em 13 MOCs. É a âncora de rastreabilidade: toda nota de Knowledge aponta para cá via source:. Invocado por /cad:discovery, /cad:synthesize e /cad:backlog.
 ---
 
-# cad-doc-evidence — Evidence (09) + Registro de Evidências (substrato neutro)
+# knowledge-vault-doc-evidence — Evidence (09) + Registro de Evidências (substrato neutro)
 
 ## Objetivo
 
@@ -13,7 +13,7 @@ por uma **nota de evidência** em `09 Evidence`, identificada por `EV-XXX`, que 
 arquivo de config). É o análogo Zettelkasten do antigo `evidence-log.md`: em vez de uma
 tabela monolítica, uma **nota por evidência** + um **MOC** que as indexa.
 
-Segue as [convenções do vault](../cad-doc-conventions/SKILL.md).
+Segue as [convenções do vault](../knowledge-vault-doc-conventions/SKILL.md).
 
 ## Entradas
 
@@ -57,7 +57,7 @@ Tipos de fonte: `Normativo`, `Corporativo`, `Código`, `Informal`, `Validação 
 O template abaixo usa **lista com marcador** — nela o pipe do alias (`[[título|código]]`) é
 inofensivo. **Se optar por montar o MOC como tabela** (ex.: colunas ID/Resumo/Localização),
 **escape o pipe do alias como `\|`** dentro das células — senão o `|` é lido como separador
-de coluna, o link quebra e as colunas deslocam (ver [convenções](../cad-doc-conventions/SKILL.md)):
+de coluna, o link quebra e as colunas deslocam (ver [convenções](../knowledge-vault-doc-conventions/SKILL.md)):
 
 ```markdown
 ---
@@ -82,7 +82,7 @@ created: 2026-07-10
 ## Como preencher
 
 - **Uma nota por evidência.** O id é **`EV-<sessão>-<agente>-<seq>`** (ver
-  [convenções](../cad-doc-conventions/SKILL.md)): `<sessão>` do `state.json`, `<agente>` o id
+  [convenções](../knowledge-vault-doc-conventions/SKILL.md)): `<sessão>` do `state.json`, `<agente>` o id
   dado pelo orquestrador ao subagente (`a1`, `a2`…) e `<seq>` sequencial **por agente** — ex.:
   `EV-5-a2-007`. No modo de **1 agente** o `<agente>` é omitido: `EV-5-014`. O código vira
   `alias` e o **título** carrega o resumo legível. O corpo guarda o artefato real (paráfrase
@@ -103,7 +103,7 @@ created: 2026-07-10
 - **Append, nunca sobrescrita:** evidências são **imutáveis**. Reescanear uma fonte numa
   sessão futura cria uma **nota nova**, nunca edita uma existente.
 - **Conflitos:** quando duas evidências divergem, **não esconda** — registre ambas, marque
-  a divergência no MOC e abra `11 Investigations` (via `cad-doc-investigations`). A
+  a divergência no MOC e abra `11 Investigations` (via `knowledge-vault-doc-investigations`). A
   hierarquia de fontes (Normativo > Corporativo > Código > Informal) define a versão
   priorizada; a **validação humana** supera todas.
 - Mantenha o **MOC Registro de Evidências** atualizado a cada nova `EV`. **No modo

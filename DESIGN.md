@@ -138,23 +138,23 @@ cad-claude-plugin/
 │   ├── cad-backlog/                              # orquestrador: /cad:backlog
 │   │   └── SKILL.md
 │   │
-│   ├── cad-doc-conventions/                      # ── substrato neutro (Knowledge Vault) ──
+│   ├── knowledge-vault-doc-conventions/                      # ── substrato neutro (Knowledge Vault) ──
 │   │   └── SKILL.md                              # backbone: frontmatter, taxonomia, filosofia
-│   ├── cad-doc-business/                         # Knowledge 01 Overview + 02 Business
+│   ├── knowledge-vault-doc-business/                         # Knowledge 01 Overview + 02 Business
 │   │   └── SKILL.md
-│   ├── cad-doc-system/                           # Knowledge 03 Structural + 04 Behavioral
+│   ├── knowledge-vault-doc-system/                           # Knowledge 03 Structural + 04 Behavioral
 │   │   └── SKILL.md
-│   ├── cad-doc-technical/                        # Knowledge 05 Code + 06 Data + 07 Integr. + 08 Ops
+│   ├── knowledge-vault-doc-technical/                        # Knowledge 05 Code + 06 Data + 07 Integr. + 08 Ops
 │   │   └── SKILL.md
-│   ├── cad-doc-evidence/                         # Discovery 09 Evidence + MOC de evidências
+│   ├── knowledge-vault-doc-evidence/                         # Discovery 09 Evidence + MOC de evidências
 │   │   └── SKILL.md
-│   ├── cad-doc-decisions/                        # Discovery 10 Decisions (ADRs, premissas)
+│   ├── knowledge-vault-doc-decisions/                        # Discovery 10 Decisions (ADRs, premissas)
 │   │   └── SKILL.md
-│   ├── cad-doc-investigations/                   # Discovery 11 Investigations (substitui o backlog)
+│   ├── knowledge-vault-doc-investigations/                   # Discovery 11 Investigations (substitui o backlog)
 │   │   └── SKILL.md
-│   ├── cad-doc-views/                            # Discovery 12 Views (Mermaid/PlantUML)
+│   ├── knowledge-vault-doc-views/                            # Discovery 12 Views (Mermaid/PlantUML)
 │   │   └── SKILL.md
-│   ├── cad-doc-mocs/                             # Discovery 13 MOCs (mapas navegáveis)
+│   ├── knowledge-vault-doc-mocs/                             # Discovery 13 MOCs (mapas navegáveis)
 │   │   └── SKILL.md
 │   │
 │   ├── lean-inception-module/                    # ── módulo de técnica: Lean Inception ──
@@ -346,9 +346,9 @@ paralelismo **não enfraquece** a disciplina de evidência nem a proteção de v
 
 | Comando | Função |
 |---|---|
-| `/cad:discovery [fontes]` | Registra as fontes em `sources.json` → escaneia apenas elas, por inteiro → captura a evidência em `09 Evidence` (via `cad-doc-evidence`) e materializa o conhecimento como notas do vault via `cad-doc-conventions` (backbone) + `cad-doc-business` (01–02), `cad-doc-system` (03–04), `cad-doc-technical` (05–08), `cad-doc-decisions` (10), `cad-doc-views` (12), `cad-doc-mocs` (13) → abre `cad-doc-investigations` (11) para lacunas/conflitos. **Não gera nenhum artefato de técnica.** Respeita a proteção de notas validadas por humano (princípio 7). |
+| `/cad:discovery [fontes]` | Registra as fontes em `sources.json` → escaneia apenas elas, por inteiro → captura a evidência em `09 Evidence` (via `knowledge-vault-doc-evidence`) e materializa o conhecimento como notas do vault via `knowledge-vault-doc-conventions` (backbone) + `knowledge-vault-doc-business` (01–02), `knowledge-vault-doc-system` (03–04), `knowledge-vault-doc-technical` (05–08), `knowledge-vault-doc-decisions` (10), `knowledge-vault-doc-views` (12), `knowledge-vault-doc-mocs` (13) → abre `knowledge-vault-doc-investigations` (11) para lacunas/conflitos. **Não gera nenhum artefato de técnica.** Respeita a proteção de notas validadas por humano (princípio 7). |
 | `/cad:synthesize <técnica> [escopo]` | Carrega o manifesto do módulo da técnica (ex.: `lean-inception-module`) → valida que as pastas do vault em `entradas_substrato` têm notas suficientes (senão sugere `/cad:discovery` ou aponta as investigações abertas) → invoca os skills de documento daquele módulo, que **leem só as pastas do vault** e escrevem **só em `docs/<técnica>/`**, citando as evidências por `[[EV-…]]` → quando falta um fato no vault, abre `11 Investigations` (`consumidor/<técnica>`). A síntese **nunca** lê a fonte. |
-| `/cad:backlog [nota...]` | Invoca `cad-doc-investigations` para listar as investigações abertas (`11 Investigations`), filtradas por título quando informado; sem argumento, lista todas abertas → formulário de perguntas → grava resposta como evidência "Validação Humana" em `09 Evidence` (via `cad-doc-evidence`, sob `CAD_BACKLOG_FLOW=1`) → propaga a atualização às notas afetadas, no substrato (`docs/knowledge-vault/`) ou no módulo da técnica indicada. |
+| `/cad:backlog [nota...]` | Invoca `knowledge-vault-doc-investigations` para listar as investigações abertas (`11 Investigations`), filtradas por título quando informado; sem argumento, lista todas abertas → formulário de perguntas → grava resposta como evidência "Validação Humana" em `09 Evidence` (via `knowledge-vault-doc-evidence`, sob `CAD_BACKLOG_FLOW=1`) → propaga a atualização às notas afetadas, no substrato (`docs/knowledge-vault/`) ou no módulo da técnica indicada. |
 
 Não há comando separado para vocabulário/glossário ou relatório de cobertura:
 conflito de definição é um tipo de item de backlog; o status de cobertura é saída
@@ -610,7 +610,7 @@ ser autossuficiente em runtime (não depende deste documento). Este documento de
 
 | Pasta | Técnica | Templates canônicos em |
 |---|---|---|
-| `docs/knowledge-vault/` | substrato neutro (Knowledge Vault) | `skills/cad-doc-*/SKILL.md` — conventions, business, system, technical, evidence, decisions, investigations, views, mocs |
+| `docs/knowledge-vault/` | substrato neutro (Knowledge Vault) | `skills/knowledge-vault-doc-*/SKILL.md` — conventions, business, system, technical, evidence, decisions, investigations, views, mocs |
 | `docs/lean-inception/` | Lean Inception | `skills/lean-inception-doc-*/SKILL.md` |
 | `docs/ddd/` | DDD | `skills/ddd-doc-*/SKILL.md` |
 | `docs/event-storming/` | Event Storming | `skills/event-storming-doc-*/SKILL.md` |
@@ -728,7 +728,7 @@ para ler o `module.json` de cada técnica).
 
 > **Substrato só é escrito pela descoberta.** Um skill de **módulo** que tente escrever em
 > `docs/knowledge-vault/` é bloqueado pelo hook de isolamento — é exatamente a violação que ele existe
-> para impedir. O módulo escreve só em `docs/<técnica>/`; a descoberta (`cad-doc-*`), só em
+> para impedir. O módulo escreve só em `docs/<técnica>/`; a descoberta (`knowledge-vault-doc-*`), só em
 > `docs/knowledge-vault/`.
 
 ---

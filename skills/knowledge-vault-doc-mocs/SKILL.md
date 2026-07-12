@@ -1,9 +1,9 @@
 ---
-name: cad-doc-mocs
+name: knowledge-vault-doc-mocs
 description: Gerencia a pasta 13 MOCs do vault docs/knowledge-vault/ — Maps of Content que funcionam como índices navegáveis do vault (MOC - Arquitetura, - Código, - Dados, - Integrações, - Processos, - Operação, - Evidências). Conectam notas relacionadas e facilitam a navegação. Invocado por /cad:discovery e /cad:backlog.
 ---
 
-# cad-doc-mocs — MOCs (13) (substrato neutro)
+# knowledge-vault-doc-mocs — MOCs (13) (substrato neutro)
 
 ## Objetivo
 
@@ -12,12 +12,12 @@ MOC é uma nota-índice que **conecta notas relacionadas** de uma área, dando a
 de entrada navegáveis. MOCs **não contêm fatos próprios** — apenas organizam e ligam notas
 que já existem em outras pastas.
 
-Segue as [convenções do vault](../cad-doc-conventions/SKILL.md).
+Segue as [convenções do vault](../knowledge-vault-doc-conventions/SKILL.md).
 
 ## Entradas
 
 - Todas as notas de Knowledge (01–08) e de Discovery (09–12) já criadas.
-- O MOC **Registro de Evidências** é mantido em conjunto com a skill `cad-doc-evidence`.
+- O MOC **Registro de Evidências** é mantido em conjunto com a skill `knowledge-vault-doc-evidence`.
 
 ## MOCs típicos
 

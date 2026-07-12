@@ -21,13 +21,13 @@ sobre essas notas.
 - **Argumento `[nota...]`** (opcional) — títulos/aliases de investigações específicas. Sem
   argumento, lista **todas** as investigações abertas (`status: open`/`conflicting`).
 - `docs/knowledge-vault/11 Investigations/` — as notas de pendência (via
-  [`cad-doc-investigations`](../cad-doc-investigations/SKILL.md)).
+  [`knowledge-vault-doc-investigations`](../knowledge-vault-doc-investigations/SKILL.md)).
 - As notas afetadas (linkadas em **Afeta**), no substrato (`docs/knowledge-vault/`) ou no módulo da
   técnica (indicado pela tag `consumidor/<técnica>`).
 
 ## Procedimento
 
-1. **Listar investigações.** Via `cad-doc-investigations`, liste as notas abertas,
+1. **Listar investigações.** Via `knowledge-vault-doc-investigations`, liste as notas abertas,
    filtradas pelos títulos quando informados. Para cada uma mostre o tipo (lacuna,
    `conflito_definição`, `conflito_pós_validação`…), o consumidor (tag) e as notas
    afetadas. Em conflito, apresente a versão priorizada (por hierarquia) **e** todas as
@@ -35,7 +35,7 @@ sobre essas notas.
 2. **Formulário ao consultor.** Para cada investigação, faça uma pergunta clara e objetiva.
    Aguarde a resposta — **não preencha por conta própria** (é o espírito do CAD).
 3. **Gravar a resposta como evidência.** Sinalize o fluxo com `CAD_BACKLOG_FLOW=1` e, via
-   [`cad-doc-evidence`](../cad-doc-evidence/SKILL.md), crie uma nota de evidência `EV-NNN`
+   [`knowledge-vault-doc-evidence`](../knowledge-vault-doc-evidence/SKILL.md), crie uma nota de evidência `EV-NNN`
    em `09 Evidence` com `type: evidence`, `status: validated` e
    `source: "validação humana (consultor) — <data>"`. Esta evidência **supera a hierarquia
    normativa** para o ponto em questão.

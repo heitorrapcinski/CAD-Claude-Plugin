@@ -1,9 +1,9 @@
 ---
-name: cad-doc-views
+name: knowledge-vault-doc-views
 description: Gerencia a pasta 12 Views do vault docs/knowledge-vault/ — representações gráficas do sistema (diagramas Mermaid/PlantUML, fluxogramas, diagramas de arquitetura/dados/sequência, timelines). Uma mesma informação pode ter várias visões; cada View deriva de notas já evidenciadas e liga a elas. Invocado por /cad:discovery e /cad:backlog.
 ---
 
-# cad-doc-views — Views (12) (substrato neutro)
+# knowledge-vault-doc-views — Views (12) (substrato neutro)
 
 ## Objetivo
 
@@ -12,7 +12,7 @@ visualizar este conhecimento?"*. Uma mesma informação pode ter **diversas vis�
 arquitetura, uma de dados, uma de sequência). Views **derivam** de notas de Knowledge já
 evidenciadas — não introduzem fatos novos; consolidam visualmente o que já existe.
 
-Segue as [convenções do vault](../cad-doc-conventions/SKILL.md).
+Segue as [convenções do vault](../knowledge-vault-doc-conventions/SKILL.md).
 
 ## Entradas
 

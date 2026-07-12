@@ -17,7 +17,7 @@ nota em `11 Investigations`. **Este comando nunca gera artefato de técnica** (n
 `docs/lean-inception/`, `docs/ddd/`, etc.).
 
 As convenções de nota (frontmatter, componentes, taxonomia, filosofia Knowledge×Discovery)
-são a **fonte única** da skill [`cad-doc-conventions`](../cad-doc-conventions/SKILL.md) —
+são a **fonte única** da skill [`knowledge-vault-doc-conventions`](../knowledge-vault-doc-conventions/SKILL.md) —
 carregue-a antes de escrever qualquer nota.
 
 ## Entradas
@@ -94,8 +94,8 @@ Para cada etapa do plano, na ordem definida:
 
 **b) Reduce da etapa (só o orquestrador).** Ao fim da fatia, consolide **contra o vault
    acumulado**:
-   - **Navegação:** construa/atualize os **MOCs** (`13 MOCs`, via `cad-doc-mocs`) e o
-     **Registro de Evidências** (via `cad-doc-evidence`), agrupando por `SRC` e domínio/escopo.
+   - **Navegação:** construa/atualize os **MOCs** (`13 MOCs`, via `knowledge-vault-doc-mocs`) e o
+     **Registro de Evidências** (via `knowledge-vault-doc-evidence`), agrupando por `SRC` e domínio/escopo.
    - **Dedup de conceito transversal:** o mesmo conceito (`Cliente`) pode ter surgido em
      mais de uma fatia/etapa. Funda numa nota canônica (ou ligue as variantes) e conserte os
      `[[links]]`.
@@ -120,10 +120,10 @@ Para cada etapa do plano, na ordem definida:
   título completo** com o código como exibição —
   `[[EV-5-a2-007 · Aprovação exige duas alçadas|EV-5-a2-007]]` (nunca `[[EV-5-a2-007]]`
   sozinho, que fica órfão no grafo).
-- **Skills a seguir:** [`cad-doc-conventions`](../cad-doc-conventions/SKILL.md) (backbone) +
-  as de camada conforme o conteúdo — `cad-doc-evidence` (09), `cad-doc-business` (01–02),
-  `cad-doc-system` (03–04), `cad-doc-technical` (05–08), `cad-doc-decisions` (10),
-  `cad-doc-views` (12).
+- **Skills a seguir:** [`knowledge-vault-doc-conventions`](../knowledge-vault-doc-conventions/SKILL.md) (backbone) +
+  as de camada conforme o conteúdo — `knowledge-vault-doc-evidence` (09), `knowledge-vault-doc-business` (01–02),
+  `knowledge-vault-doc-system` (03–04), `knowledge-vault-doc-technical` (05–08), `knowledge-vault-doc-decisions` (10),
+  `knowledge-vault-doc-views` (12).
 - **O que produzir:** capture a evidência **primeiro** (nota em `09 Evidence` com
   `source: SRC-NNN + localização`), depois as notas de Knowledge ligadas a ela via `source:`,
   e abra `11 Investigations` (`tags: consumidor/cad`) para as lacunas **da sua sub-fatia**.
@@ -134,16 +134,16 @@ Para cada etapa do plano, na ordem definida:
 ### Passos comuns (por você no modo de 1 agente, ou por cada subagente no map-reduce)
 
 i. **Capturar evidência primeiro.** Para cada afirmação que a fonte sustenta, crie/atualize
-   a nota de evidência em `09 Evidence` (via [`cad-doc-evidence`](../cad-doc-evidence/SKILL.md)):
+   a nota de evidência em `09 Evidence` (via [`knowledge-vault-doc-evidence`](../knowledge-vault-doc-evidence/SKILL.md)):
    o artefato real (trecho de código, SQL, log, config, paráfrase de normativo),
    `source: SRC-NNN + localização`, e a lista **Sustenta**.
 ii. **Materializar o conhecimento em notas**, cada uma ligada à sua evidência via `source:`,
    distribuídas pelas pastas conforme a natureza — delegando à skill de cada camada
-   (Knowledge 01–08: `cad-doc-business`, `cad-doc-system`, `cad-doc-technical`; Discovery
-   10/12: `cad-doc-decisions`, `cad-doc-views`). **Ligue liberalmente** (`[[...]]`).
-iii. **Aplicar a regra de evidência** (detalhe em `cad-doc-conventions`):
+   (Knowledge 01–08: `knowledge-vault-doc-business`, `knowledge-vault-doc-system`, `knowledge-vault-doc-technical`; Discovery
+   10/12: `knowledge-vault-doc-decisions`, `knowledge-vault-doc-views`). **Ligue liberalmente** (`[[...]]`).
+iii. **Aplicar a regra de evidência** (detalhe em `knowledge-vault-doc-conventions`):
    - Sem evidência clara → **não afirme, não assuma** → abra nota em `11 Investigations`
-     (via [`cad-doc-investigations`](../cad-doc-investigations/SKILL.md), `status: open`,
+     (via [`knowledge-vault-doc-investigations`](../knowledge-vault-doc-investigations/SKILL.md), `status: open`,
      `tags: consumidor/cad`).
    - Definições conflitantes **dentro da fatia** → hierarquia + `status: conflicting` +
      investigação. (Conflito **entre** fatias/etapas é resolvido no reduce.)

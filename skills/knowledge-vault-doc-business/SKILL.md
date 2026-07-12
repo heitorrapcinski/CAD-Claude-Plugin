@@ -1,9 +1,9 @@
 ---
-name: cad-doc-business
+name: knowledge-vault-doc-business
 description: Gera as notas de Knowledge das pastas 01 Overview (o que é o sistema) e 02 Business Knowledge (por que existe) do vault docs/knowledge-vault/ — visão geral, glossário, stakeholders, tecnologias; processos, capacidades, regras de negócio, papéis, eventos de negócio. Notas Zettelkasten neutras, rastreadas por evidência. Invocado por /cad:discovery e /cad:backlog.
 ---
 
-# cad-doc-business — Overview & Business Knowledge (01–02)
+# knowledge-vault-doc-business — Overview & Business Knowledge (01–02)
 
 ## Objetivo
 
@@ -11,7 +11,7 @@ Produzir as notas que respondem **"o que é o sistema?"** (`01 Overview`) e **"p
 existe?"** (`02 Business Knowledge`) — o **domínio do problema**, não a implementação
 técnica. Conhecimento **neutro**: sem opinião de método.
 
-Segue as [convenções do vault](../cad-doc-conventions/SKILL.md) — frontmatter, componentes,
+Segue as [convenções do vault](../knowledge-vault-doc-conventions/SKILL.md) — frontmatter, componentes,
 `source:` ligando a `09 Evidence`, taxonomia, vocabulário proibido.
 
 ## Entradas
@@ -88,7 +88,7 @@ created: 2026-07-10
 - **Parafraseie**, nunca copie literalmente a fonte (especialmente normativos e documentos
   corporativos protegidos). O trecho literal, quando necessário, vive na nota de `09 Evidence`.
 - Toda nota confirmada/inferida traz `source:` apontando para `09 Evidence`. Sem evidência,
-  **não escreva a nota** — abra `11 Investigations` (via `cad-doc-investigations`).
+  **não escreva a nota** — abra `11 Investigations` (via `knowledge-vault-doc-investigations`).
 - `status`: `confirmed` (evidência direta), `inferred` (derivado — marque a inferência),
   `conflicting` (divergência entre fontes — registre a versão priorizada pela hierarquia e
   abra investigação).

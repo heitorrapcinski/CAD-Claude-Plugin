@@ -1,16 +1,16 @@
 ---
-name: cad-doc-conventions
+name: knowledge-vault-doc-conventions
 description: Convenção única do Knowledge Vault do CAD — schema de frontmatter, componentes permitidos (Markdown/Obsidian/Mermaid/PlantUML/callouts/[[links]]), a taxonomia numerada 01–13, a filosofia Knowledge×Discovery, e os tipos/status de nota. Referência citada por todas as skills de substrato e pela /cad:discovery.
 ---
 
-# cad-doc-conventions — Convenções do Knowledge Vault (substrato neutro)
+# knowledge-vault-doc-conventions — Convenções do Knowledge Vault (substrato neutro)
 
 ## Objetivo
 
 Definir **como toda nota do substrato é escrita**, para que `docs/knowledge-vault/` seja um
 **Knowledge Vault** coeso e navegável no Obsidian: um conjunto de notas atômicas em
 Markdown, cada uma rastreável até uma evidência. Esta skill é a **fonte única** das
-convenções; as demais skills de substrato (`cad-doc-business`, `-system`, `-technical`,
+convenções; as demais skills de substrato (`knowledge-vault-doc-business`, `-system`, `-technical`,
 `-evidence`, `-decisions`, `-investigations`, `-views`, `-mocs`) e a `/cad:discovery`
 apontam para cá em vez de repetir as regras.
 
@@ -187,7 +187,7 @@ frontmatter pode **não resolver** e vira um **nó órfão** no grafo. Por isso:
 - **Relações explícitas.** Prefira frases com o link no meio a listas soltas:
   `[[Cliente]] é persistido em [[TB_CLIENTE]]`.
 
-## Regra de evidência (resumo — detalhe em `cad-doc-evidence`)
+## Regra de evidência (resumo — detalhe em `knowledge-vault-doc-evidence`)
 
 ```
 Há evidência rastreável (código/doc/SQL/log/config/entrevista)?

@@ -1,9 +1,9 @@
 ---
-name: cad-doc-decisions
+name: knowledge-vault-doc-decisions
 description: Gerencia a pasta 10 Decisions do vault docs/knowledge-vault/ — conclusões da engenharia reversa: ADRs (decisões arquiteturais identificadas), premissas assumidas e hipóteses confirmadas. Notas Zettelkasten rastreadas por evidência. Invocado por /cad:discovery e /cad:backlog.
 ---
 
-# cad-doc-decisions — Decisions (10) (substrato neutro)
+# knowledge-vault-doc-decisions — Decisions (10) (substrato neutro)
 
 ## Objetivo
 
@@ -16,7 +16,7 @@ tiradas durante a engenharia reversa?"*. Inclui:
 - **Hipóteses confirmadas** — o que era dúvida em `11 Investigations` e virou conclusão
   sustentada por evidência.
 
-Segue as [convenções do vault](../cad-doc-conventions/SKILL.md). É substrato **neutro** —
+Segue as [convenções do vault](../knowledge-vault-doc-conventions/SKILL.md). É substrato **neutro** —
 decisões descritas como observadas, sem opinião de método.
 
 ## Entradas

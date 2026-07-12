@@ -51,11 +51,11 @@ fonte**: quando falta um fato no vault, o módulo abre uma nota em `11 Investiga
 ## Skills (28)
 
 - **3 orquestradores:** `cad-discovery`, `cad-synthesize`, `cad-backlog`.
-- **9 do substrato neutro (Knowledge Vault):** `cad-doc-conventions` (backbone);
-  Knowledge — `cad-doc-business` (01+02), `cad-doc-system` (03+04),
-  `cad-doc-technical` (05+06+07+08); Discovery — `cad-doc-evidence` (09),
-  `cad-doc-decisions` (10), `cad-doc-investigations` (11), `cad-doc-views` (12),
-  `cad-doc-mocs` (13).
+- **9 do substrato neutro (Knowledge Vault):** `knowledge-vault-doc-conventions` (backbone);
+  Knowledge — `knowledge-vault-doc-business` (01+02), `knowledge-vault-doc-system` (03+04),
+  `knowledge-vault-doc-technical` (05+06+07+08); Discovery — `knowledge-vault-doc-evidence` (09),
+  `knowledge-vault-doc-decisions` (10), `knowledge-vault-doc-investigations` (11), `knowledge-vault-doc-views` (12),
+  `knowledge-vault-doc-mocs` (13).
 - **Módulo Lean Inception (7):** `lean-inception-module` (+ `module.json`) e
   `lean-inception-doc-product-framing` / `-personas` / `-features` / `-journeys` /
   `-sequencer` / `-mvp-canvas`.

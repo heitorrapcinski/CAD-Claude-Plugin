@@ -1,9 +1,9 @@
 ---
-name: cad-doc-system
+name: knowledge-vault-doc-system
 description: Gera as notas de Knowledge das pastas 03 Structural Knowledge (do que o sistema é composto) e 04 Behavioral Knowledge (como funciona) do vault docs/knowledge-vault/ — conceitos, componentes, módulos, serviços, interfaces, relações; fluxos, casos de uso, algoritmos, máquinas de estado, jobs. Notas Zettelkasten neutras (sem tecnologia nem método), rastreadas por evidência. Invocado por /cad:discovery e /cad:backlog.
 ---
 
-# cad-doc-system — Structural & Behavioral Knowledge (03–04)
+# knowledge-vault-doc-system — Structural & Behavioral Knowledge (03–04)
 
 ## Objetivo
 
@@ -11,14 +11,14 @@ Produzir as notas que respondem **"do que o sistema é composto?"** (`03 Structu
 Knowledge`) e **"como funciona?"** (`04 Behavioral Knowledge`) — o que **existe** e como se
 **comporta**, em nível conceitual/lógico e **neutro** (sem assumir tecnologia nem método).
 
-Segue as [convenções do vault](../cad-doc-conventions/SKILL.md).
+Segue as [convenções do vault](../knowledge-vault-doc-conventions/SKILL.md).
 
 ## Entradas
 
 - Fontes escaneadas por `/cad:discovery`.
 - Notas de `09 Evidence` (para ligar via `source:`).
 - Detalhe técnico fino (tipos, tabelas, FKs) **não** entra aqui — vai para `05 Source Code`
-  e `06 Data` (skill `cad-doc-technical`). Aqui fica o **conceito** e o **comportamento**.
+  e `06 Data` (skill `knowledge-vault-doc-technical`). Aqui fica o **conceito** e o **comportamento**.
 
 ## Pastas e notas
 
@@ -93,7 +93,7 @@ sequenceDiagram
   dizer que X é um *agregado* ou *objeto de valor* é opinião de método (**não** entra).
 - **Relacionamentos com multiplicidade** (`1..1`, `1..n`, `0..n`) quando a fonte sustentar.
 - Diagramas curtos podem ficar inline (Mermaid); diagramas substanciais vão em `12 Views`
-  (skill `cad-doc-views`) e são referenciados por `[[...]]`.
+  (skill `knowledge-vault-doc-views`) e são referenciados por `[[...]]`.
 - Toda nota confirmada/inferida traz `source:` → `09 Evidence`. Sem evidência, abra
   `11 Investigations`. Conflito entre fontes → versão priorizada pela hierarquia +
   investigação.

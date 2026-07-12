@@ -1,9 +1,9 @@
 ---
-name: cad-doc-technical
+name: knowledge-vault-doc-technical
 description: Gera as notas de Knowledge das pastas 05 Source Code (como foi implementado), 06 Data (que informações manipula), 07 Integrations (com quem se comunica) e 08 Operational Architecture (como opera em produção) do vault docs/knowledge-vault/ — engenharia reversa de código, dados, integrações e arquitetura operacional. Notas Zettelkasten rastreadas por evidência. Invocado por /cad:discovery e /cad:backlog.
 ---
 
-# cad-doc-technical — Source Code · Data · Integrations · Operational Architecture (05–08)
+# knowledge-vault-doc-technical — Source Code · Data · Integrations · Operational Architecture (05–08)
 
 ## Objetivo
 
@@ -14,7 +14,7 @@ Produzir as notas da **camada de implementação e operação** do System of Rec
 - **`07 Integrations`** — *"com quem o sistema se comunica?"* integrações internas/externas.
 - **`08 Operational Architecture`** — *"como opera em produção?"* deploy, runtime, monitoração.
 
-Segue as [convenções do vault](../cad-doc-conventions/SKILL.md). Diferente de
+Segue as [convenções do vault](../knowledge-vault-doc-conventions/SKILL.md). Diferente de
 `03 Structural`/`04 Behavioral` (conceito/comportamento neutros), aqui a nota **descreve a
 implementação** — mas ainda é substrato **neutro de método** (nada de DDD/C4/TOGAF).
 

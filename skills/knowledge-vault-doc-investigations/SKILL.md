@@ -1,9 +1,9 @@
 ---
-name: cad-doc-investigations
+name: knowledge-vault-doc-investigations
 description: Gerencia a pasta 11 Investigations do vault docs/knowledge-vault/ — o backlog da engenharia reversa em forma de notas: perguntas abertas, hipóteses, dúvidas, lacunas de documentação, conflitos entre fontes e pendências. Substitui o antigo backlog.md. Cada nota tem status (open|conflicting|confirmed|validated). Invocado por /cad:discovery, /cad:synthesize e /cad:backlog.
 ---
 
-# cad-doc-investigations — Investigations (11) (substrato neutro)
+# knowledge-vault-doc-investigations — Investigations (11) (substrato neutro)
 
 ## Objetivo
 
@@ -12,7 +12,7 @@ precisa ser investigado?"*. Evita que conhecimento **incompleto** ou **em dúvid
 É a pasta que **substitui o antigo `backlog.md`** — em vez de linhas numa tabela `BL-XXX`,
 uma **nota por pendência**, ligada por `[[...]]` às notas que a originaram.
 
-Segue as [convenções do vault](../cad-doc-conventions/SKILL.md).
+Segue as [convenções do vault](../knowledge-vault-doc-conventions/SKILL.md).
 
 ## Entradas
 

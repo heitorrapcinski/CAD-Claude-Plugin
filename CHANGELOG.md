@@ -38,13 +38,13 @@ engenharia reversa de um System of Record. Skills do substrato: **7 → 9**.
   e evidências `EV-<sessão>-<agente>-<seq>` por subagente (ou `EV-<sessão>-<seq>` no modo de
   1 agente). Degrada para 1 agente se o runtime não tiver subagentes. Seção 3.3 do `DESIGN.md`.
 - **9 skills novas do substrato**, espelhando as duas partes:
-  - Backbone: **`cad-doc-conventions`** (schema de frontmatter, componentes, taxonomia,
+  - Backbone: **`knowledge-vault-doc-conventions`** (schema de frontmatter, componentes, taxonomia,
     tipos/status de nota, filosofia Knowledge×Discovery — fonte única de convenções).
-  - Knowledge: **`cad-doc-business`** (01+02), **`cad-doc-system`** (03+04),
-    **`cad-doc-technical`** (05+06+07+08).
-  - Discovery: **`cad-doc-evidence`** (09 + MOC Registro de Evidências),
-    **`cad-doc-decisions`** (10), **`cad-doc-investigations`** (11),
-    **`cad-doc-views`** (12), **`cad-doc-mocs`** (13).
+  - Knowledge: **`knowledge-vault-doc-business`** (01+02), **`knowledge-vault-doc-system`** (03+04),
+    **`knowledge-vault-doc-technical`** (05+06+07+08).
+  - Discovery: **`knowledge-vault-doc-evidence`** (09 + MOC Registro de Evidências),
+    **`knowledge-vault-doc-decisions`** (10), **`knowledge-vault-doc-investigations`** (11),
+    **`knowledge-vault-doc-views`** (12), **`knowledge-vault-doc-mocs`** (13).
 
 ### Alterado
 
@@ -82,8 +82,8 @@ engenharia reversa de um System of Record. Skills do substrato: **7 → 9**.
   arquivo**, não pelo `alias` de frontmatter, gerando nós órfãos no grafo. Convenção
   corrigida: citar a evidência **pelo título completo** com o código como exibição —
   `[[EV-5-a2-007 · Aprovação exige duas alçadas|EV-5-a2-007]]`. Como as evidências são
-  imutáveis, o título é estável e o link não quebra. Ajustado em `cad-doc-conventions`
-  (nova regra "Como referenciar uma evidência"), `cad-doc-evidence`, `cad-discovery` e nos
+  imutáveis, o título é estável e o link não quebra. Ajustado em `knowledge-vault-doc-conventions`
+  (nova regra "Como referenciar uma evidência"), `knowledge-vault-doc-evidence`, `cad-discovery` e nos
   exemplos das skills do vault.
 - **Múltiplas evidências no `source:` do frontmatter.** Vários `[[...]]` numa **mesma
   string** não resolvem no Obsidian (não há separação por vírgula). Convenção: usar **lista
@@ -95,7 +95,7 @@ engenharia reversa de um System of Record. Skills do substrato: **7 → 9**.
   coluna, então o link virava texto cru e as colunas deslocavam (observado no MOC "Registro
   de Evidências"). A convenção mandava a forma com alias, mas só exemplificava em **lista**,
   onde o `|` é inofensivo — a interseção "alias dentro de tabela" nunca fora coberta. Regra
-  adicionada em `cad-doc-conventions` e `cad-doc-evidence`: **em célula de tabela, escape o
+  adicionada em `knowledge-vault-doc-conventions` e `knowledge-vault-doc-evidence`: **em célula de tabela, escape o
   pipe como `\|`** (`[[título\|código]]`); fora de tabela, `|` normal. Como rede de segurança,
   novo hook **PostToolUse `validate-obsidian-syntax`** — lint incremental de sintaxe do
   Obsidian que quebra o render silenciosamente (pipe-em-tabela, wikilink/embed não fechado,
