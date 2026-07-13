@@ -297,48 +297,47 @@ inteiro, no maior nível de detalhe — a descoberta **nunca** oferece coletar m
 para poupar esforço, pois um retrato parcial enviesa o humano. O consultor decide **quais
 fontes** autorizar; uma vez autorizada, a fonte é coberta 100%.
 
-O que escala com o esforço **não** é a cobertura, e sim a **forma de executar**: uma fonte
-pequena é coberta por **1 agente** e uma fonte grande em **map-reduce** (paralelizando a
-varredura). O papel da skill é garantir que **tudo** seja coberto, usando o **vault em disco
-como memória** entre passes; se uma sessão não fecha 100%, a seguinte retoma pelo que ainda
-falta.
+O que **não** escala com o esforço é a cobertura — ela é sempre 100%. **Como** percorrer a
+fonte é decisão livre da descoberta, guiada pela natureza da própria fonte: por
+**módulo/subsistema** quando ela tem essa estrutura, por **camada `01…13`** quando é
+monolítica, na ordem que melhor materializa o conhecimento. **Não há um modelo de execução
+prescrito** (nem map-reduce, nem subagentes): forçar uma forma fixa impediria a descoberta de
+estruturar o vault do jeito que a fonte pede. O papel da skill é garantir o **resultado** —
+tudo coberto, na maior profundidade, cada afirmação ancorada em evidência — usando o **vault
+em disco como memória** entre passes; se uma sessão não fecha 100%, a seguinte retoma pelo que
+ainda falta.
 
-- **Esforço pequeno → 1 agente.** Um passe cobre tudo, área por área.
-- **Esforço grande → map-reduce.** O orquestrador particiona a fonte em sub-fatias coesas (por
-  **módulo/subsistema** de preferência) **para paralelizar** — cada subagente cobre a sua
-  sub-fatia **por inteiro**, na maior profundidade. É decisão de execução do orquestrador.
+Os invariantes do CAD (cobertura total, rastreabilidade, IDs sem colisão, navegação e conflito
+globais) valem **independentemente da forma de execução**:
 
-O paralelismo é **map-reduce**, e a separação **map × reduce** é o que preserva os invariantes
-do CAD sob paralelismo:
+| O quê | Como se sustenta |
+|---|---|
+| **Registro de fontes** | `SRC-NNN` é atribuído **uma vez**, ao registrar a fonte em `.cad-plugin/sources.json`; a sessão é incrementada no `state.json`. |
+| **Coleta** | Percorre a fonte por inteiro, captura evidência primeiro (`09 Evidence`, id `EV-<sessão>-<seq>`) e materializa as notas de Knowledge ligadas por `source:`; abre investigações para o que não tem evidência. |
+| **Consolidação** | Contra o **vault acumulado**: **MOCs** e **Registro de Evidências**, **dedup** de conceito transversal e **detecção de conflito entre fontes** — a visão do todo, que fecha o retrato consolidado. |
 
-| Fase | Ator | Faz |
-|---|---|---|
-| Preparação | Orquestrador | Registra fontes (`SRC-NNN`, **escritor único**), incrementa a sessão, **decide o modo** (1 agente vs map-reduce) e, no map-reduce, particiona em sub-fatias e atribui um **id** por subagente (`a1`, `a2`…). |
-| **Map** | Subagentes (paralelo) | Cada um varre **só a sua sub-fatia** (por inteiro), captura evidência (`09 Evidence`, id `EV-<sessão>-<agente>-<seq>`) e materializa as notas de Knowledge ligadas por `source:`; abre investigações locais. **Não** escreve MOCs, **não** resolve conflito entre fatias, **não** toca `sources.json`/`state.json`. |
-| **Reduce** | Orquestrador | Ao fim da coleta, consolida contra o **vault acumulado**: **MOCs** e **Registro de Evidências**, **dedup** de conceito transversal e **detecção de conflito entre fontes** (que só quem vê o todo consegue), entregando o retrato consolidado. |
-
-Como o vault em disco **acumula**, o reduce roda contra tudo o que já existe (inclusive o que
-sessões anteriores gravaram) — conflito com o vault existente aparece quando a nota nova
+Como o vault em disco **acumula**, a consolidação roda contra tudo o que já existe (inclusive o
+que sessões anteriores gravaram) — conflito com o vault existente aparece quando a nota nova
 aterrissa. Dois pontos de projeto sustentam isso:
 
-- **Identidade sem colisão** (padrão worker-id + sequência). `SRC` é atribuído uma vez
-  (escritor único). As evidências usam `EV-<sessão>-<agente>-<seq>` no modo paralelo: a
-  `<sessão>` (do `state.json`) garante unicidade **entre runs**, o `<agente>` (`a1`, `a2`…)
-  garante que dois subagentes nunca colidam, e o `<seq>` é sequencial **por agente** — tudo
-  sem RNG e sem escritor central. No modo de 1 agente, `EV-<sessão>-<seq>`. O título da nota
-  é `EV-<id> · <resumo>`; para **evitar links órfãos**, as citações linkam a evidência **pelo
-  título completo** com o código como exibição (`[[EV-5-a2-007 · … |EV-5-a2-007]]`), nunca
-  pelo código sozinho — o Obsidian resolve `[[...]]` por nome de arquivo, não por `alias`.
-  Como a evidência é imutável, o título é estável e o link não quebra. Com **várias**
-  evidências, o `source:` é uma **lista YAML** (um link por item) — vários `[[...]]` numa
-  mesma string de frontmatter não resolvem. O hook `validate-evidence` aceita ambas as formas.
-- **Conflito e navegação são globais.** Detecção de conflito entre fontes, dedup e MOCs são
-  **intrinsecamente reduce** — ficam com o orquestrador, nunca com um subagente. Links
-  `[[...]]` para notas que outra fatia criará ficam pendentes no meio do caminho, o que é
-  **legítimo em Zettelkasten** (sinaliza nota a criar) e é resolvido no reduce.
+- **Identidade sem colisão** (sessão + sequência). `SRC` é atribuído uma vez, ao registrar a
+  fonte. As evidências usam `EV-<sessão>-<seq>`: a `<sessão>` (do `state.json`) garante
+  unicidade **entre runs** e o `<seq>` é sequencial dentro da sessão — sem RNG e sem contador
+  global frágil. O título da nota é `EV-<id> · <resumo>`; para **evitar links órfãos**, as
+  citações linkam a evidência **pelo título completo** com o código como exibição
+  (`[[EV-5-007 · … |EV-5-007]]`), nunca pelo código sozinho — o Obsidian resolve `[[...]]` por
+  nome de arquivo, não por `alias`. Como a evidência é imutável, o título é estável e o link
+  não quebra. Com **várias** evidências, o `source:` é uma **lista YAML** (um link por item) —
+  vários `[[...]]` numa mesma string de frontmatter não resolvem. O hook `validate-evidence`
+  aceita ambas as formas.
+- **Conflito e navegação são globais.** Detecção de conflito entre fontes, dedup e MOCs
+  dependem da **visão do todo** — só se resolvem contra o vault acumulado. Links `[[...]]` para
+  notas ainda não criadas ficam pendentes no meio do caminho, o que é **legítimo em
+  Zettelkasten** (sinaliza nota a criar) e se resolve quando a nota-alvo aterrissa.
 
-Os hooks (seção 10) são **agnósticos de quem escreve**: rodam em qualquer `Write`, então o
-paralelismo **não enfraquece** a disciplina de evidência nem a proteção de validação humana.
+Os hooks (seção 10) são **agnósticos de quem escreve**: rodam em qualquer `Write`, então a
+disciplina de evidência e a proteção de validação humana valem qualquer que seja a forma de
+execução.
 
 ---
 

@@ -28,13 +28,13 @@ Escreve apenas em `docs/ddd/`.
 ## Contexto: [Nome]
 | Termo | Significado NESTE contexto | Nota do substrato | Evidência |
 |---|---|---|---|
-| Aprovação | etapa única de liberação automática | [[Aprovação]] | [[EV-5-a1-011 · Código implementa uma alçada|EV-5-a1-011]] |
-| Conta | carteira de crédito do cliente | [[Conta]] | [[EV-5-a1-020 · Conta é carteira de crédito|EV-5-a1-020]] |
+| Aprovação | etapa única de liberação automática | [[Aprovação]] | [[EV-5-011 · Código implementa uma alçada|EV-5-011]] |
+| Conta | carteira de crédito do cliente | [[Conta]] | [[EV-5-020 · Conta é carteira de crédito|EV-5-020]] |
 
 ## Contexto: [Outro Nome]
 | Termo | Significado NESTE contexto | Nota do substrato | Evidência |
 |---|---|---|---|
-| Aprovação | fluxo de 2 alçadas (gerência + risco) | [[Aprovação]] | [[EV-5-a2-007 · Aprovação exige duas alçadas|EV-5-a2-007]] |
+| Aprovação | fluxo de 2 alçadas (gerência + risco) | [[Aprovação]] | [[EV-5-007 · Aprovação exige duas alçadas|EV-5-007]] |
 
 > O mesmo termo "Aprovação" significa coisas distintas em contextos distintos — esse
 > é o sinal clássico de fronteira de contexto. Conflitos de definição registrados em

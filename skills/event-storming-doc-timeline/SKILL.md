@@ -29,9 +29,9 @@ bloco factual cita a evidência por `[[EV-… · resumo|EV-…]]`.
 
 | # | Evento de domínio (passado) | Fase | Pivô? | Origem (código/fila/API/BD) | Evidência |
 |---|---|---|---|---|---|
-| 1 | Pedido Registrado | Captação | — | POST /orders → OrderCreated | [[EV-5-a4-071 · POST /orders|EV-5-a4-071]] |
-| 2 | Pagamento Aprovado | Pagamento | ⭐ | fila `payments.approved` | [[EV-5-a7-072 · Fila payments.approved|EV-5-a7-072]] |
-| 3 | Pedido Faturado | Faturamento | — | billing/service.py L88 | [[EV-5-a4-073 · billing/service.py|EV-5-a4-073]] |
+| 1 | Pedido Registrado | Captação | — | POST /orders → OrderCreated | [[EV-5-071 · POST /orders|EV-5-071]] |
+| 2 | Pagamento Aprovado | Pagamento | ⭐ | fila `payments.approved` | [[EV-5-072 · Fila payments.approved|EV-5-072]] |
+| 3 | Pedido Faturado | Faturamento | — | billing/service.py L88 | [[EV-5-073 · billing/service.py|EV-5-073]] |
 
 > Evento sem origem rastreável: [⚠️ Pendente: [[Investigação - Origem do evento …]]] (consumidor: event-storming).
 ```

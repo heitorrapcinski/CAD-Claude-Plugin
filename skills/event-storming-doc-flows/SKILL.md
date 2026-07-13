@@ -28,13 +28,13 @@ comandos), `02 Business Knowledge/` (regras → políticas), `03 Structural Know
 > Política**. Comando no imperativo; evento no passado.
 
 ## Fatia: [comando principal]
-- **Ator:** [quem dispara] [[EV-5-a4-080 · Ator do comando|EV-5-a4-080]]
-- **Comando:** [Registrar Pedido] (imperativo) [[EV-5-a4-081 · Endpoint de registro|EV-5-a4-081]]
-- **Agregado:** [Pedido] — recebe o comando e garante a consistência [[EV-5-a3-082 · Classe Pedido|EV-5-a3-082]]
-- **Evento(s):** [Pedido Registrado] (→ timeline.md) [[EV-5-a4-071 · POST /orders|EV-5-a4-071]]
-- **Read model (decisão):** [dado consultado antes de decidir] [[EV-5-a3-083 · View de saldo|EV-5-a3-083]] | [⚠️ Pendente: [[Investigação - Read model da decisão …]]]
+- **Ator:** [quem dispara] [[EV-5-080 · Ator do comando|EV-5-080]]
+- **Comando:** [Registrar Pedido] (imperativo) [[EV-5-081 · Endpoint de registro|EV-5-081]]
+- **Agregado:** [Pedido] — recebe o comando e garante a consistência [[EV-5-082 · Classe Pedido|EV-5-082]]
+- **Evento(s):** [Pedido Registrado] (→ timeline.md) [[EV-5-071 · POST /orders|EV-5-071]]
+- **Read model (decisão):** [dado consultado antes de decidir] [[EV-5-083 · View de saldo|EV-5-083]] | [⚠️ Pendente: [[Investigação - Read model da decisão …]]]
 - **Política (reação):** "sempre que [Pagamento Aprovado] → [Faturar Pedido]"
-  ([[Regra - Faturar após pagamento]]) [[EV-5-a2-084 · Regra de faturamento|EV-5-a2-084]]
+  ([[Regra - Faturar após pagamento]]) [[EV-5-084 · Regra de faturamento|EV-5-084]]
 ```
 
 ## Como preencher

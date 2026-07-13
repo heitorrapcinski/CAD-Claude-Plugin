@@ -22,7 +22,7 @@ Lê **apenas** o substrato CAD (Knowledge Vault): as **capacidades**
 `docs/ddd/`.
 
 Cada bloco factual cita a evidência **pelo título completo da nota**, com o código como
-exibição — `[[EV-5-a3-014 · Risco de crédito é core|EV-5-a3-014]]` — e referencia as notas
+exibição — `[[EV-5-014 · Risco de crédito é core|EV-5-014]]` — e referencia as notas
 do substrato por **nome** (`[[Capacidade - …]]`, `[[Regra - …]]`).
 
 ## Templates (copiar fielmente)
@@ -34,9 +34,9 @@ do substrato por **nome** (`[[Capacidade - …]]`, `[[Regra - …]]`).
 
 | Subdomínio | Tipo | Descrição | Capacidade(s) relacionada(s) | Evidência |
 |---|---|---|---|---|
-| Análise de risco de crédito | Core | diferencial competitivo do negócio | [[Capacidade - Análise de risco de crédito]] | [[EV-5-a3-014 · Risco é core|EV-5-a3-014]] |
-| Notificação ao cliente | Supporting | necessário, mas não diferenciador | [[Capacidade - Notificação ao cliente]] | [[EV-5-a3-015 · Notificação apoia o core|EV-5-a3-015]] |
-| Autenticação | Generic | resolvido por solução de mercado | [[Capacidade - Autenticação]] | [[EV-5-a3-016 · Auth via lib de mercado|EV-5-a3-016]] |
+| Análise de risco de crédito | Core | diferencial competitivo do negócio | [[Capacidade - Análise de risco de crédito]] | [[EV-5-014 · Risco é core|EV-5-014]] |
+| Notificação ao cliente | Supporting | necessário, mas não diferenciador | [[Capacidade - Notificação ao cliente]] | [[EV-5-015 · Notificação apoia o core|EV-5-015]] |
+| Autenticação | Generic | resolvido por solução de mercado | [[Capacidade - Autenticação]] | [[EV-5-016 · Auth via lib de mercado|EV-5-016]] |
 
 > Tipo: **Core** (diferenciador, foco do investimento) · **Supporting** (apoia o
 > core, específico do negócio) · **Generic** (commodity, candidato a comprar/terceirizar).
@@ -51,9 +51,9 @@ do substrato por **nome** (`[[Capacidade - …]]`, `[[Regra - …]]`).
 ## Contexto: [Nome do Contexto]
 - **Subdomínio relacionado:** [...] (→ subdomains.md)
 - **Responsabilidade:** [o que este contexto resolve e o que NÃO resolve]
-- **Módulos/pacotes de código:** [ex.: [[Billing Module]], [[credito (pacote)]]] [[EV-5-a3-020 · Billing isola cobrança|EV-5-a3-020]]
+- **Módulos/pacotes de código:** [ex.: [[Billing Module]], [[credito (pacote)]]] [[EV-5-020 · Billing isola cobrança|EV-5-020]]
 - **Linguagem ubíqua:** → ubiquitous-language.md#[contexto]
-- **Acoplamento observado:** baixo | médio | alto — [evidência do acoplamento] [[EV-5-a3-021 · Acoplamento Billing↔Cadastro|EV-5-a3-021]]
+- **Acoplamento observado:** baixo | médio | alto — [evidência do acoplamento] [[EV-5-021 · Acoplamento Billing↔Cadastro|EV-5-021]]
 - **Limite incerto:** [⚠️ Pendente: [[Investigação - Fronteira do contexto …]]] — [o que falta para confirmar]
 ```
 
@@ -64,10 +64,10 @@ do substrato por **nome** (`[[Capacidade - …]]`, `[[Regra - …]]`).
 
 | Upstream (montante) | Downstream (jusante) | Padrão de relacionamento | Evidência |
 |---|---|---|---|
-| Crédito | Notificação | Customer/Supplier | [[EV-5-a3-015 · Notificação apoia o core|EV-5-a3-015]] |
-| Sistema Legado | Crédito | Anticorruption Layer (ACL) | [[EV-5-a4-030 · Adapter isola o legado|EV-5-a4-030]] |
-| Crédito | Cobrança | Shared Kernel (modelo de "Fatura" compartilhado) | [[EV-5-a4-031 · Fatura compartilhada|EV-5-a4-031]] |
-| Pagamentos | (externo) | Open Host Service + Published Language | [[EV-5-a7-005 · API pública de pagamentos|EV-5-a7-005]] |
+| Crédito | Notificação | Customer/Supplier | [[EV-5-015 · Notificação apoia o core|EV-5-015]] |
+| Sistema Legado | Crédito | Anticorruption Layer (ACL) | [[EV-5-030 · Adapter isola o legado|EV-5-030]] |
+| Crédito | Cobrança | Shared Kernel (modelo de "Fatura" compartilhado) | [[EV-5-031 · Fatura compartilhada|EV-5-031]] |
+| Pagamentos | (externo) | Open Host Service + Published Language | [[EV-5-005 · API pública de pagamentos|EV-5-005]] |
 
 > Padrões válidos: Partnership · Shared Kernel · Customer/Supplier · Conformist ·
 > Anticorruption Layer (ACL) · Open Host Service (OHS) · Published Language ·

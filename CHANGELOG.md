@@ -12,14 +12,26 @@ Todas as mudanças relevantes deste plugin. O formato segue, de modo leve,
 - **Arquivo `LICENSE` (MIT).** Formaliza na raiz do repositório a licença já declarada em
   `package.json` (`"license": "MIT"`), sob copyright de Heitor Rapcinski.
 
+### Removido
+
+- **Map-reduce e subagentes na descoberta.** A `/cad:discovery` deixa de **prescrever** uma
+  forma de execução (particionar a fonte em sub-fatias e disparar subagentes de *map*, com um
+  *reduce* separado). Na prática, o modelo fixo **impedia a descoberta de estruturar o vault no
+  formato que a fonte pede**. Agora **como** percorrer a fonte é decisão livre, guiada pela
+  natureza dela (por módulo/subsistema, ou por camada `01…13` quando monolítica). Os
+  invariantes seguem **inegociáveis**: cobertura total, profundidade máxima e rastreabilidade
+  valem independentemente da forma de execução. O id de evidência simplifica de
+  `EV-<sessão>-<agente>-<seq>` para **`EV-<sessão>-<seq>`** (some o componente por-subagente).
+  Skills afetadas: `cad-discovery`, `knowledge-vault-doc-evidence`, `knowledge-vault-doc-conventions`;
+  seção 3.3 do `DESIGN.md`.
+
 ### Alterado
 
 - **Descoberta sem faseamento prescrito.** A `/cad:discovery` deixa de **montar e negociar um
-  plano de etapas de valor** com o consultor — na prática, essa orientação confundia os
-  subagentes durante a descoberta. Cobertura total e profundidade máxima seguem
-  **inegociáveis**: a fonte autorizada é sempre lida por inteiro, na maior profundidade. Fonte
-  volumosa continua sendo coberta em **map-reduce** (paralelização), e o **vault em disco**
-  segue como memória para **retomar entre sessões** até 100%. Seção 3.3 do `DESIGN.md`.
+  plano de etapas de valor** com o consultor — na prática, essa orientação confundia a
+  descoberta. Cobertura total e profundidade máxima seguem **inegociáveis**: a fonte autorizada
+  é sempre lida por inteiro, na maior profundidade, e o **vault em disco** segue como memória
+  para **retomar entre sessões** até 100%. Seção 3.3 do `DESIGN.md`.
 
 ## [0.4.0] — 2026-07-10
 

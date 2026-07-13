@@ -29,7 +29,7 @@ pendentes) e `09 Evidence/` (evidências em conflito). Localiza os hotspots sobr
 
 | ID | Hotspot (problema/dúvida) | Onde no fluxo (evento/comando) | Tipo | Referência |
 |---|---|---|---|---|
-| HS-01 | "Aprovação": código faz 1 alçada, normativo exige 2 | evento "Pagamento Aprovado" | conflito | [[Investigação - Alçadas de Aprovação]] · [[EV-5-a2-007 · Aprovação exige duas alçadas|EV-5-a2-007]], [[EV-5-a1-011 · Código implementa uma alçada|EV-5-a1-011]] |
+| HS-01 | "Aprovação": código faz 1 alçada, normativo exige 2 | evento "Pagamento Aprovado" | conflito | [[Investigação - Alçadas de Aprovação]] · [[EV-5-007 · Aprovação exige duas alçadas|EV-5-007]], [[EV-5-011 · Código implementa uma alçada|EV-5-011]] |
 | HS-02 | Não se sabe quem dispara o estorno | comando "Estornar" | lacuna | [[Investigação - Gatilho do estorno]] |
 
 > Cada hotspot referencia a nota de `11 Investigations` ou as evidências em conflito

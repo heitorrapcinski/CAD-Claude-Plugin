@@ -33,13 +33,13 @@ Se um detalhe não está no vault, **não infira**: abre-se `11 Investigations`
 # Agregados — Contexto [Nome]
 
 ## Agregado: [Raiz do Agregado]
-- **Raiz (entidade):** [ex.: Proposta] [[EV-5-a3-040 · Classe Proposta|EV-5-a3-040]]
-- **Entidades:** [ex.: ItemDaProposta] [[EV-5-a3-041 · ItemDaProposta|EV-5-a3-041]]
-- **Objetos de valor:** [ex.: Valor, CPF, Período] [[EV-5-a6-010 · Campos de Proposta|EV-5-a6-010]]
+- **Raiz (entidade):** [ex.: Proposta] [[EV-5-040 · Classe Proposta|EV-5-040]]
+- **Entidades:** [ex.: ItemDaProposta] [[EV-5-041 · ItemDaProposta|EV-5-041]]
+- **Objetos de valor:** [ex.: Valor, CPF, Período] [[EV-5-010 · Campos de Proposta|EV-5-010]]
 - **Invariantes (regras que o agregado protege):** [ex.: total = soma dos itens]
-  ([[Regra - Total da proposta]]) [[EV-5-a2-012 · Total é soma dos itens|EV-5-a2-012]]
-- **Eventos de domínio publicados:** [ex.: PropostaAprovada, PropostaRecusada] [[EV-5-a4-050 · Eventos de Proposta|EV-5-a4-050]]
-- **Repositório:** [ex.: PropostaRepository] [[EV-5-a5-020 · PropostaRepository|EV-5-a5-020]]
+  ([[Regra - Total da proposta]]) [[EV-5-012 · Total é soma dos itens|EV-5-012]]
+- **Eventos de domínio publicados:** [ex.: PropostaAprovada, PropostaRecusada] [[EV-5-050 · Eventos de Proposta|EV-5-050]]
+- **Repositório:** [ex.: PropostaRepository] [[EV-5-020 · PropostaRepository|EV-5-020]]
 - **Incerteza de modelagem:** [⚠️ Pendente: [[Investigação - Fronteira do agregado Proposta]]]
 
 > Eventos de domínio aqui são os do **modelo tático** (publicados por um agregado).

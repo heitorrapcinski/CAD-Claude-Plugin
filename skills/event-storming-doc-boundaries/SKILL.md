@@ -29,14 +29,14 @@ eventos-pivô de `timeline.md` (deste módulo). Escreve apenas em `docs/event-st
 
 | Contexto candidato | Eventos incluídos | Delimitado até o pivô | Evidência |
 |---|---|---|---|
-| Captação de Pedidos | Pedido Registrado, … | "Pagamento Aprovado" | [[EV-5-a4-071 · POST /orders|EV-5-a4-071]], [[EV-5-a7-072 · Fila payments.approved|EV-5-a7-072]] |
+| Captação de Pedidos | Pedido Registrado, … | "Pagamento Aprovado" | [[EV-5-071 · POST /orders|EV-5-071]], [[EV-5-072 · Fila payments.approved|EV-5-072]] |
 
 ## Sistemas externos
 > Sistemas externos (rosa) que emitem ou consomem eventos do fluxo.
 
 | Sistema externo | Emite / Consome | Evento(s) | Evidência |
 |---|---|---|---|
-| Gateway de Pagamento | emite | Pagamento Aprovado / Recusado | [[EV-5-a7-072 · Fila payments.approved|EV-5-a7-072]] |
+| Gateway de Pagamento | emite | Pagamento Aprovado / Recusado | [[EV-5-072 · Fila payments.approved|EV-5-072]] |
 ```
 
 ## Como preencher

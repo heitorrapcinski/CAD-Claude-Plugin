@@ -25,8 +25,8 @@ Segue as [convenções do vault](../knowledge-vault-doc-conventions/SKILL.md).
 
 ```markdown
 ---
-title: EV-5-a2-007 · Aprovação exige duas alçadas
-aliases: [EV-5-a2-007]
+title: EV-5-007 · Aprovação exige duas alçadas
+aliases: [EV-5-007]
 tags: [evidencia, normativo, dominio/credito]
 type: evidence
 status: confirmed
@@ -35,7 +35,7 @@ author: CAD Discovery
 created: 2026-07-10
 ---
 
-# EV-5-a2-007 · Aprovação exige duas alçadas
+# EV-5-007 · Aprovação exige duas alçadas
 
 > [!quote] Trecho da fonte (paráfrase)
 > A aprovação de crédito acima do limite requer duas alçadas distintas.
@@ -72,19 +72,18 @@ created: 2026-07-10
 # MOC · Registro de Evidências
 
 ## SRC-002 · normativo_credito_v3.pdf (Normativo)
-- [[EV-5-a2-007 · Aprovação exige duas alçadas|EV-5-a2-007]] — Aprovação exige duas alçadas
-- ⚠️ conflita com [[EV-5-a1-011 · Código implementa uma alçada|EV-5-a1-011]] → ver [[Investigação - Alçadas de Aprovação]]
+- [[EV-5-007 · Aprovação exige duas alçadas|EV-5-007]] — Aprovação exige duas alçadas
+- ⚠️ conflita com [[EV-5-011 · Código implementa uma alçada|EV-5-011]] → ver [[Investigação - Alçadas de Aprovação]]
 
 ## SRC-001 · credito/ (Código)
-- [[EV-5-a1-011 · Código implementa uma alçada|EV-5-a1-011]] — Código implementa uma alçada
+- [[EV-5-011 · Código implementa uma alçada|EV-5-011]] — Código implementa uma alçada
 ```
 
 ## Como preencher
 
-- **Uma nota por evidência.** O id é **`EV-<sessão>-<agente>-<seq>`** (ver
-  [convenções](../knowledge-vault-doc-conventions/SKILL.md)): `<sessão>` do `state.json`, `<agente>` o id
-  dado pelo orquestrador ao subagente (`a1`, `a2`…) e `<seq>` sequencial **por agente** — ex.:
-  `EV-5-a2-007`. No modo de **1 agente** o `<agente>` é omitido: `EV-5-014`. O código vira
+- **Uma nota por evidência.** O id é **`EV-<sessão>-<seq>`** (ver
+  [convenções](../knowledge-vault-doc-conventions/SKILL.md)): `<sessão>` do `state.json` e `<seq>`
+  sequencial na sessão — ex.: `EV-5-007`. O código vira
   `alias` e o **título** carrega o resumo legível. O corpo guarda o artefato real (paráfrase
   de normativos/documentos protegidos; trecho literal curto só de código/SQL).
 - **`source:` liga à fonte autorizada** via `SRC-XXX` + localização. É o elo que torna a
@@ -95,8 +94,8 @@ created: 2026-07-10
   (relação inversa do `source:` delas). Mantém o grafo do Obsidian navegável nos dois sentidos.
 - **Como esta evidência é referenciada (evite órfãos):** as notas que citam esta evidência
   devem linká-la **pelo título completo** (o nome do arquivo), exibindo o código:
-  `[[EV-5-a2-007 · Aprovação exige duas alçadas|EV-5-a2-007]]`. Um link pelo **código sozinho**
-  (`[[EV-5-a2-007]]`) pode não resolver — mesmo com `aliases` — e vira nó órfão no grafo. Como
+  `[[EV-5-007 · Aprovação exige duas alçadas|EV-5-007]]`. Um link pelo **código sozinho**
+  (`[[EV-5-007]]`) pode não resolver — mesmo com `aliases` — e vira nó órfão no grafo. Como
   a evidência é imutável, o título é estável e o link não quebra. **Quando uma nota cita mais
   de uma evidência no `source:`, use uma lista YAML** (um link por item) — vários `[[...]]`
   numa mesma string de frontmatter não resolvem.
@@ -106,7 +105,6 @@ created: 2026-07-10
   a divergência no MOC e abra `11 Investigations` (via `knowledge-vault-doc-investigations`). A
   hierarquia de fontes (Normativo > Corporativo > Código > Informal) define a versão
   priorizada; a **validação humana** supera todas.
-- Mantenha o **MOC Registro de Evidências** atualizado a cada nova `EV`. **No modo
-  map-reduce, o Registro é construído/consolidado só na fase de reduce, pelo orquestrador**
-  (agrupando por `SRC` e domínio/escopo) — os subagentes criam notas de evidência na sua fatia,
-  mas **não** escrevem o Registro nem resolvem conflito entre fatias.
+- Mantenha o **MOC Registro de Evidências** atualizado a cada nova `EV`, agrupando por `SRC`
+  e domínio/escopo. O Registro consolida a visão do todo — é onde a divergência entre fontes
+  fica visível e vira `11 Investigations`.

@@ -40,7 +40,7 @@ aliases: [Onboarding de Cliente]
 tags: [dominio/cadastro, processo]
 type: process
 status: confirmed
-source: "[[EV-5-a1-003 · Cliente é cadastrado antes de operar|EV-5-a1-003]]"
+source: "[[EV-5-003 · Cliente é cadastrado antes de operar|EV-5-003]]"
 author: CAD Discovery
 created: 2026-07-10
 ---
@@ -69,7 +69,7 @@ title: Regra - Limite de Crédito
 tags: [regra, credito]
 type: rule
 status: confirmed
-source: "[[EV-5-a2-007 · Aprovação exige duas alçadas|EV-5-a2-007]]"
+source: "[[EV-5-007 · Aprovação exige duas alçadas|EV-5-007]]"
 author: CAD Discovery
 created: 2026-07-10
 ---

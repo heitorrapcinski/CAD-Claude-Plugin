@@ -95,9 +95,9 @@ created:
 - **Nota de Knowledge (01–08), Decisions (10), Views (12):** `source` aponta para a(s)
   nota(s) de evidência que a sustentam — via wikilink **pelo título completo da nota**, com
   o código como texto de exibição. **Uma** evidência (escalar):
-  `source: "[[EV-5-a2-007 · Aprovação exige duas alçadas|EV-5-a2-007]]"`. **Várias**
+  `source: "[[EV-5-007 · Aprovação exige duas alçadas|EV-5-007]]"`. **Várias**
   evidências → **lista YAML**, um link por item (ver a regra de referência abaixo). **Não**
-  cite pelo código sozinho (`[[EV-5-a2-007]]`). Sem evidência clara, **não afirme**: abra
+  cite pelo código sozinho (`[[EV-5-007]]`). Sem evidência clara, **não afirme**: abra
   `11 Investigations`.
 - **Nota de Evidence (09):** a nota **é** a fonte. Aqui `source` traz `SRC-XXX` + a
   localização (`SRC-002 · normativo_credito_v3.pdf · Seção 4.2`). `SRC-XXX` liga à fonte
@@ -110,28 +110,22 @@ created:
 
 ### Identidade de fontes e evidências (IDs sem colisão)
 
-Discovery pode rodar em **paralelo** (map-reduce com subagentes) para escopo grande — por
-isso os IDs são projetados para **não colidir** entre escritores concorrentes, sem RNG e
-sem escritor central:
+Os IDs são projetados para **não colidir** entre sessões ao longo do tempo, sem RNG e sem
+contador global frágil:
 
-- **`SRC-NNN`** (fonte autorizada) é atribuído **uma vez, pelo orquestrador**, ao registrar
+- **`SRC-NNN`** (fonte autorizada) é atribuído **uma vez**, ao registrar
   a fonte em `.cad-plugin/sources.json`. Escritor único, sem concorrência.
-- **`EV-<sessão>-<agente>-<seq>`** (nota de evidência em `09 Evidence`) — padrão worker-id +
-  sequência:
-  - **`<sessão>`** — o número da sessão de discovery (do `state.json`, incrementado pelo
-    orquestrador). Garante unicidade **entre runs** ao longo do tempo.
-  - **`<agente>`** — o id que o orquestrador dá a cada subagente no dispatch (`a1`, `a2`…).
-    Cada subagente é dono do seu espaço de IDs → colisão impossível entre subagentes.
-  - **`<seq>`** — sequencial **por agente**, começando em 1 (cada subagente conta só as
-    próprias evidências, o que erra muito menos que um contador global).
-  - Ex.: `EV-5-a2-007`. No modo de **1 agente** (escopo pequeno) o `<agente>` é omitido:
-    `EV-<sessão>-<seq>` → `EV-5-014`.
+- **`EV-<sessão>-<seq>`** (nota de evidência em `09 Evidence`) — sessão + sequência:
+  - **`<sessão>`** — o número da sessão de discovery (do `state.json`, incrementado a cada
+    run). Garante unicidade **entre runs** ao longo do tempo.
+  - **`<seq>`** — sequencial dentro da sessão, começando em 1.
+  - Ex.: `EV-5-007`.
 - **Handle curto + título legível.** O código é a chave estável; a legibilidade vem do
-  **título** da nota, que carrega o resumo: `title: EV-5-a2-007 · Aprovação exige duas
-  alçadas`. Mantenha também `aliases: [EV-5-a2-007]` (ajuda busca/autocomplete).
-- **MOCs e o Registro de Evidências são consolidados só no reduce** (pelo orquestrador),
-  nunca por um subagente — é lá que o domínio/escopo agrupa as evidências, e onde dedup de
-  conceito e conflito entre fontes se resolvem.
+  **título** da nota, que carrega o resumo: `title: EV-5-007 · Aprovação exige duas
+  alçadas`. Mantenha também `aliases: [EV-5-007]` (ajuda busca/autocomplete).
+- **MOCs e o Registro de Evidências consolidam a visão do todo** — é neles que o
+  domínio/escopo agrupa as evidências, e onde dedup de conceito e conflito entre fontes se
+  resolvem.
 
 ### Como referenciar uma evidência (evite links órfãos)
 
@@ -140,14 +134,14 @@ frontmatter pode **não resolver** e vira um **nó órfão** no grafo. Por isso:
 
 - **Sempre linke pelo título completo** da nota de evidência (o nome do arquivo), e use
   `|` para exibir o código curto:
-  `[[EV-5-a2-007 · Aprovação exige duas alçadas|EV-5-a2-007]]`.
-- **Nunca** cite a evidência pelo código sozinho (`[[EV-5-a2-007]]`) — mesmo com `aliases`
+  `[[EV-5-007 · Aprovação exige duas alçadas|EV-5-007]]`.
+- **Nunca** cite a evidência pelo código sozinho (`[[EV-5-007]]`) — mesmo com `aliases`
   definido, o link pode ficar órfão.
 - Como as evidências são **imutáveis**, o título completo é **estável** — o link não quebra.
 - Vale para o `source:` do frontmatter, para o corpo das notas e para os MOCs.
 - **Dentro de célula de tabela, escape o pipe do alias como `\|`** — em tabela Markdown o `|`
   é separador de coluna, então um link com alias não escapado quebra a célula e o link vira
-  texto cru. Em tabela: `| [[EV-5-a2-007 · Aprovação exige duas alçadas\|EV-5-a2-007]] | … |`.
+  texto cru. Em tabela: `| [[EV-5-007 · Aprovação exige duas alçadas\|EV-5-007]] | … |`.
   Fora de tabela (listas, corpo, frontmatter), use `|` normal.
 - **Várias evidências no `source:` → use uma lista YAML**, um link por item. Vários
   `[[...]]` **numa mesma string não funcionam** (o Obsidian não separa e perde os links):
@@ -169,7 +163,7 @@ frontmatter pode **não resolver** e vira um **nó órfão** no grafo. Por isso:
 
 - **Markdown** puro (títulos, listas, tabelas, ênfase).
 - **Obsidian**: `[[wikilinks]]` para conectar notas (`[[Cliente]]`, `[[TB_CLIENTE]]`; para
-  evidências, pelo título completo — `[[EV-5-a2-007 · Aprovação exige duas alçadas|EV-5-a2-007]]`);
+  evidências, pelo título completo — `[[EV-5-007 · Aprovação exige duas alçadas|EV-5-007]]`);
   embeds `![[...]]` quando fizer sentido.
 - **Mermaid / PlantUML** em cerca de código (` ```mermaid ` / ` ```plantuml `). Diagramas
   substanciais vão em `12 Views` e são referenciados por `[[...]]`.
