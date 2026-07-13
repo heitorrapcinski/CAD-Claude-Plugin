@@ -7,6 +7,11 @@ Todas as mudanças relevantes deste plugin. O formato segue, de modo leve,
 
 ## [Unreleased]
 
+### Adicionado
+
+- **Arquivo `LICENSE` (MIT).** Formaliza na raiz do repositório a licença já declarada em
+  `package.json` (`"license": "MIT"`), sob copyright de Heitor Rapcinski.
+
 ### Alterado
 
 - **Descoberta sem faseamento prescrito.** A `/cad:discovery` deixa de **montar e negociar um
