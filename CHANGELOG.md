@@ -5,6 +5,17 @@ Todas as mudanças relevantes deste plugin. O formato segue, de modo leve,
 [SemVer](https://semver.org/lang/pt-BR/). O racional de design vive em
 [`DESIGN.md`](DESIGN.md); este arquivo é o histórico de mudanças.
 
+## [Unreleased]
+
+### Alterado
+
+- **Descoberta sem faseamento prescrito.** A `/cad:discovery` deixa de **montar e negociar um
+  plano de etapas de valor** com o consultor — na prática, essa orientação confundia os
+  subagentes durante a descoberta. Cobertura total e profundidade máxima seguem
+  **inegociáveis**: a fonte autorizada é sempre lida por inteiro, na maior profundidade. Fonte
+  volumosa continua sendo coberta em **map-reduce** (paralelização), e o **vault em disco**
+  segue como memória para **retomar entre sessões** até 100%. Seção 3.3 do `DESIGN.md`.
+
 ## [0.4.0] — 2026-07-10
 
 Nova **estratégia de extração de conhecimento na descoberta**: o substrato neutro deixa

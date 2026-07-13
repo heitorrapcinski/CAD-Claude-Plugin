@@ -1,6 +1,6 @@
 ---
 name: cad-discovery
-description: Orquestrador /cad:discovery — escaneia exatamente as fontes indicadas pelo consultor e estrutura o conhecimento como um Knowledge Vault Zettelkasten/Obsidian em docs/knowledge-vault/ (notas com frontmatter, [[links]], evidências rastreáveis nas pastas 01–13). Cobertura total e profundidade máxima são inegociáveis; quando o esforço é grande, o trabalho é FASEADO em etapas de valor (por módulo), nunca reduzido. Abre notas em 11 Investigations para o que não tem evidência. Não gera nenhum artefato de técnica.
+description: Orquestrador /cad:discovery — escaneia exatamente as fontes indicadas pelo consultor e estrutura o conhecimento como um Knowledge Vault Zettelkasten/Obsidian em docs/knowledge-vault/ (notas com frontmatter, [[links]], evidências rastreáveis nas pastas 01–13). Cobertura total e profundidade máxima são inegociáveis: a fonte autorizada é lida por inteiro, na maior profundidade, nunca reduzida — fonte volumosa é coberta em map-reduce (subagentes). Abre notas em 11 Investigations para o que não tem evidência. Não gera nenhum artefato de técnica.
 argument-hint: "[fontes...]  (ex.: credito/ normativo_credito_v3.pdf)"
 ---
 
@@ -30,86 +30,69 @@ carregue-a antes de escrever qualquer nota.
 - `.cad-plugin/state.json` e `.cad-plugin/sources.json` (se existirem) — sessão atual e
   histórico. Se não existirem, crie-os.
 
-## Estratégia de execução — cobertura total, entregue em etapas
+## Estratégia de execução — cobertura total, na profundidade máxima
 
 **Escopo e profundidade não são negociáveis.** A fonte autorizada é lida **por inteiro**, na
 **maior profundidade** que ela sustenta — todo módulo, classe, tabela, integração, config,
 até o fato mais fino. A descoberta **nunca** oferece cobrir menos, nem de forma rasa, para
 poupar esforço: entregar um retrato parcial **enviesa o humano** e fere "sem evidência, sem
 afirmação". O consultor escolhe **quais fontes** autorizar (na entrada); uma vez autorizada,
-a fonte é coberta **integralmente**.
+a fonte é coberta **integralmente**. A meta de toda sessão é fechar **100%** da fonte.
 
-O que se ajusta ao tamanho do esforço é **só o faseamento** — entregar a cobertura total em
-**etapas de valor**, jamais reduzir a cobertura:
+Seu trabalho é **cobrir tudo**, usando o **vault em disco como memória** entre passes
+(releia-o conforme precisar). Se uma sessão não fechar 100%, a seguinte **retoma pelo que
+ainda não foi coberto**.
 
-- **Esforço pequeno → uma etapa.** Um passe cobre tudo (você mesmo, área por área; o **vault
-  em disco é a memória** entre passes — releia-o conforme precisar).
-- **Esforço grande → várias etapas por valor.** Particione a fonte em fatias coesas que
-  entregam valor sozinhas (por **módulo/subsistema** de preferência; por camada `01…13`
-  quando a fonte for monolítica). Cada etapa gera **tudo** da sua fatia, na **maior
-  profundidade**, como incremento coerente no vault. Ao fim da última etapa, a cobertura é
-  **100%**.
-
-> **O humano decide o faseamento, não o escopo.** Você apresenta o **plano de etapas** (as
-> fatias e uma ordem sugerida); o consultor **reordena/prioriza** e define os **checkpoints**
-> (ex.: "comece pelo módulo de crédito", "pare após cada etapa"). Ele **não** corta escopo
-> nem profundidade — só escolhe a **ordem** e **quando pausar**. Nunca proponha "coletar só
-> parte" como alternativa ao esforço; proponha **como dividir** e **em que ordem entregar**.
-
-> **Dentro de uma etapa, paralelize se ajudar.** Uma etapa grande pode ser feita em
-> **map-reduce**: subagentes fazem o *map* (extrair/escrever a sua sub-fatia); só o
-> orquestrador faz o *reduce* (MOCs, dedup e **conflito entre fontes**). Se o runtime não
-> oferecer subagentes, faça a etapa com 1 agente. Como o **vault em disco acumula**, o reduce
-> de cada etapa roda contra **tudo o que já existe** — então conflito com uma etapa anterior
-> aparece quando a etapa nova aterrissa.
+> **Fonte grande → paralelize em map-reduce.** Uma fonte volumosa pode ser coberta em
+> **map-reduce**: subagentes fazem o *map* (varrer/escrever uma **sub-fatia** coesa — por
+> **módulo/subsistema** de preferência, ou por camada `01…13` quando a fonte for monolítica);
+> só o orquestrador faz o *reduce* (MOCs, dedup e **conflito entre fontes**). Cada sub-fatia é
+> coberta **por inteiro**, na maior profundidade — o particionamento é só para **paralelizar**.
+> Se o runtime não oferecer subagentes, cubra com **1 agente**, área por área. Como o **vault
+> em disco acumula**, o reduce roda contra **tudo o que já existe** (inclusive o que sessões
+> anteriores gravaram) — conflito com o vault existente aparece quando a nota nova aterrissa.
 
 ## Procedimento
 
-### 0. Preparação e plano de etapas (orquestrador, antes de qualquer nota)
+### 0. Preparação (orquestrador, antes de qualquer nota)
 
 1. **Registrar fontes** (escritor único: você). Para cada fonte do argumento, faça
    **append** em `.cad-plugin/sources.json` uma entrada com `id` (`SRC-NNN`, sequencial),
    `caminho`, `tipo` (`Normativo` | `Corporativo` | `Código` | `Informal`), `sessao` e
    `data`. Incremente a sessão em `state.json`. Os `SRC` são atribuídos **aqui, de uma vez**
    — os subagentes recebem a lista pronta e **não** criam `SRC`.
-2. **Avaliar o esforço e montar o plano de etapas.** Estime o tamanho da fonte
-   (nº de arquivos/módulos/áreas). Se couber num passe, é **uma etapa**. Se for grande,
-   **particione em etapas de valor** (por módulo/subsistema de preferência), cada uma
-   cobrindo **integralmente** a sua fatia. **Não reduza escopo nem profundidade** — o plano
-   sempre cobre 100% da fonte; o que você propõe é a **divisão e a ordem**.
-3. **Confirmar o faseamento com o humano (não o escopo).** Apresente as etapas e uma ordem
-   sugerida; deixe o consultor reordenar/priorizar e definir os checkpoints. Deixe explícito
-   que a meta é **cobertura total** e que ele escolhe **sequência**, não quanto coletar.
-   Registre o plano (etapas e ordem) no `state.json`.
+2. **Escolher o modo de execução.** Estime o tamanho da fonte. Cabe num passe → **1 agente**,
+   área por área. É volumosa → **map-reduce**: particione em sub-fatias coesas (por
+   módulo/subsistema de preferência) **só para paralelizar**, cada uma coberta
+   **integralmente**. Isso é uma decisão de execução sua — não reduza escopo nem profundidade.
 
-### Laço por etapa (repita até 100% de cobertura)
+### Execução — cobrir a fonte (1 agente ou map-reduce)
 
-Para cada etapa do plano, na ordem definida:
-
-**a) Coletar a fatia, na maior profundidade.** Faça a etapa com 1 agente (fatia menor) ou
-   em **map-reduce** (fatia grande). No map-reduce, dispare **subagentes de propósito geral
+**a) Coletar, na maior profundidade.** Cubra a fonte com 1 agente (fonte menor) ou em
+   **map-reduce** (fonte volumosa). No map-reduce, dispare **subagentes de propósito geral
    (com escrita)** com o briefing abaixo; atribua a cada um um **id** (`a1`, `a2`…) que entra
    no id das evidências (`EV-<sessão>-<agente>-<seq>`). Em ambos os casos, execute os
-   **passos comuns** (adiante) até **esgotar** a fatia — nada de amostra.
+   **passos comuns** (adiante) até **esgotar** o escopo — nada de amostra.
 
-**b) Reduce da etapa (só o orquestrador).** Ao fim da fatia, consolide **contra o vault
+**b) Reduce (só o orquestrador).** Ao fim da coleta, consolide **contra o vault
    acumulado**:
    - **Navegação:** construa/atualize os **MOCs** (`13 MOCs`, via `knowledge-vault-doc-mocs`) e o
      **Registro de Evidências** (via `knowledge-vault-doc-evidence`), agrupando por `SRC` e domínio/escopo.
    - **Dedup de conceito transversal:** o mesmo conceito (`Cliente`) pode ter surgido em
-     mais de uma fatia/etapa. Funda numa nota canônica (ou ligue as variantes) e conserte os
+     mais de uma sub-fatia. Funda numa nota canônica (ou ligue as variantes) e conserte os
      `[[links]]`.
    - **Conflito entre fontes (só o todo enxerga):** compare com o que já existe no vault.
      Onde divergir, aplique a **hierarquia** (Normativo > Corporativo > Código > Informal),
      registre a versão priorizada (`status: conflicting`) e abra `11 Investigations` ligando
      as evidências divergentes.
 
-**c) Entregar valor e registrar progresso.** Marque a etapa como concluída no `state.json`
-   (etapas concluídas / total) e **reporte o incremento** ao consultor (o que a etapa
-   adicionou ao vault + investigações abertas). Havendo checkpoint, pause para ele seguir ou
-   parar; a descoberta **retoma** da próxima etapa na sessão seguinte.
+**c) Reportar e registrar progresso.** Registre no `state.json` o que foi coberto (no
+   map-reduce, o nº de sub-fatias/subagentes) e **reporte ao consultor** o que a sessão
+   adicionou ao vault + investigações abertas. Se a sessão não fechou 100% da fonte, deixe
+   claro **o que falta e por onde retomar**; a descoberta **continua** pelo que ainda não foi
+   coberto na sessão seguinte.
 
-#### Briefing do subagente (map, dentro de uma etapa)
+#### Briefing do subagente (map, no map-reduce)
 
 - **Escopo:** exatamente os caminhos da **sub-fatia** — **não** saia deles, **não** registre
   fontes novas. Cubra a sub-fatia **por inteiro**, na maior profundidade.
@@ -146,30 +129,28 @@ iii. **Aplicar a regra de evidência** (detalhe em `knowledge-vault-doc-conventi
      (via [`knowledge-vault-doc-investigations`](../knowledge-vault-doc-investigations/SKILL.md), `status: open`,
      `tags: consumidor/cad`).
    - Definições conflitantes **dentro da fatia** → hierarquia + `status: conflicting` +
-     investigação. (Conflito **entre** fatias/etapas é resolvido no reduce.)
+     investigação. (Conflito **entre** sub-fatias é resolvido no reduce.)
    - Nota já validada por humano → **nunca sobrescreva**; conflito novo abre investigação
      `conflito_pós_validação`.
 iv. **Não tocar em nenhuma pasta de técnica.** Discovery escreve só em `docs/knowledge-vault/`.
 
-## Saída ao final (por etapa e ao encerrar)
+## Saída ao final
 
-Atualize `state.json` (append no `historico`; registre o plano de etapas, quais já foram
-concluídas e, no map-reduce, o nº de sub-fatias/subagentes). **Ao fim de cada etapa**,
-reporte o incremento entregue. **Ao encerrar a sessão**, exiba um **resumo de cobertura**:
-etapas concluídas / total (com a % de cobertura da fonte), fontes escaneadas, notas de
-evidência criadas, notas por pasta (01–13) e a **lista de investigações abertas**
-(`11 Investigations`). Se ainda faltam etapas, deixe claro **o que falta e por onde retomar**
-— a meta é sempre fechar **100%** da fonte; o vault só está completo quando não há etapa
-pendente.
+Atualize `state.json` (append no `historico`; no map-reduce, registre o nº de
+sub-fatias/subagentes). **Ao encerrar a sessão**, exiba um **resumo de cobertura**: fontes
+escaneadas, notas de evidência criadas, notas por pasta (01–13) e a **lista de investigações
+abertas** (`11 Investigations`). Se a fonte não fechou 100%, deixe claro **o que falta e por
+onde retomar** — a meta é sempre cobrir **100%** da fonte; o vault só está completo quando não
+resta nada da fonte por percorrer.
 
 ## Regras inegociáveis
 
 - Sem evidência, sem afirmação (a fonte vive numa nota de `09 Evidence`; o Knowledge liga a
   ela via `source:`).
 - **Cobertura total e profundidade máxima não são negociáveis.** Toda a fonte autorizada é
-  lida por inteiro, no maior nível de detalhe. Esforço grande vira **faseamento** (etapas de
-  valor), **nunca** redução de escopo ou profundidade. Não ofereça "coletar só parte" ao
-  humano — ofereça **como dividir e em que ordem entregar**.
+  lida por inteiro, no maior nível de detalhe. Esforço grande vira **map-reduce** (paralelizar
+  a cobertura), **nunca** redução de escopo ou profundidade. Não ofereça "coletar só parte" ao
+  humano — a fonte autorizada é sempre coberta por inteiro.
 - Escopo humano: só as fontes passadas. A síntese nunca lê fontes; ampliar o vault é só da
   descoberta. Fonte nova sempre volta ao humano.
 - **Identidade sem colisão:** `SRC` é atribuído uma vez pelo orquestrador; `EV` é

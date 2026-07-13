@@ -290,36 +290,36 @@ docs/
 Cada técnica nova é uma pasta nova; o substrato `docs/knowledge-vault/` é compartilhado por
 todas. **Nunca** há conceito de uma técnica dentro da pasta de outra.
 
-### 3.3 Modelo de execução da descoberta (cobertura total, faseada por valor)
+### 3.3 Modelo de execução da descoberta (cobertura total, na profundidade máxima)
 
 **Cobertura total e profundidade máxima são inegociáveis.** A fonte autorizada é lida por
 inteiro, no maior nível de detalhe — a descoberta **nunca** oferece coletar menos (ou raso)
 para poupar esforço, pois um retrato parcial enviesa o humano. O consultor decide **quais
 fontes** autorizar; uma vez autorizada, a fonte é coberta 100%.
 
-O que escala com o esforço é **só o faseamento** — entregar a cobertura total em **etapas de
-valor**, não reduzir a cobertura:
+O que escala com o esforço **não** é a cobertura, e sim a **forma de executar**: uma fonte
+pequena é coberta por **1 agente** e uma fonte grande em **map-reduce** (paralelizando a
+varredura). O papel da skill é garantir que **tudo** seja coberto, usando o **vault em disco
+como memória** entre passes; se uma sessão não fecha 100%, a seguinte retoma pelo que ainda
+falta.
 
-- **Esforço pequeno → uma etapa.** Um passe cobre tudo, usando o **vault em disco como
-  memória** entre áreas.
-- **Esforço grande → várias etapas por valor.** O orquestrador particiona a fonte em fatias
-  coesas (por **módulo/subsistema** de preferência) e as processa **etapa a etapa**, cada uma
-  cobrindo **integralmente** a sua fatia, na maior profundidade. O **humano decide a ordem e
-  os checkpoints** — não o escopo nem a profundidade. Só ao fim da última etapa a cobertura
-  fecha 100%; o `state.json` registra as etapas concluídas para **retomar entre sessões**.
+- **Esforço pequeno → 1 agente.** Um passe cobre tudo, área por área.
+- **Esforço grande → map-reduce.** O orquestrador particiona a fonte em sub-fatias coesas (por
+  **módulo/subsistema** de preferência) **para paralelizar** — cada subagente cobre a sua
+  sub-fatia **por inteiro**, na maior profundidade. É decisão de execução do orquestrador.
 
-Dentro de uma etapa grande, o trabalho pode ser paralelizado em **map-reduce**. A separação
-**map × reduce** é o que preserva os invariantes do CAD sob paralelismo:
+O paralelismo é **map-reduce**, e a separação **map × reduce** é o que preserva os invariantes
+do CAD sob paralelismo:
 
 | Fase | Ator | Faz |
 |---|---|---|
-| Preparação | Orquestrador | Registra fontes (`SRC-NNN`, **escritor único**), incrementa a sessão, **monta o plano de etapas** (particiona por valor, sem cortar cobertura) e atribui um **id** por subagente (`a1`, `a2`…). |
+| Preparação | Orquestrador | Registra fontes (`SRC-NNN`, **escritor único**), incrementa a sessão, **decide o modo** (1 agente vs map-reduce) e, no map-reduce, particiona em sub-fatias e atribui um **id** por subagente (`a1`, `a2`…). |
 | **Map** | Subagentes (paralelo) | Cada um varre **só a sua sub-fatia** (por inteiro), captura evidência (`09 Evidence`, id `EV-<sessão>-<agente>-<seq>`) e materializa as notas de Knowledge ligadas por `source:`; abre investigações locais. **Não** escreve MOCs, **não** resolve conflito entre fatias, **não** toca `sources.json`/`state.json`. |
-| **Reduce** | Orquestrador | Ao fim da etapa, consolida contra o **vault acumulado**: **MOCs** e **Registro de Evidências**, **dedup** de conceito transversal e **detecção de conflito entre fontes** (que só quem vê o todo consegue), entregando o incremento de valor da etapa. |
+| **Reduce** | Orquestrador | Ao fim da coleta, consolida contra o **vault acumulado**: **MOCs** e **Registro de Evidências**, **dedup** de conceito transversal e **detecção de conflito entre fontes** (que só quem vê o todo consegue), entregando o retrato consolidado. |
 
-Como o vault em disco **acumula**, o reduce de cada etapa roda contra tudo o que já existe —
-conflito com uma etapa anterior aparece quando a etapa nova aterrissa. Dois pontos de projeto
-sustentam isso:
+Como o vault em disco **acumula**, o reduce roda contra tudo o que já existe (inclusive o que
+sessões anteriores gravaram) — conflito com o vault existente aparece quando a nota nova
+aterrissa. Dois pontos de projeto sustentam isso:
 
 - **Identidade sem colisão** (padrão worker-id + sequência). `SRC` é atribuído uma vez
   (escritor único). As evidências usam `EV-<sessão>-<agente>-<seq>` no modo paralelo: a
@@ -556,8 +556,8 @@ SE humano responde investigação (/cad:backlog)     → resolve a nota, cria ev
 Sem prioridade automática. Duas decisões ficam com o consultor, sessão a sessão:
 
 - **Quando o substrato está "rico o bastante"** para sintetizar uma técnica — é
-  julgamento do consultor. `/cad:discovery` exibe, ao final, a cobertura (etapas
-  concluídas) e a lista de **investigações abertas** para apoiar essa decisão.
+  julgamento do consultor. `/cad:discovery` exibe, ao final, o **resumo de cobertura** da
+  fonte e a lista de **investigações abertas** para apoiar essa decisão.
 - **Quando sintetizar / o quê** — `/cad:synthesize <técnica>` valida o mínimo
   necessário do substrato para aquela técnica e, se faltar, aponta exatamente quais
   **investigações** resolver antes (via `/cad:backlog`). O consultor decide se
